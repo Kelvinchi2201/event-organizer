@@ -22,7 +22,7 @@ const createEventsTable = async () => {
     CREATE TABLE events (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    descripcion TEXT,
+    description TEXT,
     fecha_evento DATE NOT NULL,
     hora_evento TIME,
     usuarios_id INTEGER NOT NULL,

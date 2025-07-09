@@ -3,6 +3,7 @@ import { ZodError } from 'zod/v4';
 import { ErrorWithStatus } from './src/utils/errorTypes.js';
 import { DatabaseError } from 'pg';
 import usersRouter from './src/module/users/users.routes.js';
+import eventsRouter from './src/module/events/events.routes.js';
 
 const app = express();
 
@@ -14,9 +15,10 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/users', usersRouter);
+app.use('/api/events', eventsRouter);
 
 app.use((err, req, res, _next) => {
-  console.log('IADADAHIDIHAIHDHID');
+  console.log('error', err);
 
   if (err instanceof ZodError) {
     const messages = err.issues.map((zodError) => zodError.message);
@@ -34,7 +36,7 @@ app.use((err, req, res, _next) => {
     }
   }
 
-  res.json({ erorr: 'HUBO UN ERROR' });
+  res.json({ error: 'HUBO UN ERROR' });
 });
 
 export default app;
