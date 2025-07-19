@@ -3,7 +3,7 @@ import eventsRepository from './events.repository.js';
 import {
     createEventsRouteSchema,
     deleteEventsRouteSchema,
-    updateEventsRouteSchema 
+    updateEventsRouteSchema,
 } from './events.routes.schemas.js';
 
 const eventsRouter = express.Router()
@@ -19,6 +19,27 @@ eventsRouter.post('/', async (req, res) => {
   const newEvent = await eventsRepository.addOneEvents(body);
   res.json(newEvent);
 });
+
+eventsRouter.delete('/:id', async (req, res) => {
+  const params = deleteEventsRouteSchema.params.parse(req.params)
+   console.log('PARAMS', params);
+  const eventsDeleted = await eventsRepository.deleteEventsById(params.id);
+  console.log('EVENTO ELIMINADO', eventsDeleted);
+
+  res.json(eventsDeleted);
+});
+
+eventsRouter.put('/:id', async (req, res) => {
+  const body = updateEventsRouteSchema.body.parse(req.body);
+  const params = updateEventsRouteSchema.params.parse(req.params);
+  const updateEvents = await eventsRepository.updateEventsById(params.id, body);
+  res.json(updateEvents);
+
+})
+
+
+
+
 
 
 export default eventsRouter;
