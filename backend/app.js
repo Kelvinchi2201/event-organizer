@@ -4,6 +4,7 @@ import { ErrorWithStatus } from './src/utils/errorTypes.js';
 import { DatabaseError } from 'pg';
 import usersRouter from './src/module/users/users.routes.js';
 import eventsRouter from './src/module/events/events.routes.js';
+import indicationsRouter from './src/module/Instructions/indications.routes.js';
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/users', usersRouter);
 app.use('/api/events', eventsRouter);
+app.use('/api/indications', indicationsRouter)
 
 app.use((err, req, res, _next) => {
   console.log('error', err);
