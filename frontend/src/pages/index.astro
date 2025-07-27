@@ -1,11 +1,23 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Navigation from '../components/Navigation.astro';
+import Layout from '../layouts/Layout.astro';
+import '../styles/global.css'
 ---
 
 <Layout>
-	<Welcome />
+	 <main class=` bg-cover bg- min-h-screen min-w-screen flex flex-col justify-center gap-4 px-4 max-w-7xl mx-auto md:items-center md:w-[70%] lg:flex-row `>
+	<div class="flex justify-between  items-center w-[70%] gap-4">	
+    <h1 class="text-pink-700 text-9xl justify-center items-center md:text-6xl lg:text-7xl">EOrganizer</h1>
+    <div class="flex flex-col justify-center w-[50%]  gap-4">
+		<div class="flex flex-col outline-2 outline-offset-2 outline-pink-700 rounded-xs gap-4 p-4">
+      <p class="text-justify text-black md:text-base lg:text-sm">Bienvenido a EOrganizer  Tu espacio para gestionar y compartir eventos fácilmente</p>
+      <p class="text-justify text-black md:text-base lg:text-sm">¿Quieres organizar un evento y mantener todo bajo control? En EOrganizer, te ofrecemos una herramienta sencilla y eficiente para publicar tus eventos con todos los detalles importantes: fecha, hora, ubicación, y una lista de invitados personalizable.</p>
+	  </div>
+      
+      <a class="bg-pink-700 py-4 px-8 text-white no-underline text-center font-medium text-xl rounded-md hover:bg-pink-800 transition-all duration-200 ease-in" href="/login">iniciar sesion</a>
+	  <a class="bg-pink-700 py-4 px-8 text-white no-underline text-center font-medium text-xl rounded-md hover:bg-pink-800 transition-all duration-200 ease-in" href="/registro">registro</a>
+    </div>
+	</div>
+  </main>
 </Layout>
