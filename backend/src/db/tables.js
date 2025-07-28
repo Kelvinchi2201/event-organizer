@@ -6,8 +6,10 @@ const createUsersTable = async () => {
   await db.query(`
     CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
-    passwordHash TEXT NOT NULL
+    passwordHash TEXT NOT NULL,
+    verify_email BOOLEAN DEFAULT false
     )
   `);
   console.log('Tabla de usuarios creada');

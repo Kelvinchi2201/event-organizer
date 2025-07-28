@@ -2,13 +2,15 @@ import express from 'express';
 import { ZodError } from 'zod/v4';
 import { ErrorWithStatus } from './src/utils/errorTypes.js';
 import { DatabaseError } from 'pg';
+import cors from 'cors';
 import usersRouter from './src/module/users/users.routes.js';
 import eventsRouter from './src/module/events/events.routes.js';
 import indicationsRouter from './src/module/Instructions/indications.routes.js';
+import jwt from 'jsonwebtoken';
 
 const app = express();
 
-
+app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -21,6 +23,9 @@ app.use('/api/indications', indicationsRouter)
 
 app.use((err, req, res, _next) => {
   console.log('error', err);
+    if (err instanceof jwt.TokenExpiredError) {
+    return res.status(403).json({ error: 'El tiempo para validar su usuario ha expirado' });
+  }
 
   if (err instanceof ZodError) {
     const messages = err.issues.map((zodError) => zodError.message);
