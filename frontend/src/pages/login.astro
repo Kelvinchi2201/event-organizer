@@ -14,7 +14,7 @@ import Layout from "../layouts/Layout.astro"
         </p>
       </div>
 
-      <form class="space-y-6" action="#" method="POST">
+      <form class="space-y-6" id="form" novalidate>
         <div>
           <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
           <input
@@ -70,3 +70,41 @@ import Layout from "../layouts/Layout.astro"
     </div>
   </main>
 </Layout>
+
+<script>
+  // @ts-nocheck
+  import ky from 'ky';
+  import { BACK_ENDPOINT } from '../config/endpoints';
+  import { createNotification } from '../features/notifications/notificiation';
+  const BASE_PATH = `${BACK_ENDPOINT}/api/login`;
+
+  // Element Selection
+  const form = document.querySelector('#form');
+  const emailInput = document.querySelector('#email');
+  const passwordInput = document.querySelector('#password');
+
+
+  
+  
+  
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const formData = {
+      email: emailInput.value,
+      password: passwordInput.value,
+    };
+    
+    try {
+      const data = await ky.post(BASE_PATH, {json: formData}).json();
+    } catch (error) {
+      const errorData = await error.response.json();
+      createNotification({
+        type: 'error',
+        title: 'Hubo un error',
+        description: errorData.error
+      })
+    }
+  });
+</script>

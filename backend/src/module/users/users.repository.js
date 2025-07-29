@@ -33,6 +33,19 @@ const verifyOne = async (payload) => {
   return response.rows[0];
 };
 
-const usersRepository = { addOne, getAll, verifyOne };
+
+const findByEmail = async (payload) => {
+  const response = await db.query(
+    `
+    SELECT * FROM usuarios
+    WHERE email = $1
+  `,
+    [payload.email],
+  );
+  return response.rows[0];
+};
+
+
+const usersRepository = { addOne, getAll, verifyOne, findByEmail };
 
 export default usersRepository;
