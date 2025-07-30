@@ -8,11 +8,13 @@ import eventsRouter from './src/module/events/events.routes.js';
 import indicationsRouter from './src/module/Instructions/indications.routes.js';
 import jwt from 'jsonwebtoken';
 import loginRoutes from './src/module/login/login.routes.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ credentials: true, origin: ['http://localhost:4321'] }));
 app.use(express.json());
+app.use(cookieParser);
 
 app.get('/', (req, res) => {
   res.json({ hola: 'mundo' });

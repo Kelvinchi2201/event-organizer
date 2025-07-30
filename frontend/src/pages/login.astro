@@ -73,18 +73,14 @@ import Layout from "../layouts/Layout.astro"
 
 <script>
   // @ts-nocheck
-  import ky from 'ky';
-  import { BACK_ENDPOINT } from '../config/endpoints';
-  import { createNotification } from '../features/notifications/notificiation';
-  const BASE_PATH = `${BACK_ENDPOINT}/api/login`;
+    import AuthModule from '../features/auth/auth.module';
+    import { createNotification } from '../features/notifications/notificiation';
 
   // Element Selection
   const form = document.querySelector('#form');
   const emailInput = document.querySelector('#email');
   const passwordInput = document.querySelector('#password');
 
-
-  
   
   
 
@@ -97,7 +93,8 @@ import Layout from "../layouts/Layout.astro"
     };
     
     try {
-      const data = await ky.post(BASE_PATH, {json: formData}).json();
+    await AuthModule.loginUser(formData);
+      location.replace('/')
     } catch (error) {
       const errorData = await error.response.json();
       createNotification({
