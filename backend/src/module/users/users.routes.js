@@ -20,7 +20,7 @@ usersRouter.post('/', async (req, res) => {
   const token = jwt.sign(
     { id: newUser.id, email: newUser.email },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: '1h' },
+    { expiresIn: '10m' },
   );
   await nodemailerService.sendMail({
     from: process.env.EMAIL_USER,

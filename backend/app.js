@@ -7,14 +7,15 @@ import usersRouter from './src/module/users/users.routes.js';
 import eventsRouter from './src/module/events/events.routes.js';
 import indicationsRouter from './src/module/Instructions/indications.routes.js';
 import jwt from 'jsonwebtoken';
-import loginRoutes from './src/module/login/login.routes.js';
+import authRouter from './src/module/auth/auth.routes.js';
 import cookieParser from 'cookie-parser';
 
 const app = express();
 
 app.use(cors({ credentials: true, origin: ['http://localhost:4321'] }));
 app.use(express.json());
-app.use(cookieParser);
+app.use(cookieParser());
+
 
 app.get('/', (req, res) => {
   res.json({ hola: 'mundo' });
@@ -23,7 +24,8 @@ app.get('/', (req, res) => {
 app.use('/api/users', usersRouter);
 app.use('/api/events', eventsRouter);
 app.use('/api/indications', indicationsRouter);
-app.use('/api/login', loginRoutes);
+app.use('/api/auth', authRouter);
+
 
 app.use((err, req, res, _next) => {
   console.log('error', err);
