@@ -1,6 +1,6 @@
 import db from '../../db/index.js';
 import { ErrorWithStatus } from '../../utils/errorTypes.js';
-
+//TODO: cambiar toda la dinamica de indicaciones por que ya no es necesario una tabla de indicaciones
 
 const getAll = async () => {
   const response = await db.query('SELECT * FROM indicaciones');
