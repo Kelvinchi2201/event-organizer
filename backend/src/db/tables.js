@@ -48,6 +48,7 @@ const createGuestsTable = async () => {
         fecha_respuesta TIMESTAMP WITH TIME ZONE,
         usuarios_id INTEGER NOT NULL,
         events_id INTEGER NOT NULL,
+        indications TEXT,
 
         CONSTRAINT fk_usuarios
             FOREIGN KEY(usuarios_id)
@@ -64,25 +65,6 @@ const createGuestsTable = async () => {
 };
 
 
-const createIndicationsTable = async () => {
-    await db.query('DROP TABLE IF EXISTS indicaciones CASCADE');
-    await db.query(`
-        CREATE TABLE indicaciones (
-            id SERIAL PRIMARY KEY,
-            titulo TEXT NOT NULL,
-            descripcion TEXT,
-            fecha_publicacion TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-            events_id INTEGER NOT NULL,
-
-            CONSTRAINT fk_events
-                FOREIGN KEY(events_id)
-                REFERENCES events(id)
-                ON DELETE CASCADE
-        )
-    `);
-    console.log('Tabla indicaciones creada');
-};
-
 
 
 
@@ -92,7 +74,7 @@ const createTables = async () => {
     await createUsersTable();
     await createEventsTable();
     await createGuestsTable();
-    await createIndicationsTable();
+  
 
     console.log('Todas las tablas fueron creadas correctamente');
   } catch (error) {
