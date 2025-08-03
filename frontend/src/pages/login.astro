@@ -89,7 +89,7 @@ import AuthModule from "../features/auth/auth.module";
 
     try {
       await AuthModule.login({email: emailInput.value, password: passwordInput.value});
-      location.assign('/contacts');
+      location.assign('/');
     } catch (error) {
       console.log(error);
       const errorData = await error?.response?.json();
