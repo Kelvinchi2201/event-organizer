@@ -73,35 +73,31 @@ import Layout from "../layouts/Layout.astro"
 
 <script>
   // @ts-nocheck
-    import AuthModule from '../features/auth/auth.module';
-    import { createNotification } from '../features/notifications/notificiation';
+  import { BACK_ENDPOINT } from "../config/endpoints";
+import AuthModule from "../features/auth/auth.module";
+  import { createNotification } from "../features/notifications/notificiation";
+  import ky from 'ky';
 
-  // Element Selection
+  // DOM Element Selection
   const form = document.querySelector('#form');
   const emailInput = document.querySelector('#email');
   const passwordInput = document.querySelector('#password');
 
-  
-  
-
+  // Form Submission
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const formData = {
-      email: emailInput.value,
-      password: passwordInput.value,
-    };
-    
     try {
-    await AuthModule.loginUser(formData);
-      location.replace('/')
+      await AuthModule.login({email: emailInput.value, password: passwordInput.value});
+      location.assign('/contacts');
     } catch (error) {
-      const errorData = await error.response.json();
-      createNotification({
-        type: 'error',
-        title: 'Hubo un error',
-        description: errorData.error
-      })
-    }
+      console.log(error);
+      const errorData = await error?.response?.json();
+      createNotification({ 
+        title: 'Ups! Hubo un error', 
+        description: errorData?.error ?? 'Sin mensaje', 
+        type: 'error'
+      });
+    }  
   });
 </script>
