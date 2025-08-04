@@ -1,5 +1,5 @@
 ---
-import AuthProtected from "../features/auth/authProtected.astro"
+import AuthProtected from "../features/auth/AuthProtected.astro"
 import Layout from "../layouts/Layout.astro"
 ---
 
@@ -92,6 +92,14 @@ import Layout from "../layouts/Layout.astro"
 
 <script>
      // @ts-nocheck
+       import { BACK_ENDPOINT } from "../config/endpoints";
+       import { createNotification } from "../features/notifications/notificiation";
+       import ky from 'ky';
+       import AuthModule from "../features/auth/auth.module";
+
+
+
+
     const eventForm = document.querySelector('#event-form')
     const nameInput = document.querySelector('#event-name')
     const dateInput = document.querySelector('#event-date')
@@ -106,8 +114,10 @@ import Layout from "../layouts/Layout.astro"
     const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
     const TIME_REGEX = /^\d{2}:\d{2}$/;
     const DESCRIPTION_REGEX = /^[\w\s.,-ñÑáéíóúÁÉÍÓÚ¡!¿?()"'\/@#%\n\r]+$/;
+    const user =  await AuthModule.getLoggedUser();
+    const userId = user.id;
     
-
+    
      const validationState = {
     isNameValid: false,
     isDateValid: false,
@@ -161,11 +171,60 @@ import Layout from "../layouts/Layout.astro"
         validateForm();
     });
 
-    descriptionInput?.addEventListener('input', async () => {
+    descriptionInput.addEventListener('input', async () => {
         const isValid = DESCRIPTION_REGEX.test(descriptionInput.value);
         validationState.isDescriptionvalid = isValid;
         updateInputValidationUI(descriptionInput, isValid);
         validateForm();
     });
+
+    
+    
+    
+
+    eventForm.addEventListener('submit', async (event)=> {
+      event.preventDefault();
+      const { isNameValid, isDateValid, isTimeValid, isDescriptionValid } = validationState;
+    if (!isNameValid || !isDateValid || !isTimeValid || !isDescriptionValid) return;
+    try {
+      const response = await ky.post(`${BACK_ENDPOINT}/api/events`, {
+        json: {
+          name: nameInput.value,
+          description: descriptionInput.value,
+          fecha_evento: dateInput.value,
+          hora_evento: timeInput.value,
+          usuarios_id: userId
+        }
+      });
+      for (const key in validationState) {
+        validationState[key] = false;
+      }
+      form.reset();
+      [nameInput, descriptionInput, dateInput, timeInput].forEach(input => {
+        updateInputValidationUI(input);
+      });
+      validateForm();
+      createNotification({ 
+        title: 'Evento creado!', 
+        description: 'su evento se acreado correctamente', 
+        type: 'success'
+      });
+      
+    } catch (error) {
+      const errorData = await error?.response?.json();
+      createNotification({ 
+        title: 'Ups! Hubo un error', 
+        description: errorData?.error ?? 'Sin mensaje', 
+        type: 'error'
+      });
+    } 
+   
+   
+    
+
+
+      
+    });
+  
    
 </script>

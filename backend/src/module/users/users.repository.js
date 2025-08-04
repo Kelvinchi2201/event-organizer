@@ -46,6 +46,6 @@ const findByEmail = async (payload) => {
 };
 
 
-const usersRepository = { addOne, getAll, verifyOne, findByEmail };
+const usersRepository = { addOne, getAll, verifyOne, findByEmail};
 
 export default usersRepository;
