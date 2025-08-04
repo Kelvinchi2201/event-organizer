@@ -1,8 +1,10 @@
 ---
+import AuthProtected from "../features/auth/authProtected.astro"
 import Layout from "../layouts/Layout.astro"
 ---
 
 <Layout>
+  <AuthProtected>
     <main class="min-h-screen flex items-center justify-center px-4 py-12 bg-gray-50">
   <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-6">
     <div class="text-center">
@@ -85,6 +87,7 @@ import Layout from "../layouts/Layout.astro"
 
   </div>
 </main>
+</AuthProtected>
 </Layout>
 
 <script>
@@ -95,7 +98,7 @@ import Layout from "../layouts/Layout.astro"
     const timeInput = document.querySelector('#event-time')
     const descriptionInput = document.querySelector('#event-description')
     const btnEvent = document.querySelector('#button-create-event')
-    console.log(eventForm, nameInput, dateInput, timeInput, descriptionInput, btnEvent);
+   
 
     //TODO: implementar la logica de la creacion de evntos 
 

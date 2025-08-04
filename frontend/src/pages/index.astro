@@ -1,11 +1,13 @@
 ---
 
 import Navigation from '../components/Navigation.astro';
+import AuthUnprotected from '../features/auth/AuthUnprotected.astro';
 import Layout from '../layouts/Layout.astro';
 import '../styles/global.css'
 ---
 
 <Layout>
+ <AuthUnprotected>
 	 <main class=` bg-cover  min-h-screen min-w-screen flex flex-col justify-center gap-4 px-4 max-w-7xl mx-auto md:items-center md:w-[70%] lg:flex-row `
    >
 	<div class="flex flex-col justify-center items-center md:w-[50%] lg:w-[50%] gap-6">	
@@ -21,4 +23,5 @@ import '../styles/global.css'
     </div>
 	</div>
   </main>
+  </AuthUnprotected>
 </Layout>
