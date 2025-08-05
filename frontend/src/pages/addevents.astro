@@ -77,7 +77,7 @@ import Layout from "../layouts/Layout.astro"
           id="button-create-event"
           type="submit"
           class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-700 hover:bg-pink-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-colors duration-200"
-          disabled
+          
         >
           Crear Evento
         </button>
@@ -96,8 +96,7 @@ import Layout from "../layouts/Layout.astro"
        import { createNotification } from "../features/notifications/notificiation";
        import ky from 'ky';
        import AuthModule from "../features/auth/auth.module";
-
-
+       const BASE_URL = `${BACK_ENDPOINT}/api/events`
 
 
     const eventForm = document.querySelector('#event-form')
@@ -106,8 +105,9 @@ import Layout from "../layouts/Layout.astro"
     const timeInput = document.querySelector('#event-time')
     const descriptionInput = document.querySelector('#event-description')
     const btnEvent = document.querySelector('#button-create-event')
-   
-
+    
+     console.log(eventForm);
+     
     //TODO: implementar la logica de la creacion de evntos 
 
     const NAME_REGEX = /^[a-zA-Z0-9\s.,-ñÑáéíóúÁÉÍÓÚ]+$/;
@@ -145,7 +145,7 @@ import Layout from "../layouts/Layout.astro"
   function validateForm() {
     const { isNameValid, isDateValid, isTimeValid, isDescriptionValid } = validationState;
     // Enable the button only if all validation checks pass
-    btnEvent.disabled = !isNameValid || !isDateValid || !isTimeValid || !isDescriptionValid;
+  
   };
 
 
@@ -179,51 +179,27 @@ import Layout from "../layouts/Layout.astro"
     });
 
     
-    
-    
-
     eventForm.addEventListener('submit', async (event)=> {
-      event.preventDefault();
-      const { isNameValid, isDateValid, isTimeValid, isDescriptionValid } = validationState;
-    if (!isNameValid || !isDateValid || !isTimeValid || !isDescriptionValid) return;
-    try {
-      const response = await ky.post(`${BACK_ENDPOINT}/api/events`, {
-        json: {
+      event.preventDefault();  
+      
+     try {
+    const contactCreated = await ky.post(BASE_URL, {json: {
           name: nameInput.value,
           description: descriptionInput.value,
           fecha_evento: dateInput.value,
           hora_evento: timeInput.value,
           usuarios_id: userId
-        }
-      });
-      for (const key in validationState) {
-        validationState[key] = false;
-      }
-      form.reset();
-      [nameInput, descriptionInput, dateInput, timeInput].forEach(input => {
-        updateInputValidationUI(input);
-      });
-      validateForm();
-      createNotification({ 
-        title: 'Evento creado!', 
-        description: 'su evento se acreado correctamente', 
-        type: 'success'
-      });
-      
-    } catch (error) {
-      const errorData = await error?.response?.json();
-      createNotification({ 
-        title: 'Ups! Hubo un error', 
-        description: errorData?.error ?? 'Sin mensaje', 
-        type: 'error'
-      });
-    } 
-   
-   
-    
-
-
-      
+        }, credentials: 'include'}).json();
+    createNotification({title: 'Evento creado!',type: 'success'});
+  } catch (error) {
+    console.log(error);
+    const errorData = await error.response.json();
+    createNotification({
+      title: 'Ups! Hubo un error',
+      description: errorData.error,
+      type: 'error'
+    });
+  }      
     });
   
    
