@@ -1,7 +1,8 @@
 ---
-import Navigation from "../components/Navigation.astro"
+import Navigation from "../features/navigation/Navigation.astro"
 import Notification from "../features/notifications/Notification.astro";
 import '../styles/global.css';
+const { title } = Astro.props;
 ---
 
 
@@ -12,7 +13,7 @@ import '../styles/global.css';
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Hola</title>
+		<title>{title}</title>
 	</head>
 	<body class="pt-16 h-screen overflow-hidden">
 		<Notification/>
