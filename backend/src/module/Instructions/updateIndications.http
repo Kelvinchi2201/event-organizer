@@ -1,8 +1,0 @@
-PUT http://localhost:3000/api/indications/4
-Content-Type: application/json
-
-{
-    "titulo": "Traer comida",
-    "descripcion": "se debe traer dos pizzas"
-    
-}

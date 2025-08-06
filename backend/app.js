@@ -5,10 +5,10 @@ import { DatabaseError } from 'pg';
 import cors from 'cors';
 import usersRouter from './src/module/users/users.routes.js';
 import eventsRouter from './src/module/events/events.routes.js';
-import indicationsRouter from './src/module/Instructions/indications.routes.js';
 import jwt from 'jsonwebtoken';
 import authRouter from './src/module/auth/auth.routes.js';
 import cookieParser from 'cookie-parser';
+import guestRouter from './src/module/invitations/guest.routes.js';
 
 const app = express();
 
@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/users', usersRouter);
 app.use('/api/events', eventsRouter);
-app.use('/api/indications', indicationsRouter);
+app.use('/api/guest', guestRouter)
 app.use('/api/auth', authRouter);
 
 

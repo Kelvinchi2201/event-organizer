@@ -1,4 +1,4 @@
-import {date, z} from 'zod/v4';
+import {z} from 'zod/v4';
 
 export const eventsSchema = z.object({
     id: z.number(),

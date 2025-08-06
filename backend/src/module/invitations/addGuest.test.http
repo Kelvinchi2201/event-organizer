@@ -1,0 +1,10 @@
+POST http://localhost:3000/api/guest
+Content-Type: application/json
+
+
+    {
+        "guest_name": "jose",
+        "events_id": 1,
+        "indications": "traer comida"
+    }
+    

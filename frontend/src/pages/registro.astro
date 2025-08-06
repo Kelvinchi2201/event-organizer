@@ -141,7 +141,7 @@ import Layout from "../layouts/Layout.astro"
   function validateForm() {
     const { isEmailValid, isPasswordValid, doPasswordsMatch, isNameValid } = validationState;
     // Enable the button only if all validation checks pass
-    btn.disabled = !isEmailValid || !isPasswordValid || !doPasswordsMatch || !isNamevalid;
+    btn.disabled = !isEmailValid || !isPasswordValid || !doPasswordsMatch || !isNameValid;
   };
 
   InputName.addEventListener('input', () => {

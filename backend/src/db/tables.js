@@ -45,15 +45,10 @@ const createGuestsTable = async () => {
       CREATE TABLE invitados (
         id SERIAL PRIMARY KEY,
         estado_asistencia BOOLEAN DEFAULT FALSE,
-        fecha_respuesta TIMESTAMP WITH TIME ZONE,
-        usuarios_id INTEGER NOT NULL,
+        fecha_envio TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+        guest_name TEXT NOT NULL,
         events_id INTEGER NOT NULL,
         indications TEXT,
-
-        CONSTRAINT fk_usuarios
-            FOREIGN KEY(usuarios_id)
-            REFERENCES usuarios(id)
-            ON DELETE CASCADE,
 
         CONSTRAINT fk_events
             FOREIGN KEY(events_id)

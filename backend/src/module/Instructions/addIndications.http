@@ -1,8 +1,0 @@
-POST http://localhost:3000/api/indications
-Content-Type: application/json
-
-{
-    "titulo": "traer comida 3",
-    "descripcion": "se debe traer algo para comer",
-    "events_id": 5
-}
