@@ -55,7 +55,7 @@
 
   user.subscribe(user => {
     if (!user) return;
-    const userName = user.email.split('@')[0];
+    const userName = user.name;
     navUserName.innerHTML = `Bienvenido ${userName}`;
 
     

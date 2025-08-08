@@ -36,6 +36,7 @@ authRouter.get('/user', authenticateUser, async (req, res) => {
   const loggedUser = {
     id: user.id,
     email: user.email,
+    name: user.name,
   };
 
   return res.status(200).json(loggedUser);
