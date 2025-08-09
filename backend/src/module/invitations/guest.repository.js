@@ -20,7 +20,25 @@ const addOneGuest = async (payload) => {
   return response.rows[0];
 };
 
+const addIndicationsById = async (id, payload) => {
+  const response = await db.query(
+    `
+    UPDATE invitados
+    SET indications = $1
+    WHERE id = $2
+    RETURNING *
+  `,
+    [payload.indications, id],
+  );
+  if (response.rowCount === 0) {
+    throw new ErrorWithStatus(404, 'El evento fue no encontrado');
+  }
+  return response.rows[0];
+};
 
-const guestRepository = {addOneGuest};
+
+
+
+const guestRepository = { getAll, addOneGuest, addIndicationsById };
 
 export default guestRepository

@@ -5,6 +5,6 @@ Content-Type: application/json
     {
         "guest_name": "jose",
         "events_id": 1,
-        "indications": "traer comida"
+        "indications": ""
     }
     

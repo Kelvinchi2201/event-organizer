@@ -15,6 +15,12 @@ export const createGuestRouteSchema = {
   queries: z.object({}),
 };
 
+export const createIndicationsRouteSchema = {
+  params: z.object({ id: guestIdSchema }),
+  body: guestSchema.omit({ id: true, estado_asistencia: true, fecha_envio: true, events_id: true, guest_name: true}),
+  queries: z.object({}),
+};
+
 export const deleteGuestRouteSchema = {
   params: z.object({ id: guestIdSchema }),
   body: z.object({}),
