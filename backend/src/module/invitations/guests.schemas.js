@@ -6,7 +6,8 @@ export const guestSchema = z.object({
     guest_name: z.string(),
     estado_asistencia: z.boolean(),
     events_id: z.number(),
+    guest_email: z.email("tiene que ser un email valido."),
     indications: z.string().optional()
 
 
-})
+});

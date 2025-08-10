@@ -3,8 +3,9 @@ Content-Type: application/json
 
 
     {
-        "guest_name": "jose",
+        "guest_name": "Maria jose",
         "events_id": 1,
+        "guest_email": "kelvinchirinos485@gmail.com",
         "indications": ""
     }
     

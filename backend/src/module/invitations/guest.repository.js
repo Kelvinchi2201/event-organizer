@@ -12,10 +12,10 @@ const getAll = async () => {
 const addOneGuest = async (payload) => {
   const response = await db.query(
     `
-    INSERT INTO invitados (guest_name, events_id, indications)
-    VALUES ($1, $2, $3) RETURNING *
+    INSERT INTO invitados (guest_name, events_id, guest_email, indications)
+    VALUES ($1, $2, $3, $4) RETURNING *
   `,
-    [payload.guest_name, payload.events_id, payload.indications],
+    [payload.guest_name, payload.events_id, payload.guest_email, payload.indications],
   );
   return response.rows[0];
 };
@@ -37,8 +37,24 @@ const addIndicationsById = async (id, payload) => {
 };
 
 
+const verifyAttendance = async (payload) => {
+  const response = await db.query(
+    `
+    UPDATE invitados
+    SET estado_asistencia = true
+    WHERE id = $1
+    RETURNING *
+  `,
+    [payload.id],
+  );
+  if (response.rowCount === 0) {
+    throw new ErrorWithStatus(400, 'Token malformado');
+  }
+  return response.rows[0];
+};
 
 
-const guestRepository = { getAll, addOneGuest, addIndicationsById };
+
+const guestRepository = { getAll, addOneGuest, addIndicationsById, verifyAttendance };
 
 export default guestRepository

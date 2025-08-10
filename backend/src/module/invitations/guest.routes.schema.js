@@ -17,13 +17,23 @@ export const createGuestRouteSchema = {
 
 export const createIndicationsRouteSchema = {
   params: z.object({ id: guestIdSchema }),
-  body: guestSchema.omit({ id: true, estado_asistencia: true, fecha_envio: true, events_id: true, guest_name: true}),
+  body: guestSchema.omit({ id: true, estado_asistencia: true, fecha_envio: true, events_id: true, guest_name: true, guest_email: true}),
   queries: z.object({}),
 };
 
 export const deleteGuestRouteSchema = {
   params: z.object({ id: guestIdSchema }),
   body: z.object({}),
+  queries: z.object({}),
+};
+
+
+
+export const verifyConfirmGuestRouteSchema = {
+  params: z.object({}),
+  body: z.object({
+    token: z.jwt('Tiene que ser un token valido'),
+  }),
   queries: z.object({}),
 };
 
