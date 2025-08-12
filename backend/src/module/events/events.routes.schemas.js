@@ -15,6 +15,12 @@ export const createEventsRouteSchema = {
   queries: z.object({}),
 };
 
+export const getEventsByIdRouteSchema = {
+  params: z.object({usuarios_id: eventsIdSchema }),
+  body: z.object({}),
+  queries: z.object({}),
+}
+
 export const deleteEventsRouteSchema = {
   params: z.object({ id: eventsIdSchema }),
   body: z.object({}),

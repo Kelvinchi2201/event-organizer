@@ -4,6 +4,7 @@ import {
     createEventsRouteSchema,
     deleteEventsRouteSchema,
     updateEventsRouteSchema,
+    getEventsByIdRouteSchema,
 } from './events.routes.schemas.js';
 
 const eventsRouter = express.Router()
@@ -12,6 +13,15 @@ const eventsRouter = express.Router()
 eventsRouter.get('/', async (req, res) => {
   const events = await eventsRepository.getAll();
   res.json(events);
+});
+eventsRouter.get('/events/:usuarios_id', async (req, res, next) => {
+
+    const params = getEventsByIdRouteSchema.params.parse(req.params);
+    const events = await eventsRepository.getEventsById(params.usuarios_id);
+    res.json(events);
+  
+    
+   
 });
 
 eventsRouter.post('/', async (req, res) => {

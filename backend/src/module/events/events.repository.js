@@ -6,6 +6,17 @@ const getAll = async () => {
   return response.rows;
 };
 
+const getEventsById = async (usuarios_id) => {
+  const response = await db.query(
+    `
+    SELECT * FROM events
+    WHERE usuarios_id = $1
+    `,
+    [usuarios_id]
+  );
+  return response.rows;
+};
+
 const addOneEvents = async (payload) => {
   const response = await db.query(
     `
@@ -47,6 +58,6 @@ const deleteEventsById = async (id) => {
   return response.rows[0];
 };
 
-const eventsRepository = { addOneEvents, updateEventsById, deleteEventsById, getAll };
+const eventsRepository = { addOneEvents, updateEventsById, deleteEventsById, getAll, getEventsById };
 
 export default eventsRepository;
