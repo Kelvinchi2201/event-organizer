@@ -1,0 +1,95 @@
+---
+import AuthProtected from "../features/auth/AuthProtected.astro"
+import Layout from "../layouts/Layout.astro"
+---
+
+
+<Layout>
+    <AuthProtected>
+        <main class="min-h-screen flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-6">
+            
+            <!-- Encabezado del formulario -->
+            <div class="text-center">
+                <h1 class="text-3xl font-bold text-gray-900">
+                    Enviar Invitación
+                </h1>
+                <p class="mt-2 text-sm text-gray-600">
+                    Completa los datos para enviar una invitación a tu evento.
+                </p>
+            </div>
+
+            <!-- Formulario para enviar la invitación -->
+            <form class="space-y-6" id="invitation-form">
+                
+                <!-- Campo para el Nombre del Invitado -->
+                <div>
+                    <label for="guest-name" class="block text-sm font-medium text-gray-700">Nombre del invitado</label>
+                    <input
+                        type="text"
+                        name="guest_name"
+                        id="guest-name"
+                        placeholder="Ej: Ada Lovelace"
+                        class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+                        required
+                    />
+                </div>
+
+                <!-- Campo para el Email del Invitado -->
+                <div>
+                    <label for="guest-email" class="block text-sm font-medium text-gray-700">Email del invitado</label>
+                    <input
+                        type="email"
+                        name="guest_email"
+                        id="guest-email"
+                        placeholder="Ej: ada@example.com"
+                        class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+                        required
+                    />
+                </div>
+
+                <!-- Campo para seleccionar el Evento (events_id) -->
+                <div>
+                    <label for="event-id" class="block text-sm font-medium text-gray-700">Seleccionar evento</label>
+                    <select 
+                        name="events_id" 
+                        id="event-id"
+                        class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+                        required>
+                        <option value="" disabled selected>Elige un evento...</option>
+                        <!-- Estas opciones deberían cargarse dinámicamente -->
+                        <option value="evt_12345">Conferencia de Astro</option>
+                        <option value="evt_67890">Lanzamiento de Producto X</option>
+                        <option value="evt_abcde">Reunión Anual de Equipo</option>
+                    </select>
+                </div>
+
+                <!-- Campo para las Indicaciones (opcional) -->
+                <div>
+                    <label for="indications" class="block text-sm font-medium text-gray-700">Indicaciones (Opcional)</label>
+                    <textarea
+                        name="indications"
+                        id="indications"
+                        placeholder="Ej: Traer laptop, código de vestimenta casual..."
+                        rows="3"
+                        class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+                    ></textarea>
+                </div>
+
+                <!-- Botón de Envío -->
+                <div>
+                    <button
+                        type="submit"
+                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-700 hover:bg-pink-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-colors duration-200"
+                    >
+                        Enviar Invitación
+                    </button>
+                </div>
+            </form>
+            <!-- Fin del formulario -->
+
+        </div>
+    </main>
+    </AuthProtected>
+    
+</Layout>
