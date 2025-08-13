@@ -51,17 +51,14 @@ import Layout from "../layouts/Layout.astro"
                 <!-- Campo para seleccionar el Evento (events_id) -->
                 <div>
                     <label for="event-id" class="block text-sm font-medium text-gray-700">Seleccionar evento</label>
-                    <select 
+              
+                  <select 
                         name="events_id" 
                         id="event-id"
                         class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500"
                         required>
                         <option value="" disabled selected>Elige un evento...</option>
-                        <!-- Estas opciones deberían cargarse dinámicamente -->
-                        <option value="evt_12345">Conferencia de Astro</option>
-                        <option value="evt_67890">Lanzamiento de Producto X</option>
-                        <option value="evt_abcde">Reunión Anual de Equipo</option>
-                    </select>
+                        </select>
                 </div>
 
                 <!-- Campo para las Indicaciones (opcional) -->
@@ -93,3 +90,65 @@ import Layout from "../layouts/Layout.astro"
     </AuthProtected>
     
 </Layout>
+
+
+<script>
+     // @ts-nocheck
+       import { BACK_ENDPOINT } from "../config/endpoints";
+       import { createNotification } from "../features/notifications/notificiation";
+       import ky from 'ky';
+       import AuthModule from "../features/auth/auth.module";
+       const BASE_URL = `${BACK_ENDPOINT}/api/guest`
+       const user =  await AuthModule.getLoggedUser();
+        const userId = user.id;
+       const eventsApiUrl = `${BACK_ENDPOINT}/api/events/events/${userId}`;
+
+
+    const indicationsInput = document.querySelector('#indications');
+    const form = document.querySelector('#invitation-form');
+    const nameInput = document.querySelector('#guest-name');
+    const emailInput = document.querySelector('#guest-email');
+    const eventSelect = document.querySelector('#event-id');
+
+    console.log(userId);
+    
+   const events = await ky.get(eventsApiUrl, { credentials: 'include' }).json();
+   
+   
+        
+            events.forEach(event => {
+                const option = document.createElement('option');
+                option.value = event.id; // El valor de la opción será el ID del evento
+                option.textContent = event.name; // El texto visible será el nombre del evento
+                eventSelect.appendChild(option);
+            });
+
+
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                const guestToSend = {
+                    guest_name: nameInput.value,
+                    guest_email: emailInput.value,
+                    events_id: Number(eventSelect.value),
+                    indications: indicationsInput.value || ""
+                }
+                try {
+                    const response = await ky.post(BASE_URL, {
+                        json: guestToSend,
+                        credentials: 'include'
+                    })
+                    createNotification({title: 'Invitacion enviada', type: 'success'});
+                } catch (error) {
+                    console.log(error);
+                    createNotification({
+                    title: 'Ups! Hubo un error',
+                    description: errorData.error,
+                    type: 'error'
+                    });
+                    
+                }
+
+            })
+        
+</script>
