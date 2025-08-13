@@ -11,7 +11,7 @@ const guestIdSchema = z
 
 export const createGuestRouteSchema = {
   params: z.object({}),
-  body: guestSchema.omit({ id: true, estado_asistencia: true, fecha_envio: true}),
+  body: z.array(guestSchema.omit({ id: true, estado_asistencia: true, fecha_envio: true})),
   queries: z.object({}),
 };
 

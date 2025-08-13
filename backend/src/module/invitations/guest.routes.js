@@ -4,14 +4,18 @@ import guestRepository from './guest.repository.js';
 import jwt from 'jsonwebtoken';
 import nodemailerService from '../../services/nodemailer.services.js';
 
-const guestRouter = express.Router()
+const guestRouter = express.Router();
 
 
 
 
 guestRouter.post('/', async (req, res) => {
   const body = createGuestRouteSchema.body.parse(req.body);
-  const newGuest = await guestRepository.addOneGuest(body);
+  const newGuests = [];
+  for (const guest of body) {
+    const newGuest = await guestRepository.addOneGuest(guest);
+    newGuests.push(newGuest);
+
     const token = jwt.sign(
     { id: newGuest.id, email: newGuest.guest_email },
     process.env.REFRESH_TOKEN_SECRET,
@@ -19,12 +23,12 @@ guestRouter.post('/', async (req, res) => {
   );
   await nodemailerService.sendMail({
     from: process.env.EMAIL_USER,
-    to: body.guest_email,
+    to: guest.guest_email,
     subject: 'Verifica tu correo',
     html: `<a href="http://localhost:4321/verifyGuest/${token}">Verifica tu correo</a>`,
   });
-
-  res.sendStatus(200);
+}
+  res.sendStatus(200).json(newGuests);
 });
 
 guestRouter.patch('/verifyGuest', async (req, res) => {
