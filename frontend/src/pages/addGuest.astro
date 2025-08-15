@@ -83,7 +83,7 @@ import Layout from "../layouts/Layout.astro"
                     </button>
                 </div>
             </form>
-            <!-- Fin del formulario -->
+            
 
         </div>
     </main>
@@ -110,7 +110,7 @@ import Layout from "../layouts/Layout.astro"
     const emailInput = document.querySelector('#guest-email');
     const eventSelect = document.querySelector('#event-id');
 
-    console.log(userId);
+    
     
    const events = await ky.get(eventsApiUrl, { credentials: 'include' }).json();
    
