@@ -19,6 +19,9 @@ export const createNotification = (options) => {
     case 'error':
       div.classList.add('bg-red-500');
       break;
+    case 'info':
+      div.classList.add('bg-blue-500');
+      break;
   }
 
   setTimeout(() => {

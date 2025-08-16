@@ -30,9 +30,10 @@ export const guests = atom(guestsArray);
   * @param {string} guestToSend.indications las indicaciones del invitado (son opcionales)
 */
 
-const addGuestTolist = async (guestToSend) => {
+const addGuestTolist = (guestToSend) => {
    
         const newGuest = {
+                temp_id: crypto.randomUUID(),
                 guest_name: guestToSend.guest_name,
                 events_id: guestToSend.events_id,
                 guest_email: guestToSend.guest_email,
@@ -44,11 +45,32 @@ const addGuestTolist = async (guestToSend) => {
             title: 'invitado agregado a la lista',
             type: 'success'
         })
-}
+};
+
+const removeGuestFromList = (guestIdToRemove) => {
+    const updatedGuests = guests.get().filter(guest => guest.temp_id !== guestIdToRemove);
+    guests.set(updatedGuests);
+    createNotification({ 
+        title: "Invitado eliminado de la lista",
+        type: "success" 
+    });
+};
+
+
+const updatedGuestList = (guestToUpdate) => {
+    const updatedGuests = guests.get().map(guest => 
+        guest.temp_id === guestToUpdate.temp_id ? guestToUpdate : guest
+    );
+    guests.set(updatedGuests);
+    createNotification({ 
+        title: "Invitado actualizado", 
+        type: "success" 
+    });
+};
 
 
 const sendGuestList = async () =>{
-    const guestsTosend = guests.get();
+   const guestsToSend = guests.get().map(({ temp_id, ...rest }) => rest);
 
     if (guestsTosend.length === 0) {
         createNotification({
@@ -60,10 +82,13 @@ const sendGuestList = async () =>{
     }
     try { 
         const response = await ky.post(BASE_URL, {
-            json: guestsTosend,
+            json: guestsToSend,
             credentials: 'include'
         });
-         createNotification({title: 'Invitaciones enviadas', type: 'success'});
+         createNotification({
+            title: 'Invitaciones enviadas',
+            type: 'success'
+        });
          guests.set([]); 
     
         
@@ -80,5 +105,7 @@ const sendGuestList = async () =>{
 
 export default {
     addGuestTolist,
-    sendGuestList
+    sendGuestList,
+    removeGuestFromList,
+    updatedGuestList
  }
