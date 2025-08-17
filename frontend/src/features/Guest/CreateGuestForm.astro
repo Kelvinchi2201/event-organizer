@@ -1,0 +1,44 @@
+---
+
+---
+
+
+<form id="main-form" class="p-2 rounded-md flex flex-col gap-4 border border-gray-300 md:w-[70%] lg:w-[50%]">
+  <div class="flex flex-col gap-2">
+    
+    <div class="relative flex items-center w-full gap-4">
+      <div>
+      <label for="guest_name-input" class="font-medium">Nombre</label>
+      <input type="text" name="name-input" id="name-input" class="w-full rounded-md p-2 text-base ring-1 ring-gray-300 focus:outline-none focus:ring-pink-500" placeholder="Gabriel Garcia">
+      <span class="absolute right-2.5 hidden text-xl"></span>
+      </div>
+      <div>
+      <label for="guest_email-input" class="font-medium">Email</label>
+       <input type="text" name="phone-input" id="phone-input" class="w-full rounded-md p-2 text-base ring-1 ring-gray-300 focus:outline-none focus:ring-pink-500" placeholder="******@correo.com">
+      <span class="absolute right-2.5 hidden text-xl"></span>
+      </div>
+      <div> 
+      <label for="select_event-id" class="block text-sm font-medium text-gray-700">Seleccionar evento</label>
+        <select 
+         name="events_id" 
+         id="event-id"
+         class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+         required>
+         <option value="" disabled selected>Elige un evento...</option>
+         </select>
+         </div>
+    </div>
+    
+  </div>
+  <div class="flex flex-col gap-2">
+   <label for="indications" class="block text-sm font-medium text-gray-700">Indicaciones (Opcional)</label>
+    <textarea
+     name="indications"
+     id="indications"
+     placeholder="Ej: Traer laptop, código de vestimenta casual..."
+     rows="3"
+     class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+     ></textarea>
+  </div>
+  <button id="main-form-btn" disabled class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-700 hover:bg-pink-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-800 transition-colors duration-200">Agregar a la lista</button>
+</form>

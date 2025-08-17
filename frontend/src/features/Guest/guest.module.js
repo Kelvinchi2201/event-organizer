@@ -72,7 +72,7 @@ const updatedGuestList = (guestToUpdate) => {
 const sendGuestList = async () =>{
    const guestsToSend = guests.get().map(({ temp_id, ...rest }) => rest);
 
-    if (guestsTosend.length === 0) {
+    if (guestsToSend.length === 0) {
         createNotification({
             title: 'La lista está vacía',
             description: 'Agrega al menos un invitado para enviar.',

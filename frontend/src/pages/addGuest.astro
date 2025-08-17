@@ -1,5 +1,6 @@
 ---
 import AuthProtected from "../features/auth/AuthProtected.astro"
+import CreateGuestForm from "../features/Guest/CreateGuestForm.astro"
 import Layout from "../layouts/Layout.astro"
 ---
 
@@ -7,85 +8,8 @@ import Layout from "../layouts/Layout.astro"
 <Layout>
     <AuthProtected>
         <main class="min-h-screen flex items-center justify-center px-4 py-12">
-        <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-6">
-            
-            <!-- Encabezado del formulario -->
-            <div class="text-center">
-                <h1 class="text-3xl font-bold text-gray-900">
-                    Enviar Invitación
-                </h1>
-                <p class="mt-2 text-sm text-gray-600">
-                    Completa los datos para enviar una invitación a tu evento.
-                </p>
-            </div>
-
-            <!-- Formulario para enviar la invitación -->
-            <form class="space-y-6" id="invitation-form">
-                
-                <!-- Campo para el Nombre del Invitado -->
-                <div>
-                    <label for="guest-name" class="block text-sm font-medium text-gray-700">Nombre del invitado</label>
-                    <input
-                        type="text"
-                        name="guest_name"
-                        id="guest-name"
-                        placeholder="Ej: Ada Lovelace"
-                        class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
-                        required
-                    />
-                </div>
-
-                <!-- Campo para el Email del Invitado -->
-                <div>
-                    <label for="guest-email" class="block text-sm font-medium text-gray-700">Email del invitado</label>
-                    <input
-                        type="email"
-                        name="guest_email"
-                        id="guest-email"
-                        placeholder="Ej: ada@example.com"
-                        class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
-                        required
-                    />
-                </div>
-
-                <!-- Campo para seleccionar el Evento (events_id) -->
-                <div>
-                    <label for="event-id" class="block text-sm font-medium text-gray-700">Seleccionar evento</label>
-              
-                  <select 
-                        name="events_id" 
-                        id="event-id"
-                        class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500"
-                        required>
-                        <option value="" disabled selected>Elige un evento...</option>
-                        </select>
-                </div>
-
-                <!-- Campo para las Indicaciones (opcional) -->
-                <div>
-                    <label for="indications" class="block text-sm font-medium text-gray-700">Indicaciones (Opcional)</label>
-                    <textarea
-                        name="indications"
-                        id="indications"
-                        placeholder="Ej: Traer laptop, código de vestimenta casual..."
-                        rows="3"
-                        class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
-                    ></textarea>
-                </div>
-
-                <!-- Botón de Envío -->
-                <div>
-                    <button
-                        type="submit"
-                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-700 hover:bg-pink-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-colors duration-200"
-                    >
-                        Enviar Invitación
-                    </button>
-                </div>
-            </form>
-            
-
-        </div>
+            <CreateGuestForm/>
+       
     </main>
     </AuthProtected>
     
@@ -94,61 +18,6 @@ import Layout from "../layouts/Layout.astro"
 
 <script>
      // @ts-nocheck
-       import { BACK_ENDPOINT } from "../config/endpoints";
-       import { createNotification } from "../features/notifications/notificiation";
-       import ky from 'ky';
-       import AuthModule from "../features/auth/auth.module";
-       const BASE_URL = `${BACK_ENDPOINT}/api/guest`
-       const user =  await AuthModule.getLoggedUser();
-        const userId = user.id;
-       const eventsApiUrl = `${BACK_ENDPOINT}/api/events/events/${userId}`;
-
-
-    const indicationsInput = document.querySelector('#indications');
-    const form = document.querySelector('#invitation-form');
-    const nameInput = document.querySelector('#guest-name');
-    const emailInput = document.querySelector('#guest-email');
-    const eventSelect = document.querySelector('#event-id');
-
-    
-    
-   const events = await ky.get(eventsApiUrl, { credentials: 'include' }).json();
-   
-   
-        
-            events.forEach(event => {
-                const option = document.createElement('option');
-                option.value = event.id; // El valor de la opción será el ID del evento
-                option.textContent = event.name; // El texto visible será el nombre del evento
-                eventSelect.appendChild(option);
-            });
-
-
-
-            form.addEventListener('submit', async (event) => {
-                event.preventDefault();
-                const guestToSend = {
-                    guest_name: nameInput.value,
-                    guest_email: emailInput.value,
-                    events_id: Number(eventSelect.value),
-                    indications: indicationsInput.value || ""
-                }
-                try {
-                    const response = await ky.post(BASE_URL, {
-                        json: guestToSend,
-                        credentials: 'include'
-                    })
-                    createNotification({title: 'Invitacion enviada', type: 'success'});
-                } catch (error) {
-                    console.log(error);
-                    createNotification({
-                    title: 'Ups! Hubo un error',
-                    description: errorData.error,
-                    type: 'error'
-                    });
-                    
-                }
-
-            })
+      
         
 </script>
