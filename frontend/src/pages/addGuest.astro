@@ -1,14 +1,16 @@
 ---
 import AuthProtected from "../features/auth/AuthProtected.astro"
 import CreateGuestForm from "../features/Guest/CreateGuestForm.astro"
+import GuestList from "../features/Guest/GuestList.astro"
 import Layout from "../layouts/Layout.astro"
 ---
 
 
 <Layout>
     <AuthProtected>
-        <main class="min-h-screen flex items-center justify-center px-4 py-12">
+        <main class="h-[calc(100vh-4rem)] flex flex-col gap-8 p-4 max-w-[90rem] mx-auto md:items-center">
             <CreateGuestForm/>
+            <GuestList/>
        
     </main>
     </AuthProtected>

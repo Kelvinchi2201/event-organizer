@@ -1,0 +1,14 @@
+---
+import GuestItem from "./GuestItem.astro";
+---
+
+
+<ul id="contacts-list" class="m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border border-gray-300 h-full md:w-[70%] lg:w-[50%]">
+  <template id="contact-item-template">
+    <GuestItem 
+      name="Perro Perro"
+      phone="04122110101"
+      id={0}
+    />
+  </template>
+</ul>
