@@ -9,6 +9,12 @@ const guestIdSchema = z
   .transform((val) => Number(val))
   .refine((val) => !isNaN(val), 'El id tiene que ser un numero');
 
+export const getGuestByEventsIdRouteSchema = {
+  params: z.object({events_id: guestIdSchema }),
+  body: z.object({}),
+  queries: z.object({}),
+};
+
 export const createGuestRouteSchema = {
   params: z.object({}),
   body: z.array(guestSchema.omit({ id: true, estado_asistencia: true, fecha_envio: true})),

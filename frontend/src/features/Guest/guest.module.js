@@ -30,6 +30,10 @@ export const guests = atom(guestsArray);
   * @param {string} guestToSend.indications las indicaciones del invitado (son opcionales)
 */
 
+const getGuestListByEventId = async (eventId) => {
+    
+};
+
 const addGuestTolist = (guestToSend) => {
    
         const newGuest = {

@@ -5,9 +5,17 @@ import { ErrorWithStatus } from '../../utils/errorTypes.js';
 
 
 const getAll = async () => {
-  const response = await db.query('SELECT * FROM events');
+  const response = await db.query('SELECT * FROM invitados');
   return response.rows;
 };
+
+const getByEventId = async (events_id) => {
+  const response = await db.query(
+    `SELECT * FROM invitados WHERE events_id = $1`,
+    [events_id]
+  );
+  return response.rows;
+}
 
 const addOneGuest = async (payload) => {
   const response = await db.query(
@@ -55,6 +63,6 @@ const verifyAttendance = async (payload) => {
 
 
 
-const guestRepository = { getAll, addOneGuest, addIndicationsById, verifyAttendance };
+const guestRepository = { getAll, addOneGuest, addIndicationsById, verifyAttendance, getByEventId };
 
 export default guestRepository

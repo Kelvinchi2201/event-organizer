@@ -1,12 +1,21 @@
 import express from 'express'
-import { createGuestRouteSchema, createIndicationsRouteSchema, verifyConfirmGuestRouteSchema } from "./guest.routes.schema.js";
+import { createGuestRouteSchema, createIndicationsRouteSchema, getGuestByEventsIdRouteSchema, verifyConfirmGuestRouteSchema } from "./guest.routes.schema.js";
 import guestRepository from './guest.repository.js';
 import jwt from 'jsonwebtoken';
 import nodemailerService from '../../services/nodemailer.services.js';
 
 const guestRouter = express.Router();
 
+guestRouter.get('/', async (req, res) => {
+  const guestList = await guestRepository.getAll();
+  res.status(200).json(guestList)
+});
 
+guestRouter.get('/events/:events_id', async (req, res) => {
+  const params = getGuestByEventsIdRouteSchema.params.parse(req.params);
+  const getGuestListByEventId = await guestRepository.getByEventId(params.events_id);
+  res.status(200).json(getGuestListByEventId);
+})
 
 
 guestRouter.post('/', async (req, res) => {
