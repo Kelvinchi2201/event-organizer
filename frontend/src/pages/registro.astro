@@ -146,14 +146,14 @@ import Layout from "../layouts/Layout.astro"
 
   InputName.addEventListener('input', () => {
     const isValid = NAME_REGEX.test(InputName.value);
-    validationState.isEmailValid = isValid;
+    validationState.isNameValid = isValid;
     updateInputValidationUI(InputName, isValid);
     validateForm();
   });
 
   inputEmail.addEventListener('input', () => {
     const isValid = emailRegex.test(inputEmail.value);
-    validationState.isNameValid = isValid;
+    validationState.isEmailValid = isValid;
     updateInputValidationUI(inputEmail, isValid);
     validateForm();
   });
