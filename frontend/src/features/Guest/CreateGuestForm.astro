@@ -40,7 +40,7 @@
      class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
      ></textarea>
   </div>
-  <button id="main-form-btn" disabled class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-700 hover:bg-pink-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-800 transition-colors duration-200">Agregar a la lista</button>
+  <button id="main-form-btn"  class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-700 hover:bg-pink-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-800 transition-colors duration-200">Agregar a la lista</button>
 </form>
 
 <script>
@@ -49,6 +49,7 @@
        import { createNotification } from "../../features/notifications/notificiation";
        import ky from 'ky';
        import AuthModule from "../../features/auth/auth.module";
+       import guestModule from "./guest.module";
        const BASE_URL = `${BACK_ENDPOINT}/api/guest`
        const user =  await AuthModule.getLoggedUser();
         const userId = user.id;
@@ -60,7 +61,41 @@
     const emailInput = document.querySelector('#guest-email');
     const eventSelect = document.querySelector('#event-id');
 
-    console.log(form, nameInput, emailInput, eventSelect, indicationsInput);
+    console.log(userId);
+
+    const events = await ky.get(eventsApiUrl, { credentials: 'include' }).json();
+
+     events.forEach(event => {
+     const option = document.createElement('option');
+     option.value = event.id; // El valor de la opción será el ID del evento
+     option.textContent = event.name; // El texto visible será el nombre del evento
+     eventSelect.appendChild(option);
+     });
+
+     form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const guestToSend = {
+                 temp_id: crypto.randomUUID(),
+                 guest_name: nameInput.value,
+                 events_id: eventSelect.value,
+                 guest_email: emailInput.value,
+                 indications: indicationsInput.value || ''
+              };
+      try {
+        await guestModule.addGuestTolist(guestToSend);
+        createNotification({
+          type: 'success',
+          title:'invitado agregado a la lista'
+        })
+      } catch (error) {
+        createNotification({
+          type: 'error',
+          description: 'Hubo un error al agregar el invitado a la lista'
+        })
+      }
+      form.reset();      
+
+     });
     
 
 </script>
