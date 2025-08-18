@@ -31,7 +31,10 @@ export const guests = atom(guestsArray);
 */
 
 const getGuestListByEventId = async (eventId) => {
-    
+    const guestData = await ky.get(`${BASE_URL}/events/${eventId}`,
+        { credentials: 'include' }
+    ).json();
+    guests.set(guestData)
 };
 
 const addGuestTolist = (guestToSend) => {

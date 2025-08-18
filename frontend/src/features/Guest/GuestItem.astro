@@ -1,12 +1,12 @@
 ---
-const { name, phone, id } = Astro.props;
+const { guest_name, guest_email, temp_id } = Astro.props;
 import { Icon } from 'astro-icon/components';
 ---
 
-<li id={id} class="flex gap-4 justify-between items-center" data-status="inputs-deshabilitados">
+<li id={temp_id} class="flex gap-4 justify-between items-center" data-status="inputs-deshabilitados">
   <div class="flex flex-wrap md:flex-nowrap gap-2 flex-grow">
-    <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={name} readonly>
-    <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={phone} readonly>
+    <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={guest_name} readonly>
+    <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={guest_email} readonly>
   </div>
   <div class="flex gap-2 items-center">
     <button class="edit-btn w-8 h-8 flex justify-center items-center text-gray-600 hover:text-indigo-700">
