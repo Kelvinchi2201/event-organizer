@@ -1,7 +1,3 @@
----
-
----
-
 
 <form id="form" class="p-2 rounded-md flex flex-col gap-4 border border-gray-300 md:w-[70%] lg:w-[50%]">
   <div class="flex flex-col gap-2">
@@ -62,13 +58,9 @@
     const eventSelect = document.querySelector('#event-id');
     const formBtn = document.querySelector('#form-btn')
 
-    console.log(formBtn);
-
-
     const NAME_REGEX = /^[A-Z][a-z]*[ ][A-Z][a-z]{3,}[ ]{0,1}$/;
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const INDICATIONS_REGEX = /^[\w\s.,-ñÑáéíóúÁÉÍÓÚ¡!¿?()"'\/@#%\n\r]+$/;
-
 
     const validationState = {
     isNameValid: false,
@@ -118,9 +110,6 @@
   });
 
 
-  
-
-
     const events = await ky.get(eventsApiUrl, { credentials: 'include' }).json();
 
      events.forEach(event => {
@@ -140,6 +129,9 @@
                  indications: indicationsInput.value || ''
               };
       try {
+      const currentGuests = guestModule.getLocalGuestList();
+      const updatedGuests = [...currentGuests, guestToSend];
+      guestModule.saveToLocalStorage(updatedGuests);
         await guestModule.addGuestTolist(guestToSend);
         createNotification({
           type: 'success',

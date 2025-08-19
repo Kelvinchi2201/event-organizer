@@ -4,8 +4,16 @@ import { BACK_ENDPOINT } from "../../config/endpoints.js";
 import ky from "ky";
  const BASE_URL = `${BACK_ENDPOINT}/api/guest`
 
+const LOCAL_STORAGE_KEY = 'guests_list';
 
-
+const loadFromLocalStorage = () => {
+  const storedGuests = localStorage.getItem(LOCAL_STORAGE_KEY);
+  return storedGuests ? JSON.parse(storedGuests) : [];
+};
+// NUEVO: Función para guardar invitados en localStorage
+const saveToLocalStorage = (guests) => {
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(guests));
+};
 
 /** 
   * @typedef Guests
@@ -17,9 +25,8 @@ import ky from "ky";
 */
 
 /** @type {Guests[]} */
-let  guestsArray = [];
+let guestsArray = loadFromLocalStorage();
 export const guests = atom(guestsArray);
-
 
 /** 
   * Agrega un contacto.
@@ -37,6 +44,10 @@ const getGuestListByEventId = async (eventId) => {
     guests.set(guestData)
 };
 
+const getLocalGuestList = () => {
+    return guests.get();
+}
+
 const addGuestTolist = (guestToSend) => {
    
         const newGuest = {
@@ -46,7 +57,10 @@ const addGuestTolist = (guestToSend) => {
                 guest_email: guestToSend.guest_email,
                 indications: guestToSend.indications || ''
             }; 
-         guests.set(guests.get().concat(newGuest));
+         
+         const updatedGuests = [...guests.get(), newGuest];
+         guests.set(updatedGuests);
+         saveToLocalStorage(updatedGuests);
         
         createNotification({
             title: 'invitado agregado a la lista',
@@ -54,9 +68,12 @@ const addGuestTolist = (guestToSend) => {
         })
 };
 
+
+
 const removeGuestFromList = (guestIdToRemove) => {
     const updatedGuests = guests.get().filter(guest => guest.temp_id !== guestIdToRemove);
     guests.set(updatedGuests);
+    saveToLocalStorage(updatedGuests);
     createNotification({ 
         title: "Invitado eliminado de la lista",
         type: "success" 
@@ -69,6 +86,7 @@ const updatedGuestList = (guestToUpdate) => {
         guest.temp_id === guestToUpdate.temp_id ? guestToUpdate : guest
     );
     guests.set(updatedGuests);
+    saveToLocalStorage(updatedGuests);
     createNotification({ 
         title: "Invitado actualizado", 
         type: "success" 
@@ -97,6 +115,7 @@ const sendGuestList = async () =>{
             type: 'success'
         });
          guests.set([]); 
+         saveToLocalStorage([]);
     
         
     } catch (error) {
@@ -114,5 +133,7 @@ export default {
     addGuestTolist,
     sendGuestList,
     removeGuestFromList,
-    updatedGuestList
+    updatedGuestList,
+    getLocalGuestList,
+    saveToLocalStorage
  }
