@@ -43,6 +43,67 @@ guests.subscribe(guests => {
   }
 });
 
+
+guestList.addEventListener('click', async e => {
+    const deleteBtn = e.target.closest('.delete-btn');
+    const editBtn = e.target.closest('.edit-btn');
+  
+    if (deleteBtn) {
+      // 1. Encuentro el li
+      const li = deleteBtn.parentElement.parentElement;
+      // 2. Actualizo el array en js, usando el metodo filter para devolver todos los contactos excepto el que quiero eliminar.
+      await guestModule.removeGuestFromList(li.id);
+    }
+
+    if (editBtn) {
+      // 1. Encuentro el li
+      const li = editBtn.parentElement.parentElement;
+      // 2. Obtener el status
+      const status = li.dataset.status;
+      // 3. Obtener los inputs
+      const guestInputName = li.children[0].children[0];
+      const guestInputEmail = li.children[0].children[1];
+      const guestInputIndications = li.children[0].children[2];
+      // 4. Obtener el boton
+      const contactEditBtn = li.children[1].children[0];
+      if (status === 'inputs-deshabilitados') {
+        // 1. Remover el readonly (No se puede editar) de los inputs.
+        guestInputName.removeAttribute('readonly');
+        guestInputEmail.removeAttribute('readonly');
+        guestInputIndications.removeAttribute('readonly');
+        // 2. Cambiar el status a inputs-habilitados
+        li.dataset.status = 'inputs-habilitados';
+        // 3. Cambiar icono del boton para reflejar el estado
+        contactEditBtn.children[0].classList.add('hidden');
+        contactEditBtn.children[1].classList.remove('hidden');
+        // 4. Cambiar estilos de los inputs para reflejar el estado
+      }
+
+      
+
+      if (status === 'inputs-habilitados') {
+        // 1. Agegar el readonly (No se puede editar) de los inputs.
+        guestInputName.setAttribute('readonly', true);
+        guestInputEmail.setAttribute('readonly', true);
+        guestInputIndications.setAttribute('readonly', true)
+        // 2. Cambiar el status a inputs-deshabilitados
+        li.dataset.status = 'inputs-deshabilitados';
+        // 3. Cambiar icono del boton para reflejar el estado
+        contactEditBtn.children[0].classList.remove('hidden');
+        contactEditBtn.children[1].classList.add('hidden');
+        // 4. Actualizar el contacto
+        const guestToUpdate = {
+          temp_id: li.id,
+          guest_name: guestInputName.value,
+          guest_email: guestInputEmail.value,
+          indications: guestInputIndications.value
+
+        }
+        await guestModule.updatedGuestList(guestToUpdate);
+      }
+    }
+  });
+
 document.addEventListener('DOMContentLoaded', () => {
   guestModule.getLocalGuestList();
 });
