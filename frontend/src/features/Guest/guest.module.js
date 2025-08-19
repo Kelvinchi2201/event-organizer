@@ -8,7 +8,14 @@ const LOCAL_STORAGE_KEY = 'guests_list';
 
 const loadFromLocalStorage = () => {
   const storedGuests = localStorage.getItem(LOCAL_STORAGE_KEY);
-  return storedGuests ? JSON.parse(storedGuests) : [];
+  if (storedGuests) {
+    
+    return JSON.parse(storedGuests).map(guest => ({
+      ...guest,
+      events_id: Number(guest.events_id) 
+    }));
+  }
+  return [];
 };
 // NUEVO: Función para guardar invitados en localStorage
 const saveToLocalStorage = (guests) => {
@@ -53,7 +60,7 @@ const addGuestTolist = (guestToSend) => {
         const newGuest = {
                 temp_id: crypto.randomUUID(),
                 guest_name: guestToSend.guest_name,
-                events_id: guestToSend.events_id,
+                events_id: Number(guestToSend.events_id),
                 guest_email: guestToSend.guest_email,
                 indications: guestToSend.indications || ''
             }; 

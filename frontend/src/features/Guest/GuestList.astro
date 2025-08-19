@@ -13,7 +13,7 @@ import GuestItem from "./GuestItem.astro";
     />
   </template>
 </ul>
-<button type="submit" id="sendListBtn" class="w-full md:w-[70%] lg:w-[50%] flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-700 hover:bg-pink-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-800 transition-colors duration-200"> enviar lista </button>
+<button type="submit" id="sendListBtn" class="w-full md:w-[70%] lg:w-[50%] flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-700 hover:bg-pink-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-800 transition-colors duration-200"> enviar invitaciones </button>
 <script>
   // @ts-nocheck
 import ky from 'ky';
@@ -23,6 +23,8 @@ const guestList = document.querySelector('#guest-list');
 const guestItemTemplate = document.querySelector('#guest-item-template');
 const sendListBtn = document.querySelector('#sendListBtn');
 await guestModule.getLocalGuestList();
+
+
 
 guests.subscribe(guests => {
   guestList.innerHTML = ''; // Limpia la lista actual
@@ -44,10 +46,11 @@ guests.subscribe(guests => {
 document.addEventListener('DOMContentLoaded', () => {
   guestModule.getLocalGuestList();
 });
-// Manejar el evento de enviar lista
+
 sendListBtn.addEventListener('click', async () => {
   await guestModule.sendGuestList();
 });
+
 
 
 
