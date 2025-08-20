@@ -202,6 +202,7 @@ import Layout from "../layouts/Layout.astro"
       [nameInput, dateInput, timeInput, descriptionInput].forEach(input => {
         updateInputValidationUI(input);
       });
+      location.assign('/addGuest');
   } catch (error) {
     console.log(error);
     const errorData = await error.response.json();
