@@ -9,6 +9,7 @@ import GuestItem from "./GuestItem.astro";
       guest_name="Daniel Perez"
       guest_email="******@correo.com"
       indications="traer comida"
+      events_id= {1}
       temp_id={0}
     />
   </template>
@@ -34,6 +35,7 @@ guests.subscribe(guests => {
     const nameInput = guestItem.querySelector('input:nth-child(1)');
     const emailInput = guestItem.querySelector('input:nth-child(2)');
     const indicationsInput = guestItem.querySelector('input:nth-child(3)');
+    const eventsInput = guestItem.querySelector('input:nth-child(4)');
     const liElement = guestItem.querySelector('li');
     liElement.id = guest.temp_id;
     nameInput.value = guest.guest_name;
@@ -64,6 +66,7 @@ guestList.addEventListener('click', async e => {
       const guestInputName = li.children[0].children[0];
       const guestInputEmail = li.children[0].children[1];
       const guestInputIndications = li.children[0].children[2];
+      const guestInputEvent = li.children[0].children[3];
       // 4. Obtener el boton
       const contactEditBtn = li.children[1].children[0];
       if (status === 'inputs-deshabilitados') {
@@ -94,6 +97,7 @@ guestList.addEventListener('click', async e => {
         // 4. Actualizar el contacto
         const guestToUpdate = {
           temp_id: li.id,
+          events_id: Number(guestInputEvent.value),
           guest_name: guestInputName.value,
           guest_email: guestInputEmail.value,
           indications: guestInputIndications.value

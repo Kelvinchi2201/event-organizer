@@ -1,5 +1,5 @@
 ---
-const { guest_name, guest_email, guest_indications, temp_id } = Astro.props;
+const { guest_name, guest_email, guest_indications, temp_id, events_id } = Astro.props;
 import { Icon } from 'astro-icon/components';
 ---
 
@@ -8,6 +8,7 @@ import { Icon } from 'astro-icon/components';
     <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={guest_name} readonly>
     <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={guest_email} readonly>
     <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={guest_indications} readonly>
+    <input class="w-full bg-gray-100 rounded-md p-2 outline-none hidden" type="number" value={events_id} readonly>
   </div>
   <div class="flex gap-2 items-center">
     <button class="edit-btn w-8 h-8 flex justify-center items-center text-gray-600 hover:text-indigo-700">
