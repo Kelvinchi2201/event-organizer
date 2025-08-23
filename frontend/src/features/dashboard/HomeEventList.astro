@@ -17,26 +17,38 @@ import EventsItem from "./EventsItem.astro"
 
 
 <script>
-    // @ts-check
-    import homeModule from "./home.module";
+    // @ts-nocheck
+    import homeModule, { events } from "./home.module";
     import AuthModule from "../auth/auth.module";
     const eventsItemTemplate = document.querySelector('#events-item-template');
     const eventList = document.querySelector('#dashboard-list');
-    console.log(eventList);
+    await homeModule.getEventsListForHome();
+        events.subscribe(events => {
+            eventList.innerHTML= '';
+            for (const event of events) {
+                const eventItem = eventsItemTemplate.content.cloneNode(true);
+                const nameInput = eventItem.querySelector('input:nth-child(1)');
+                const dateInput = eventItem.querySelector('input:nth-child(2)');
+                const timeInput = eventItem.querySelector('input:nth-child(3)');
+                const guestsInput = eventItem.querySelector('input:nth-child(4)');
+                const descriptionInput = eventItem.querySelector('input:nth-child(5)');
+                const liElement = eventItem.querySelector('li');
+                console.log(nameInput, dateInput, timeInput, guestsInput, descriptionInput);
+                
+                liElement.id = event.event_id;
+            }
+        })
+    
     
 
     const user =  await AuthModule.getLoggedUser();
     const userId = user.id;
     
-    console.log(eventsItemTemplate);
+   
     const dataguests = await homeModule.getGuestsByEventId(userId);
     
-    console.log(dataguests);
-     
+   
   
-    const eventsData = await homeModule.getEventsListForHome();
-    console.log(eventsData);
-    
   
 
 

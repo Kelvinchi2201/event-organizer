@@ -12,14 +12,24 @@ import ky from "ky";
 
 
  const getEventsListForHome = async () => {
-    const eventsData = await ky.get(`${BASE_URL_EVENTS}`, { credentials: 'include' }).json();
-    return eventsData;
+   try {
+     const eventsData = await ky.get(`${BASE_URL_EVENTS}`, { credentials: 'include' }).json();
+     events.set(eventsData);
+   } catch (error) {
+    if (error.response.status === 401 || error.response.status === 403) {
+      location.replace('/login');
+    }
+    console.log(error);
+    
+   }
  }
 
  const getGuestsByEventId = async (userId) => {
    const guestsData = await ky.get(`${BASE_URL_GUESTS}/events/${userId}`, {credentials: 'include'}).json();
    return guestsData
- }
+ };
+
+ 
 
 
  export default { getEventsListForHome, getGuestsByEventId };

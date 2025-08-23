@@ -22,5 +22,6 @@ const logoutUser = async () => {
   await ky.get(`${BACK_ENDPOINT}/api/auth/logout`, {credentials: 'include'});
 }
 
+
 const AuthModule = { login, getLoggedUser, logoutUser };
 export default AuthModule;

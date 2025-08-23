@@ -1,1 +1,1 @@
-GET http://localhost:3000/api/guest/events/4
+GET http://localhost:3000/api/guest/events/1
