@@ -24,8 +24,8 @@ import ky from "ky";
    }
  }
 
- const getGuestsByEventId = async (userId) => {
-   const guestsData = await ky.get(`${BASE_URL_GUESTS}/events/${userId}`, {credentials: 'include'}).json();
+ const getGuestsByEventId = async (event_Id) => {
+   const guestsData = await ky.get(`${BASE_URL_GUESTS}/events/${event_Id}/count`, {credentials: 'include'}).json();
    return guestsData
  };
 

@@ -15,8 +15,13 @@ guestRouter.get('/events/:events_id', async (req, res) => {
   const params = getGuestByEventsIdRouteSchema.params.parse(req.params);
   const getGuestListByEventId = await guestRepository.getByEventId(params.events_id);
   res.status(200).json(getGuestListByEventId);
-})
+});
 
+guestRouter.get('/events/:events_id/count', async (req, res) => {
+  const params = getGuestByEventsIdRouteSchema.params.parse(req.params);
+  const getGuestListByEventId = await guestRepository.countByEventId(params.events_id);
+  res.status(200).json({ count: getGuestListByEventId});
+});
 
 guestRouter.post('/', async (req, res) => {
   const body = createGuestRouteSchema.body.parse(req.body);

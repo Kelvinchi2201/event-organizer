@@ -9,6 +9,14 @@ const getAll = async () => {
   return response.rows;
 };
 
+const countByEventId = async (events_id) => {
+ const response = await db.query(
+    `SELECT * FROM invitados WHERE events_id = $1`,
+    [events_id]
+  );
+  return response.rowCount;
+}
+
 const getByEventId = async (events_id) => {
   const response = await db.query(
     `SELECT * FROM invitados WHERE events_id = $1`,
@@ -63,6 +71,6 @@ const verifyAttendance = async (payload) => {
 
 
 
-const guestRepository = { getAll, addOneGuest, addIndicationsById, verifyAttendance, getByEventId };
+const guestRepository = { getAll, addOneGuest, addIndicationsById, verifyAttendance, getByEventId, countByEventId };
 
 export default guestRepository

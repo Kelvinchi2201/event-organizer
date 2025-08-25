@@ -23,19 +23,26 @@ import EventsItem from "./EventsItem.astro"
     const eventsItemTemplate = document.querySelector('#events-item-template');
     const eventList = document.querySelector('#dashboard-list');
     await homeModule.getEventsListForHome();
-        events.subscribe(events => {
+        events.subscribe(async events => {
             eventList.innerHTML= '';
             for (const event of events) {
-                const eventItem = eventsItemTemplate.content.cloneNode(true);
+                const eventItem = eventsItemTemplate.content.cloneNode(true).children[0];
                 const nameInput = eventItem.querySelector('input:nth-child(1)');
                 const dateInput = eventItem.querySelector('input:nth-child(2)');
                 const timeInput = eventItem.querySelector('input:nth-child(3)');
                 const guestsInput = eventItem.querySelector('input:nth-child(4)');
                 const descriptionInput = eventItem.querySelector('input:nth-child(5)');
                 const liElement = eventItem.querySelector('li');
-                console.log(nameInput, dateInput, timeInput, guestsInput, descriptionInput);
+                eventItem.id = event.id
+                const guestsCount = await homeModule.getGuestsByEventId(eventItem.id)                 
+                nameInput.value = event.name;
+                dateInput.value = event.fecha_evento;
+                timeInput.value = event.hora_evento;
+                guestsInput.value = guestsCount.count;
+                descriptionInput.value = event.description;
                 
-                liElement.id = event.event_id;
+                eventList.append(eventItem);
+                console.log(nameInput.value);
             }
         })
     
@@ -45,7 +52,7 @@ import EventsItem from "./EventsItem.astro"
     const userId = user.id;
     
    
-    const dataguests = await homeModule.getGuestsByEventId(userId);
+    
     
    
   

@@ -1,14 +1,14 @@
 ---
-const {event_name, event_date, guests_byEvents, event_description, event_Id, event_time} = Astro.props
+const {event_name, event_date, guests_byEvents, event_description, Id, event_time} = Astro.props
 ---
 
 
-<li id="eventId" class="flex gap-4 justify-between items-center">
-    
-    <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={event_name} readonly>
+<li id={Id} class="flex gap-4 justify-between items-center">
+    <div class="flex flex-wrap md:flex-nowrap gap-2 flex-grow">
+    <input class="w-full bg-pink-400 rounded-md p-2 outline-none" type="text" value={event_name} readonly>
     <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={event_date} readonly>
     <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={event_time} readonly>
     <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={guests_byEvents} readonly>
     <input class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={event_description} readonly>
-    
+    </div>
 </li>
