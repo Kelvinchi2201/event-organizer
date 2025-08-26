@@ -1,7 +1,7 @@
 ---
 import EventsItem from "./EventsItem.astro"
 ---
-<ul id="dashboard-list" class="m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border border-gray-300 h-full md:w-[70%] lg:w-[50%]">
+<ul id="dashboard-list" class="m-0 p-2 list-none overflow-scroll flex flex-col gap-6 rounded-md border border-gray-300 h-full md:w-[70%] lg:w-[50%]">
  <template id="events-item-template">
     <EventsItem
     event_name="Fiesta de fin de año"
@@ -28,10 +28,10 @@ import EventsItem from "./EventsItem.astro"
             for (const event of events) {
                 const eventItem = eventsItemTemplate.content.cloneNode(true).children[0];
                 const nameInput = eventItem.querySelector('input:nth-child(1)');
-                const dateInput = eventItem.querySelector('input:nth-child(2)');
-                const timeInput = eventItem.querySelector('input:nth-child(3)');
-                const guestsInput = eventItem.querySelector('input:nth-child(4)');
-                const descriptionInput = eventItem.querySelector('input:nth-child(5)');
+                const dateInput = eventItem.querySelector('input:nth-child(3)');
+                const timeInput = eventItem.querySelector('input:nth-child(5)');
+                const guestsInput = eventItem.querySelector('input:nth-child(7)');
+                const descriptionInput = eventItem.querySelector('input:nth-child(9)');
                 const liElement = eventItem.querySelector('li');
                 eventItem.id = event.id
                 const guestsCount = await homeModule.getGuestsByEventId(eventItem.id)                 
