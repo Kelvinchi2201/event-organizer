@@ -1,7 +1,10 @@
 ---
 import EventsItem from "./EventsItem.astro"
 ---
-<ul id="dashboard-list" class="m-0 p-2 list-none overflow-scroll flex flex-col gap-6 rounded-md border border-gray-300 h-full md:w-[70%] lg:w-[50%]">
+
+<div id="eventos-div" class="flex flex-col justify-center items-center gap-4 h-full w-full p-4">
+<h1 class="flex text-pink-700 text-4xl md:text-6xl lg:text-7xl">Eventos</h1>
+<ul id="dashboard-list" class="m-0 p-2 list-none overflow-scroll flex flex-col gap-4 rounded-md border border-gray-300 h-full md:w-[50%] lg:w-[50%]">
  <template id="events-item-template">
     <EventsItem
     event_name="Fiesta de fin de año"
@@ -12,7 +15,8 @@ import EventsItem from "./EventsItem.astro"
     />
  </template>
 </ul>
-
+</div>
+ 
 
 
 

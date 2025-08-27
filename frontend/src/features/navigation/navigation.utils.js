@@ -37,6 +37,16 @@ export const getLinks = (pathname) => {
       }
     });
   }
+  if (pathname === '/dashboard') {
+    links.push({
+      type: 'button', 
+      text: 'Cerrar sesion', 
+      handler: async () => {
+        await AuthModule.logoutUser();
+        location.replace('/');
+      }
+    });
+  }
 
   if (pathname === '/login') {
     links.push({text: 'Home', path: '/'});

@@ -7,8 +7,19 @@ import HomeEventList from "../features/dashboard/HomeEventList.astro";
 
 <Layout title= "Home">
     <AuthProtected>
-        <main class="h-[calc(100vh-4rem)] flex flex-col gap-8 p-4 max-w-[90rem] mx-auto md:items-center">
+        <main class="h-[calc(80vh)] overflow-y-auto flex flex-col gap-2 p-4 max-w-[90rem] mx-auto md:flex-row md:h-[calc(100vh-4rem)] md:justify-between items-center">
           <HomeEventList>
+          </HomeEventList>
+          <div class="md:w-[50%] flex flex-col justify-center items-center p-4 gap-4 w-[50%]">
+          <div class="flex flex-col gap-4">
+            <p class="border border-pink-700 rounded-md text-sm md:text-xl">Da vida a tu idea. Planifica, personaliza y lanza tu próximo gran evento en solo unos minutos.</p>
+          <a class="bg-pink-700 py-4 px-8 text-white no-underline text-center font-medium text-sm rounded-md hover:bg-pink-800 transition-all duration-200 ease-in md:text-xl" href="/addevents">Crear eventos</a>
+          </div>
+          <div class="flex flex-col gap-4">
+          <p class="border border-pink-700 rounded-md text-sm md:text-xl">Invita a quienes harán de tu encuentro algo especial y gestiona quiénes te acompañarán.</p>
+	        <a class="bg-pink-700 py-4 px-8 text-white no-underline text-center font-medium text-sm rounded-md hover:bg-pink-800 transition-all duration-200 ease-in md:text-xl" href="/addGuest">Crear lista de invitados</a>
+          </div>
+            </div>
         </main>
     </AuthProtected>
 </Layout>
