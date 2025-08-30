@@ -69,8 +69,22 @@ const verifyAttendance = async (payload) => {
   return response.rows[0];
 };
 
+const deleteById = async (id) => {
+  const response = await db.query(
+     `DELETE FROM invitados
+     WHERE id = $1 
+     RETURNING *`,
+     [id],
+   );
+    if (response.rowCount === 0) {
+    throw new ErrorWithStatus(404, 'El invitado fue no encontrado');
+  }
+  return response.rows[0];
+  
+}
 
 
-const guestRepository = { getAll, addOneGuest, addIndicationsById, verifyAttendance, getByEventId, countByEventId };
+
+const guestRepository = { getAll, addOneGuest, addIndicationsById, verifyAttendance, getByEventId, countByEventId, deleteById };
 
 export default guestRepository

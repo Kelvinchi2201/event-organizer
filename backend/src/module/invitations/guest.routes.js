@@ -1,5 +1,5 @@
 import express from 'express'
-import { createGuestRouteSchema, createIndicationsRouteSchema, getGuestByEventsIdRouteSchema, verifyConfirmGuestRouteSchema } from "./guest.routes.schema.js";
+import { createGuestRouteSchema, createIndicationsRouteSchema, getGuestByEventsIdRouteSchema, verifyConfirmGuestRouteSchema, deleteGuestRouteSchema } from "./guest.routes.schema.js";
 import guestRepository from './guest.repository.js';
 import jwt from 'jsonwebtoken';
 import nodemailerService from '../../services/nodemailer.services.js';
@@ -59,6 +59,12 @@ guestRouter.patch('/:id', async (req, res) => {
   const addIndications = await guestRepository.addIndicationsById(params.id, body);
   res.json(addIndications);
 });
+
+guestRouter.delete('/:id', async (req, res) => {
+  const params = deleteGuestRouteSchema.params.parse(req.params);
+  const guestDeleted = await guestRepository.deleteById(params.id);
+  res.json(guestDeleted);
+})
 
 
 export default guestRouter;
