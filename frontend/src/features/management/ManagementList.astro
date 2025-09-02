@@ -22,7 +22,7 @@ import ManagementItem from "./ManagementItem.astro"
 
 <script>
     // @ts-nocheck
-    import homeModule, { events } from "./home.module";
+    import ManagementModule, {events} from "./management.module";
     import AuthModule from "../auth/auth.module";
     const eventsItemTemplate = document.querySelector('#events-item-template');
     const eventList = document.querySelector('#dashboard-list');
@@ -38,7 +38,7 @@ import ManagementItem from "./ManagementItem.astro"
                 const descriptionInput = eventItem.querySelector('input:nth-child(9)');
                 const liElement = eventItem.querySelector('li');
                 eventItem.id = event.id
-                const guestsCount = await homeModule.getGuestsByEventId(eventItem.id)                 
+                const guestsCount = await ManagementModule.getGuestsByEventId(eventItem.id)                 
                 nameInput.value = event.name;
                 dateInput.value = event.fecha_evento.split('T')[0];
                 timeInput.value = event.hora_evento;

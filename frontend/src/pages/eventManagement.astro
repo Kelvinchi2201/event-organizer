@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import AuthProtected from "../features/auth/AuthProtected.astro";
+import ManagementList from "../features/management/ManagementList.astro";
 ---
 <Layout title="Gestion de eventos">
     <AuthProtected>
@@ -8,59 +9,9 @@ import AuthProtected from "../features/auth/AuthProtected.astro";
 
   <div class="flex flex-col gap-4 w-full md:w-1/2">
     <h1 class="text-pink-700 text-4xl md:text-6xl">Mis Eventos</h1>
-    <ul class="m-0 p-2 list-none overflow-y-auto flex flex-col gap-4 rounded-md border border-gray-300 h-[60vh] md:h-full">
-      
-      <li class="flex flex-col gap-4 p-4 border border-pink-700 rounded-md">
-        <div class="flex flex-col gap-2">
-          <label for="eventName1" class="text-sm text-gray-600">Nombre del Evento:</label>
-          <input id="eventName1" class="w-full bg-pink-500 rounded-md p-2 text-white font-bold outline-none" type="text" value="Fiesta de Fin de Año" readonly>
-        </div>
-        <div class="flex flex-col md:flex-row gap-4">
-          <div class="flex flex-col gap-2 w-full md:w-1/2">
-            <label for="eventDate1" class="text-sm text-gray-600">Fecha:</label>
-            <input id="eventDate1" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="date" value="2025-12-31" readonly>
-          </div>
-          <div class="flex flex-col gap-2 w-full md:w-1/2">
-            <label for="eventTime1" class="text-sm text-gray-600">Hora:</label>
-            <input id="eventTime1" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="time" value="16:30" readonly>
-          </div>
-        </div>
-        <div class="flex flex-col gap-2">
-          <label for="eventDescription1" class="text-sm text-gray-600">Descripción:</label>
-          <input id="eventDescription1" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value="Será una fiesta increíble para despedir el año." readonly>
-        </div>
-        <div class="flex flex-col md:flex-row gap-2 mt-2">
-          <button class="bg-gray-200 text-gray-800 py-2 px-4 text-center font-medium text-sm rounded-md hover:bg-gray-300 transition-all duration-200 ease-in w-full">Editar Evento</button>
-          <a href="/events/1/guests" class="bg-gray-200 text-gray-800 py-2 px-4 no-underline text-center font-medium text-sm rounded-md hover:bg-gray-300 transition-all duration-200 ease-in w-full">Ver Invitados</a>
-        </div>
-      </li>
-      
-      <li class="flex flex-col gap-4 p-4 border border-pink-700 rounded-md">
-        <div class="flex flex-col gap-2">
-          <label for="eventName2" class="text-sm text-gray-600">Nombre del Evento:</label>
-          <input id="eventName2" class="w-full bg-pink-500 rounded-md p-2 text-white font-bold outline-none" type="text" value="Lanzamiento de Producto" readonly>
-        </div>
-         <div class="flex flex-col md:flex-row gap-4">
-          <div class="flex flex-col gap-2 w-full md:w-1/2">
-            <label for="eventDate2" class="text-sm text-gray-600">Fecha:</label>
-            <input id="eventDate2" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="date" value="2025-11-15" readonly>
-          </div>
-          <div class="flex flex-col gap-2 w-full md:w-1/2">
-            <label for="eventTime2" class="text-sm text-gray-600">Hora:</label>
-            <input id="eventTime2" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="time" value="10:00" readonly>
-          </div>
-        </div>
-        <div class="flex flex-col gap-2">
-          <label for="eventDescription2" class="text-sm text-gray-600">Descripción:</label>
-          <input id="eventDescription2" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value="Presentación del nuevo software." readonly>
-        </div>
-        <div class="flex flex-col md:flex-row gap-2 mt-2">
-          <button class="bg-gray-200 text-gray-800 py-2 px-4 text-center font-medium text-sm rounded-md hover:bg-gray-300 transition-all duration-200 ease-in w-full">Editar Evento</button>
-          <a href="/events/2/guests" class="bg-gray-200 text-gray-800 py-2 px-4 no-underline text-center font-medium text-sm rounded-md hover:bg-gray-300 transition-all duration-200 ease-in w-full">Ver Invitados</a>
-        </div>
-      </li>
+    <ManagementList>
 
-    </ul>
+    </ManagementList>
   </div>
 
   <div class="md:w-1/2 flex flex-col justify-center items-center p-4 gap-8 w-full">
