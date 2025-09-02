@@ -29,7 +29,34 @@ import ky from "ky";
    return guestsData
  };
 
+
+const updateEvents = async (eventToUpdate) => {
+  const url = `${BASE_URL_EVENTS}/${eventToUpdate.id}`;
+  try {
+    const eventToUpdated = await ky.put(url, {json: eventToUpdate}).json();
+    events.set(events.get().map(event => {
+      if (event.id === eventToUpdated.id) {
+        return eventToUpdated;
+      } else {
+        return event;
+      }
+    }));
+     createNotification({
+      title: 'Evento actualizado',
+      description: `${eventToUpdated.name}`,
+      type: 'success'
+    });
+  } catch (error) {
+    console.log(error);
+    const errorData = await error.response.json();
+    createNotification({
+      title: 'Ups! Hubo un error',
+      description: errorData.error,
+      type: 'error'
+    });
+  }
+}
  
 
 
- export default { getEventsListForHome, getGuestsByEventId };
+ export default { getEventsListForHome, getGuestsByEventId, updateEvents };

@@ -5,22 +5,24 @@ import ManagementList from "../features/management/ManagementList.astro";
 ---
 <Layout title="Gestion de eventos">
     <AuthProtected>
-        <div class="flex flex-col md:flex-row gap-8 p-4 max-w-[90rem] mx-auto h-full">
+        <div class="h-[calc(80vh)] overflow-y-auto flex flex-col gap-2 p-4 max-w-[90rem] mx-auto md:flex-row md:h-[calc(100vh-4rem)] md:justify-between items-center">
 
-  <div class="flex flex-col gap-4 w-full md:w-1/2">
-    <h1 class="text-pink-700 text-4xl md:text-6xl">Mis Eventos</h1>
+ 
     <ManagementList>
-
     </ManagementList>
-  </div>
+ 
 
   <div class="md:w-1/2 flex flex-col justify-center items-center p-4 gap-8 w-full">
     <div class="flex flex-col gap-4 w-full text-center p-4 border border-pink-700 rounded-md">
       <p class="text-xl">¿Necesitas hacer cambios o invitar a más gente?</p>
       <a class="bg-pink-700 py-4 px-8 text-white no-underline text-center font-medium text-sm rounded-md hover:bg-pink-800 transition-all duration-200 ease-in md:text-xl" href="/addGuest">Enviar más invitaciones</a>
     </div>
+     <div class="flex flex-col gap-4 w-full text-center p-4 border border-pink-700 rounded-md">
+      <p class="text-xl">Da vida a tu idea. Planifica, personaliza y lanza tu próximo gran evento en solo unos minutos.</p>
+      <a class="bg-pink-700 py-4 px-8 text-white no-underline text-center font-medium text-sm rounded-md hover:bg-pink-800 transition-all duration-200 ease-in md:text-xl" href="/addevents">Crear eventos</a>
+    </div>
     <div class="flex flex-col gap-4 w-full text-center p-4 border border-pink-700 rounded-md">
-      <p class="text-xl">Vuelve al panel principal para crear un nuevo evento.</p>
+      <p class="text-xl">Vuelve al panel principal para ver los eventos creados por otros usuarios.</p>
       <a class="bg-pink-700 py-4 px-8 text-white no-underline text-center font-medium text-sm rounded-md hover:bg-pink-800 transition-all duration-200 ease-in md:text-xl" href="/">Ir al Home</a>
     </div>
   </div>

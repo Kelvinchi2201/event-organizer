@@ -2,11 +2,11 @@
 const {event_name, event_date, guests_byEvents, event_description, Id, event_time} = Astro.props
 ---
 
-<li id={Id} class="flex flex-col gap-4 p-4 border border-pink-700 rounded-md">
+<li id={Id} class="flex flex-col gap-4 p-4 border border-pink-700 rounded-md" data-status="inputs-deshabilitados">
     
     <div class="flex flex-col gap-2">
-      <label for="eventName1" class="text-sm text-gray-600">Nombre del Evento:</label>
-      <input id="eventName1" class="w-full bg-pink-500 rounded-md p-2 text-white font-bold outline-none" type="text" value={event_name} readonly>
+      <label for="eventName" class="text-sm text-gray-600">Nombre del Evento:</label>
+      <input id="eventName" class="w-full bg-pink-500 rounded-md p-2 text-white font-bold outline-none" type="text" value={event_name} readonly>
     </div>
 
     <div class="flex flex-col md:flex-row gap-4">
@@ -31,7 +31,7 @@ const {event_name, event_date, guests_byEvents, event_description, Id, event_tim
     </div>
     
     <div class="flex flex-col md:flex-row gap-2 mt-2">
-      <button class="bg-gray-200 text-gray-800 py-2 px-4 text-center font-medium text-sm rounded-md hover:bg-gray-300 transition-all duration-200 ease-in w-full">Editar Evento</button>
+      <button class="edit-btn bg-gray-200 text-gray-800 py-2 px-4 text-center font-medium text-sm rounded-md hover:bg-gray-300 transition-all duration-200 ease-in w-full">Editar Evento</button>
       <a href="/events/1/guests" class="bg-gray-200 text-gray-800 py-2 px-4 no-underline text-center font-medium text-sm rounded-md hover:bg-gray-300 transition-all duration-200 ease-in w-full">Ver Invitados</a>
     </div>
 

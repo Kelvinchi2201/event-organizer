@@ -3,8 +3,8 @@ import ManagementItem from "./ManagementItem.astro"
 ---
 
 <div id="eventos-div" class="flex flex-col justify-center items-center gap-4 h-full w-full p-4">
-<h1 class="flex text-pink-700 text-4xl md:text-6xl lg:text-7xl">Eventos</h1>
-<ul id="dashboard-list" class="m-0 p-2 list-none overflow-scroll flex flex-col gap-4 rounded-md border border-gray-300 h-full md:w-[50%] lg:w-[50%]">
+<h1 class="text-pink-700 text-4xl md:text-6xl">Mis Eventos</h1>
+<ul id="dashboard-list" class="m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border border-gray-300 h-full md:w-[70%] lg:w-[50%]">
  <template id="events-item-template">
     <ManagementItem
     event_name="Fiesta de fin de año"
@@ -26,17 +26,19 @@ import ManagementItem from "./ManagementItem.astro"
     import AuthModule from "../auth/auth.module";
     const eventsItemTemplate = document.querySelector('#events-item-template');
     const eventList = document.querySelector('#dashboard-list');
-    await homeModule.getEventsListForHome();
+    await ManagementModule.getEventsListForHome();
         events.subscribe(async events => {
             eventList.innerHTML= '';
             for (const event of events) {
                 const eventItem = eventsItemTemplate.content.cloneNode(true).children[0];
-                const nameInput = eventItem.querySelector('input:nth-child(1)');
-                const dateInput = eventItem.querySelector('input:nth-child(3)');
-                const timeInput = eventItem.querySelector('input:nth-child(5)');
-                const guestsInput = eventItem.querySelector('input:nth-child(7)');
-                const descriptionInput = eventItem.querySelector('input:nth-child(9)');
+                const nameInput = eventItem.querySelector('#eventName');
+                const dateInput = eventItem.querySelector('#event_date');
+                const timeInput = eventItem.querySelector('#event_time');
+                const guestsInput = eventItem.querySelector('#guests_byEvents');
+                const descriptionInput = eventItem.querySelector('#event_description');
                 const liElement = eventItem.querySelector('li');
+                console.log();
+                
                 eventItem.id = event.id
                 const guestsCount = await ManagementModule.getGuestsByEventId(eventItem.id)                 
                 nameInput.value = event.name;
@@ -48,6 +50,25 @@ import ManagementItem from "./ManagementItem.astro"
                 eventList.append(eventItem);
                 console.log(nameInput.value);
             }
+        });
+
+        eventList.addEventListener('click', async (e) => {
+           const editBtn = e.target.closest('.edit-btn');
+           if (editBtn) {
+            const liElement = editBtn.closest('li');
+            const nameInput = liElement.querySelector('#eventName');
+            const dateInput = liElement.querySelector('#event_date');
+            const timeInput = liElement.querySelector('#event_time');
+            const descriptionInput = liElement.querySelector('#event_description');
+            const status = liElement.dataset.status;
+            if (status === 'inputs-deshabilitados') {
+                nameInput.removeAttribute('readonly');
+                dateInput.removeAttribute('readonly');
+                timeInput.removeAttribute('readonly');
+                descriptionInput.removeAttribute('readonly');
+                liElement.dataset.status = 'inputs-habilitados'
+            }
+           }
         })
     
     
