@@ -2,16 +2,37 @@
 const {event_name, event_date, guests_byEvents, event_description, Id, event_time} = Astro.props
 ---
 
-<li id={Id} class="flex gap-4 p-2 justify-between border border-pink-700 rounded-md items-center">
-    <div class="flex flex-wrap md:flex-nowrap gap-2 flex-col w-full">
-    <input class="w-full bg-pink-500 rounded-md p-2 outline-none" type="text" value={event_name} readonly>
-    <label for="event_date">Fecha del evento:</label>
-    <input id="event_date" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={event_date} readonly>
-    <label for="event_time">Hora:</label>
-    <input id="event_time" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={event_time} readonly>
-    <label for="guests_byEvents">Invitados:</label>
-    <input id="guests_byEvents" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={guests_byEvents} readonly>
-    <label for="event_description">Descripcion:</label>
-    <input id="event_description" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={event_description} readonly>
+<li id={Id} class="flex flex-col gap-4 p-4 border border-pink-700 rounded-md">
+    
+    <div class="flex flex-col gap-2">
+      <label for="eventName1" class="text-sm text-gray-600">Nombre del Evento:</label>
+      <input id="eventName1" class="w-full bg-pink-500 rounded-md p-2 text-white font-bold outline-none" type="text" value={event_name} readonly>
     </div>
+
+    <div class="flex flex-col md:flex-row gap-4">
+      <div class="flex flex-col gap-2 w-full md:w-1/2">
+        <label for="event_date" class="text-sm text-gray-600">Fecha del evento:</label>
+        <input id="event_date" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="date" value={event_date} readonly>
+      </div>
+      <div class="flex flex-col gap-2 w-full md:w-1/2">
+        <label for="event_time" class="text-sm text-gray-600">Hora:</label>
+        <input id="event_time" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="time" value={event_time} readonly>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+        <label for="guests_byEvents" class="text-sm text-gray-600">Invitados:</label>
+        <input id="guests_byEvents" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={guests_byEvents} readonly>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="event_description" class="text-sm text-gray-600">Descripcion:</label>
+      <input id="event_description" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={event_description} readonly>
+    </div>
+    
+    <div class="flex flex-col md:flex-row gap-2 mt-2">
+      <button class="bg-gray-200 text-gray-800 py-2 px-4 text-center font-medium text-sm rounded-md hover:bg-gray-300 transition-all duration-200 ease-in w-full">Editar Evento</button>
+      <a href="/events/1/guests" class="bg-gray-200 text-gray-800 py-2 px-4 no-underline text-center font-medium text-sm rounded-md hover:bg-gray-300 transition-all duration-200 ease-in w-full">Ver Invitados</a>
+    </div>
+
 </li>
