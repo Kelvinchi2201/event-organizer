@@ -66,7 +66,26 @@ import ManagementItem from "./ManagementItem.astro"
                 dateInput.removeAttribute('readonly');
                 timeInput.removeAttribute('readonly');
                 descriptionInput.removeAttribute('readonly');
-                liElement.dataset.status = 'inputs-habilitados'
+                liElement.dataset.status = 'inputs-habilitados';
+
+            }
+            if (status === 'inputs-habilitados') {
+                nameInput.setAttribute('readonly', true);
+                dateInput.setAttribute('readonly', true);
+                timeInput.setAttribute('readonly', true);
+                descriptionInput.setAttribute('readonly', true);
+                liElement.dataset.status = 'inputs-deshabilitados';
+                const eventToUpdate = {
+                    id: liElement.id,
+                    name: nameInput.value,
+                    description: descriptionInput.value,
+                    fecha_evento: dateInput.value,
+                    hora_evento: timeInput.value.split(':')[0] + ':' + timeInput.value.split(':')[1]
+
+                };
+                console.log(eventToUpdate);
+                
+                await ManagementModule.updateEvents(eventToUpdate)
             }
            }
         })
