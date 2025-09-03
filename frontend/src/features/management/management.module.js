@@ -24,9 +24,30 @@ import ky from "ky";
    }
  }
 
+  const getEventsListByUserId = async (userId) => {
+   try {
+     const eventsData = await ky.get(`${BASE_URL_EVENTS}/events/${userId}`, { credentials: 'include' }).json();
+     events.set(eventsData);
+   } catch (error) {
+    if (error.response.status === 401 || error.response.status === 403) {
+      location.replace('/login');
+    }
+    console.log(error);
+    
+   }
+ }
+
+ 
+
  const getGuestsByEventId = async (event_Id) => {
    const guestsData = await ky.get(`${BASE_URL_GUESTS}/events/${event_Id}/count`, {credentials: 'include'}).json();
    return guestsData
+ };
+
+
+ const getGuestsByUserId = async (userId) => {
+   const eventsData = await ky.get(`${BASE_URL_EVENTS}/events/${userId}`, {credentials: 'include'}).json();
+   return eventsData
  };
 
 
@@ -59,4 +80,4 @@ const updateEvents = async (eventToUpdate) => {
  
 
 
- export default { getEventsListForHome, getGuestsByEventId, updateEvents };
+ export default { getEventsListForHome, getGuestsByEventId, updateEvents, getGuestsByUserId, getEventsListByUserId };
