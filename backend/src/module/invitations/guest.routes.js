@@ -56,7 +56,7 @@ guestRouter.patch('/verifyGuest', async (req, res) => {
 guestRouter.patch('/:id', async (req, res) => {
   const body = createIndicationsRouteSchema.body.parse(req.body);
   const params = createIndicationsRouteSchema.params.parse(req.params);
-  const addIndications = await guestRepository.addIndicationsById(params.id, body);
+  const addIndications = await guestRepository.updateGuestById(params.id, body);
   res.json(addIndications);
 });
 

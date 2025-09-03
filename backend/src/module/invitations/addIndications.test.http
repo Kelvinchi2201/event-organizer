@@ -1,8 +1,9 @@
-PATCH http://localhost:3000/api/guest/6
+PATCH http://localhost:3000/api/guest/11
 Content-Type: application/json
 
 
     {
-        "indications": "TRAER BEBIDAS"
+        "guest_name": "Kelvin Chirinos",
+        "indications":"TRAER BEBIDAS"
     }
     

@@ -23,7 +23,7 @@ export const createGuestRouteSchema = {
 
 export const createIndicationsRouteSchema = {
   params: z.object({ id: guestIdSchema }),
-  body: guestSchema.omit({ id: true, estado_asistencia: true, fecha_envio: true, events_id: true, guest_name: true, guest_email: true}),
+  body: guestSchema.omit({ id: true, estado_asistencia: true, fecha_envio: true, events_id: true, guest_email: true}),
   queries: z.object({}),
 };
 

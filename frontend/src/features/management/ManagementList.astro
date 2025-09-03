@@ -4,7 +4,7 @@ import ManagementGuestitem from "./ManagementGuestitem.astro"
 ---
 
 <div id="eventos-div" class="flex flex-col justify-center items-center gap-4 h-full w-full p-4">
-<h1 class="text-pink-700 text-4xl md:text-6xl">Mis Eventos</h1>
+<h1 id="main-title" class="text-pink-700 text-4xl md:text-6xl">Mis Eventos</h1>
 <ul id="dashboard-list" class="m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border border-gray-300 h-full md:w-[70%] lg:w-[50%]">
  <template id="events-item-template">
     <ManagementItem
@@ -32,14 +32,17 @@ import ManagementGuestitem from "./ManagementGuestitem.astro"
 
 <script>
     // @ts-nocheck
-    import ManagementModule, {events} from "./management.module";
+    import ManagementModule, {events, guests} from "./management.module";
     import AuthModule from "../auth/auth.module";
     const eventsItemTemplate = document.querySelector('#events-item-template');
+    const guestsItemTemplate = document.querySelector('#guests-item-template');
     const eventList = document.querySelector('#dashboard-list');
+    const mainTitle = document.querySelector('#main-title');
     const user =  await AuthModule.getLoggedUser();
     const userId = user.id;
     await ManagementModule.getEventsListByUserId(userId);
         events.subscribe(async events => {
+             if (mainTitle.textContent === 'Mis Eventos') {
             eventList.innerHTML= '';
             for (const event of events) {
                 const eventItem = eventsItemTemplate.content.cloneNode(true).children[0];
@@ -62,13 +65,16 @@ import ManagementGuestitem from "./ManagementGuestitem.astro"
                 eventList.append(eventItem);
                 
             }
+         }
         });
 
         eventList.addEventListener('click', async (e) => {
            const editBtn = e.target.closest('.edit-btn');
+           const guestsBtn = e.target.closest('.guests-btn');
+            const liElement = e.target.closest('li');
 
            if (editBtn) {
-            const liElement = editBtn.closest('li');
+            
             const nameInput = liElement.querySelector('#eventName');
             const dateInput = liElement.querySelector('#event_date');
             const timeInput = liElement.querySelector('#event_time');
@@ -101,6 +107,88 @@ import ManagementGuestitem from "./ManagementGuestitem.astro"
                 await ManagementModule.updateEvents(eventToUpdate)
             }
            }
+           if (guestsBtn) {
+               const liElement = guestsBtn.closest('li');
+               const eventId = liElement.id;
+               const eventName = liElement.querySelector('#eventName').value;
+
+               
+               await ManagementModule.getGuestsListByEventId(eventId);
+               const guestList = guests.get(); 
+
+               
+               eventList.innerHTML = '';
+               mainTitle.textContent = `Invitados de: ${eventName}`;
+
+               
+               const backButton = document.createElement('button');
+               backButton.textContent = 'Volver a Eventos';
+               backButton.className = 'bg-pink-500 text-white py-2 px-4 rounded-md hover:bg-pink-600 transition-all duration-200 ease-in mb-4 self-start';
+               backButton.onclick = async () => {
+                   mainTitle.textContent = 'Mis Eventos';
+                   
+                   await ManagementModule.getEventsListByUserId(userId);
+               };
+               eventList.append(backButton);
+
+               
+               for (const guest of guestList) {
+                    const guestItem = guestsItemTemplate.content.cloneNode(true).children[0];
+                    guestItem.id = guest.id;
+                    guestItem.querySelector('#guest_name').value = guest.guest_name;
+                    guestItem.querySelector('#guest_email').value = guest.guest_email;
+                    guestItem.querySelector('#fecha_envio').value = guest.fecha_envio.split('T')[0];
+                    guestItem.querySelector('#indications').value = guest.indications;
+                    
+                    const estadoInput = guestItem.querySelector('#estado_asistencia');
+                    estadoInput.value = guest.estado_asistencia ? "Confirmado" : "Pendiente";
+                    estadoInput.className = `w-full rounded-md p-2 outline-none text-center font-bold ${guest.estado_asistencia ? "bg-green-200 text-green-800" : "bg-yellow-200 text-yellow-800"}`;
+                    
+                    eventList.append(guestItem);
+               }
+
+           }
+            const guestEditBtn = e.target.closest('.edit-btn-guest');
+           if (guestEditBtn && liElement.querySelector('#guest_name')) { 
+        const status = liElement.dataset.status;
+        const guestNameInput = liElement.querySelector('#guest_name');
+        const indicationsInput = liElement.querySelector('#indications');
+        
+      
+        
+    
+        
+
+        if (status === 'inputs-deshabilitados') {
+            guestNameInput.removeAttribute('readonly');
+            
+            indicationsInput.removeAttribute('readonly');
+            liElement.dataset.status = 'inputs-habilitados';
+        } else if (status === 'inputs-habilitados') {
+            guestNameInput.setAttribute('readonly', true);
+            indicationsInput.setAttribute('readonly', true);
+            
+            liElement.dataset.status = 'inputs-deshabilitados';
+
+            const guestToUpdate = {
+                id: liElement.id,
+                guest_name: guestNameInput.value,
+                indications: indicationsInput.value,
+            };
+
+            await ManagementModule.updateGuest(guestToUpdate); 
+        }
+    }
+
+            const deleteBtn = e.target.closest('.delete-btn');
+            if (deleteBtn && liElement.querySelector('#guest_name')) { 
+            const guestId = liElement.id;
+            
+            
+            await ManagementModule.deleteGuestById(guestId); 
+            liElement.remove(); 
+        
+    }
 
           
         })
@@ -110,7 +198,7 @@ import ManagementGuestitem from "./ManagementGuestitem.astro"
     
 
     const eventsbyUser = await ManagementModule.getGuestsByUserId(userId);
-    console.log(eventsbyUser);
+    
     
     
    

@@ -36,15 +36,15 @@ const addOneGuest = async (payload) => {
   return response.rows[0];
 };
 
-const addIndicationsById = async (id, payload) => {
+const updateGuestById = async (id, payload) => {
   const response = await db.query(
     `
     UPDATE invitados
-    SET indications = $1
-    WHERE id = $2
+    SET indications = $1, guest_name = $2
+    WHERE id = $3
     RETURNING *
   `,
-    [payload.indications, id],
+    [payload.indications, payload.guest_name, id],
   );
   if (response.rowCount === 0) {
     throw new ErrorWithStatus(404, 'El evento fue no encontrado');
@@ -85,6 +85,6 @@ const deleteById = async (id) => {
 
 
 
-const guestRepository = { getAll, addOneGuest, addIndicationsById, verifyAttendance, getByEventId, countByEventId, deleteById };
+const guestRepository = { getAll, addOneGuest, updateGuestById, verifyAttendance, getByEventId, countByEventId, deleteById };
 
 export default guestRepository
