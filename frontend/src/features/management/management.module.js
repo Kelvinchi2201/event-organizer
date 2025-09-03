@@ -9,6 +9,9 @@ import ky from "ky";
  let eventsArray = []
  export const events = atom(eventsArray);
 
+ let guetsArray = []
+ export const guets = atom(guetsArray);
+
 
 
  const getEventsListForHome = async () => {
@@ -36,6 +39,11 @@ import ky from "ky";
     
    }
  }
+
+  const getGuestsByEventIdForList = async (event_Id) => {
+   const guestsData = await ky.get(`${BASE_URL_GUESTS}/events/${event_Id}/count`, {credentials: 'include'}).json();
+   guets.set(guestsData)
+ };
 
  
 
@@ -80,4 +88,4 @@ const updateEvents = async (eventToUpdate) => {
  
 
 
- export default { getEventsListForHome, getGuestsByEventId, updateEvents, getGuestsByUserId, getEventsListByUserId };
+ export default { getEventsListForHome, getGuestsByEventId, updateEvents, getGuestsByUserId, getEventsListByUserId, getGuestsByEventIdForList };

@@ -1,5 +1,6 @@
 ---
 import ManagementItem from "./ManagementItem.astro"
+import ManagementGuestitem from "./ManagementGuestitem.astro"
 ---
 
 <div id="eventos-div" class="flex flex-col justify-center items-center gap-4 h-full w-full p-4">
@@ -12,6 +13,15 @@ import ManagementItem from "./ManagementItem.astro"
     event_time="16:30"
     guests_byEvents="16"
     event_description="sera una fiesta de fin de año"
+    />
+ </template>
+ <template id="guests-item-template" >
+    <ManagementGuestitem
+        guest_name="Juan Pérez"
+        guest_email="juanperez@example.com"
+        fecha_envio="31-12-2025"
+        estado_asistencia={false}
+        indications="Llevar traje de baño. No se permiten niños."
     />
  </template>
 </ul>
@@ -56,6 +66,7 @@ import ManagementItem from "./ManagementItem.astro"
 
         eventList.addEventListener('click', async (e) => {
            const editBtn = e.target.closest('.edit-btn');
+
            if (editBtn) {
             const liElement = editBtn.closest('li');
             const nameInput = liElement.querySelector('#eventName');
@@ -90,6 +101,8 @@ import ManagementItem from "./ManagementItem.astro"
                 await ManagementModule.updateEvents(eventToUpdate)
             }
            }
+
+          
         })
     
     
