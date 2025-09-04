@@ -25,6 +25,8 @@ export const getLinks = (pathname) => {
         location.replace('/');
       }
     });
+    links.push({text: 'Invitaciones', path:'/addGuest'});
+    links.push({text: 'Home', path:'/dashboard'});
   }
 
   if (pathname === '/addGuest') {
@@ -36,6 +38,8 @@ export const getLinks = (pathname) => {
         location.replace('/');
       }
     });
+    links.push({text: 'Crear Eventos', path:'/addevents'});
+    links.push({text: 'Home', path:'/dashboard'});
   }
   if (pathname === '/dashboard') {
     links.push({
@@ -46,6 +50,7 @@ export const getLinks = (pathname) => {
         location.replace('/');
       }
     });
+    links.push({text: 'Mis eventos', path: '/eventManagement'});
   }
 
   if (pathname === '/login') {

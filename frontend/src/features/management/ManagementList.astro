@@ -72,6 +72,7 @@ import ManagementGuestitem from "./ManagementGuestitem.astro"
            const editBtn = e.target.closest('.edit-btn');
            const guestsBtn = e.target.closest('.guests-btn');
             const liElement = e.target.closest('li');
+            const deleteBtn = e.target.closest('.delete-btn');
 
            if (editBtn) {
             
@@ -86,6 +87,10 @@ import ManagementGuestitem from "./ManagementGuestitem.astro"
                 timeInput.removeAttribute('readonly');
                 descriptionInput.removeAttribute('readonly');
                 liElement.dataset.status = 'inputs-habilitados';
+                nameInput.classList.add('outline', 'outline-solid', 'outline-black');
+                dateInput.classList.add('outline', 'outline-solid', 'outline-cyan-500');
+                timeInput.classList.add('outline', 'outline-solid', 'outline-cyan-500');
+                descriptionInput.classList.add('outline', 'outline-solid', 'outline-cyan-500');
 
             }
             if (status === 'inputs-habilitados') {
@@ -94,6 +99,12 @@ import ManagementGuestitem from "./ManagementGuestitem.astro"
                 timeInput.setAttribute('readonly', true);
                 descriptionInput.setAttribute('readonly', true);
                 liElement.dataset.status = 'inputs-deshabilitados';
+
+                nameInput.classList.remove('outline', 'outline-solid', 'outline-black');
+                dateInput.classList.remove('outline', 'outline-solid', 'outline-cyan-500');
+                timeInput.classList.remove('outline', 'outline-solid', 'outline-cyan-500');
+                descriptionInput.classList.remove('outline', 'outline-solid', 'outline-cyan-500');
+
                 const eventToUpdate = {
                     id: liElement.id,
                     name: nameInput.value,
@@ -107,6 +118,12 @@ import ManagementGuestitem from "./ManagementGuestitem.astro"
                 await ManagementModule.updateEvents(eventToUpdate)
             }
            }
+           if (deleteBtn) {
+             const eventId = liElement.id;
+            await ManagementModule.deleteEventById(eventId); 
+            liElement.remove();
+           }
+
            if (guestsBtn) {
                const liElement = guestsBtn.closest('li');
                const eventId = liElement.id;
@@ -161,14 +178,17 @@ import ManagementGuestitem from "./ManagementGuestitem.astro"
 
         if (status === 'inputs-deshabilitados') {
             guestNameInput.removeAttribute('readonly');
-            
             indicationsInput.removeAttribute('readonly');
             liElement.dataset.status = 'inputs-habilitados';
+            guestNameInput.classList.add('outline', 'outline-solid', 'outline-black');
+            indicationsInput.classList.add('outline', 'outline-solid', 'outline-cyan-500');
         } else if (status === 'inputs-habilitados') {
             guestNameInput.setAttribute('readonly', true);
             indicationsInput.setAttribute('readonly', true);
             
             liElement.dataset.status = 'inputs-deshabilitados';
+            guestNameInput.classList.remove('outline', 'outline-solid', 'outline-black');
+            indicationsInput.classList.remove('outline', 'outline-solid', 'outline-cyan-500');
 
             const guestToUpdate = {
                 id: liElement.id,
@@ -180,8 +200,8 @@ import ManagementGuestitem from "./ManagementGuestitem.astro"
         }
     }
 
-            const deleteBtn = e.target.closest('.delete-btn');
-            if (deleteBtn && liElement.querySelector('#guest_name')) { 
+            const deleteBtnGuest = e.target.closest('.delete-btn-guest');
+            if (deleteBtnGuest && liElement.querySelector('#guest_name')) { 
             const guestId = liElement.id;
             
             

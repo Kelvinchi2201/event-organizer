@@ -95,6 +95,26 @@ const updateEvents = async (eventToUpdate) => {
     });
   }
 }
+const deleteEventById = async (eventId) => {
+  const url = `${BASE_URL_EVENTS}/${eventId}`;
+  try {
+    const eventDeleted = await ky.delete(url, { credentials: 'include' });
+    events.set(events.get().concat(eventDeleted));
+    createNotification({
+      title: 'Evento Eliminado',
+      type:'success'
+    })
+} catch (error) {
+  console.log(error);
+  const errorData = await error.response.json();
+  createNotification({
+    title: 'Hubo un error al intentar eliminar el evento',
+    description: errorData.error,
+    type: 'error'
+  })
+  
+}
+}
 
 const deleteGuestById = async (guestId) => {
   const url = `${BASE_URL_GUESTS}/${guestId}`;
@@ -152,5 +172,6 @@ const updateGuest = async (guestToUpdate) => {
   getEventsListByUserId, 
   getGuestsListByEventId, 
   deleteGuestById, 
-  updateGuest 
+  updateGuest,
+  deleteEventById 
 };

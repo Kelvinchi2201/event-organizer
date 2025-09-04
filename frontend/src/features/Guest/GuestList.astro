@@ -80,6 +80,9 @@ guestList.addEventListener('click', async e => {
         contactEditBtn.children[0].classList.add('hidden');
         contactEditBtn.children[1].classList.remove('hidden');
         // 4. Cambiar estilos de los inputs para reflejar el estado
+        guestInputName.classList.add('outline', 'outline-solid', 'outline-cyan-500');
+        guestInputEmail.classList.add('outline', 'outline-solid', 'outline-cyan-500');
+        guestInputIndications.classList.add('outline', 'outline-solid', 'outline-cyan-500');
       }
 
       
@@ -94,6 +97,9 @@ guestList.addEventListener('click', async e => {
         // 3. Cambiar icono del boton para reflejar el estado
         contactEditBtn.children[0].classList.remove('hidden');
         contactEditBtn.children[1].classList.add('hidden');
+        guestInputName.classList.remove('outline', 'outline-solid', 'outline-cyan-500');
+        guestInputEmail.classList.remove('outline', 'outline-solid', 'outline-cyan-500');
+        guestInputIndications.classList.remove('outline', 'outline-solid', 'outline-cyan-500');
         // 4. Actualizar el contacto
         const guestToUpdate = {
           temp_id: li.id,
