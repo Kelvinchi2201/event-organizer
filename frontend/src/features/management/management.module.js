@@ -25,7 +25,7 @@ import ky from "ky";
     console.log(error);
     
    }
- }
+ };
 
   const getEventsListByUserId = async (userId) => {
    try {
@@ -38,7 +38,7 @@ import ky from "ky";
     console.log(error);
     
    }
- }
+ };
 
   const getGuestsListByEventId = async (event_Id) => {
     try {
@@ -94,7 +94,7 @@ const updateEvents = async (eventToUpdate) => {
       type: 'error'
     });
   }
-}
+};
 const deleteEventById = async (eventId) => {
   const url = `${BASE_URL_EVENTS}/${eventId}`;
   try {
@@ -114,7 +114,7 @@ const deleteEventById = async (eventId) => {
   })
   
 }
-}
+};
 
 const deleteGuestById = async (guestId) => {
   const url = `${BASE_URL_GUESTS}/${guestId}`;
@@ -135,7 +135,7 @@ const deleteGuestById = async (guestId) => {
   })
   
 }
-}
+};
 
 const updateGuest = async (guestToUpdate) => {
     const url = `${BASE_URL_GUESTS}/${guestToUpdate.id}`;
