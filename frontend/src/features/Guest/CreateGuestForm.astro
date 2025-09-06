@@ -2,27 +2,30 @@
 <form id="form" class="p-2 rounded-md flex flex-col gap-4 border border-gray-300 md:w-[70%] lg:w-[50%]">
   <div class="flex flex-col gap-2">
     
-    <div class="relative flex items-center w-full gap-4">
-      <div>
-      <label for="guest-name" class="font-medium">Nombre</label>
-      <input type="text" name="guest-name" id="guest-name" class="w-full p-2 text-base bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500" placeholder="Gabriel Garcia">
-      <span class="absolute right-2.5 hidden text-xl"></span>
+    <div class="flex flex-col md:flex-row gap-4 w-full">
+      <div class="flex-grow">
+        <label for="guest-email" class="font-medium">Emails de los invitados</label>
+        <textarea 
+          name="guest-email" 
+          id="guest-email" 
+          class="w-full p-2 text-base bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500" 
+          placeholder="Separa los correos por comas, espacios o saltos de línea..."
+          rows="4"
+        ></textarea>
+        <span class="absolute right-2.5 hidden text-xl"></span>
       </div>
-      <div>
-      <label for="guest-email" class="font-medium">Email</label>
-       <input type="text" name="guest-email" id="guest-email" class="w-full p-2 text-base bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500" placeholder="******@correo.com">
-      <span class="absolute right-2.5 hidden text-xl"></span>
-      </div>
+
       <div> 
-      <label for="event-id" class="block text-sm font-medium text-gray-700">Seleccionar evento</label>
+        <label for="event-id" class="block text-sm font-medium text-gray-700">Seleccionar evento</label>
         <select 
-         name="events_id" 
-         id="event-id"
-         class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500"
-         required>
-         <option value="" disabled selected>Elige un evento...</option>
-         </select>
-         </div>
+          name="events_id" 
+          id="event-id"
+          class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+          required
+        >
+          <option value="" disabled selected>Elige un evento...</option>
+        </select>
+      </div>
     </div>
     
   </div>
@@ -41,124 +44,118 @@
 
 <script>
   // @ts-nocheck
-       import { BACK_ENDPOINT } from "../../config/endpoints";
-       import { createNotification } from "../../features/notifications/notificiation";
-       import ky from 'ky';
-       import AuthModule from "../../features/auth/auth.module";
-       import guestModule from "./guest.module";
-       const BASE_URL = `${BACK_ENDPOINT}/api/guest`
-       const user =  await AuthModule.getLoggedUser();
-        const userId = user.id;
-       const eventsApiUrl = `${BACK_ENDPOINT}/api/events/events/${userId}`;
+  import { createNotification } from "../../features/notifications/notificiation";
+  import ky from 'ky';
+  import AuthModule from "../../features/auth/auth.module";
+  import guestModule from "./guest.module";
+  import { BACK_ENDPOINT } from "../../config/endpoints";
 
-    const indicationsInput = document.querySelector('#indications');
-    const form = document.querySelector('#form');
-    const nameInput = document.querySelector('#guest-name');
-    const emailInput = document.querySelector('#guest-email');
-    const eventSelect = document.querySelector('#event-id');
-    const formBtn = document.querySelector('#form-btn')
+  const user = await AuthModule.getLoggedUser();
+  const userId = user.id;
+  const eventsApiUrl = `${BACK_ENDPOINT}/api/events/events/${userId}`;
 
-    const NAME_REGEX = /^[A-Z][a-z]*[ ][A-Z][a-z]{3,}[ ]{0,1}$/;
-    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    const INDICATIONS_REGEX = /^[\w\s.,-ñÑáéíóúÁÉÍÓÚ¡!¿?()"'\/@#%\n\r]+$/;
+  const indicationsInput = document.querySelector('#indications');
+  const form = document.querySelector('#form');
+  const emailInput = document.querySelector('#guest-email'); // Ahora es un textarea
+  const eventSelect = document.querySelector('#event-id');
+  const formBtn = document.querySelector('#form-btn');
 
-    const validationState = {
-    isNameValid: false,
+  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  const INDICATIONS_REGEX = /^[\w\s.,-ñÑáéíóúÁÉÍÓÚ¡!¿?()"'\/@#%\n\r]*$/;
+
+  const validationState = {
     isEmailValid: false,
-    isIndicationsValid: false,
+    isIndicationsValid: true, // Opcional, así que por defecto es válido
   };
 
-    function updateInputValidationUI(inputElement, isValid) {
+  function updateInputValidationUI(inputElement, isValid) {
     if (isValid) {
-      
-      inputElement.classList.remove('border-red-500', 'dark:border-red-500');
-      inputElement.classList.add('border-green-500', 'dark:border-green-500');
+      inputElement.classList.remove('border-red-500');
+      inputElement.classList.add('border-green-500');
     } else {
-      
-      inputElement.classList.remove('border-green-500', 'dark:border-green-500');
-      inputElement.classList.add('border-red-500', 'dark:border-red-500');
+      inputElement.classList.remove('border-green-500');
+      inputElement.classList.add('border-red-500');
     }
-   
     if (inputElement.value === '') {
-      inputElement.classList.remove('border-red-500', 'dark:border-red-500', 'border-green-500', 'dark:border-green-500');
+      inputElement.classList.remove('border-red-500', 'border-green-500');
     }
   };
 
   function validateForm() {
-    const { isNameValid, isEmailValid } = validationState;
-    
-    formBtn.disabled = !isNameValid || !isEmailValid;
+    // El formulario es válido si hay al menos un correo válido.
+    const emails = emailInput.value.split(/,|\s+|\n+/).filter(email => emailRegex.test(email.trim()));
+    validationState.isEmailValid = emails.length > 0;
+    formBtn.disabled = !validationState.isEmailValid;
   };
-
-  nameInput.addEventListener('input', () => {
-    const isValid = NAME_REGEX.test(nameInput.value);
-    validationState.isNameValid = isValid;
-    updateInputValidationUI(nameInput, isValid);
+  
+  // Eventos para validar en tiempo real
+  emailInput.addEventListener('input', () => {
+    const emails = emailInput.value.split(/,|\s+|\n+/).filter(email => email.trim() !== '');
+    const allEmailsAreValid = emails.every(email => emailRegex.test(email.trim()));
+    updateInputValidationUI(emailInput, allEmailsAreValid);
     validateForm();
   });
 
-  emailInput.addEventListener('input', () => {
-    const isValid = emailRegex.test(emailInput.value);
-    validationState.isEmailValid = isValid;
-    updateInputValidationUI(emailInput, isValid);
-    validateForm();
-  })
   indicationsInput.addEventListener('input', () => {
     const isValid = INDICATIONS_REGEX.test(indicationsInput.value);
     validationState.isIndicationsValid = isValid;
     updateInputValidationUI(indicationsInput, isValid);
   });
 
+  // Cargar eventos en el select
+  const events = await ky.get(eventsApiUrl, { credentials: 'include' }).json();
+  events.forEach(event => {
+    const option = document.createElement('option');
+    option.value = event.id;
+    option.textContent = event.name;
+    eventSelect.appendChild(option);
+  });
 
-    const events = await ky.get(eventsApiUrl, { credentials: 'include' }).json();
+  // --- LÓGICA DE ENVÍO PRINCIPAL (ACTUALIZADA) ---
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-     events.forEach(event => {
-     const option = document.createElement('option');
-     option.value = event.id; // El valor de la opción será el ID del evento
-     option.textContent = event.name; // El texto visible será el nombre del evento
-     eventSelect.appendChild(option);
-     });
+    // 1. Obtener y limpiar la lista de correos
+    const emailsText = emailInput.value.trim();
+    const emailsArray = emailsText.split(/,|\s+|\n+/)
+      .map(email => email.trim())
+      .filter(email => emailRegex.test(email)); // Filtrar solo los correos válidos
 
-     form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    if (emailsArray.length === 0) {
+      createNotification({
+        type: 'error',
+        description: 'Por favor, ingresa al menos un correo electrónico válido.'
+      });
+      return;
+    }
+
+    // 2. Iterar sobre cada correo y agregarlo a la lista
+    for (const email of emailsArray) {
+      // Generar un nombre a partir del correo (ej: de "juan@test.com" sale "juan")
+      const guestName = email.split('@')[0];
+
       const guestToSend = {
-                 temp_id: crypto.randomUUID(),
-                 guest_name: nameInput.value,
-                 events_id: eventSelect.value,
-                 guest_email: emailInput.value,
-                 indications: indicationsInput.value || ''
-              };
-      try {
-      const currentGuests = guestModule.getLocalGuestList();
-      const updatedGuests = [...currentGuests, guestToSend];
-      guestModule.saveToLocalStorage(updatedGuests);
-        await guestModule.addGuestTolist(guestToSend);
-        createNotification({
-          type: 'success',
-          title:'invitado agregado a la lista'
-        })
-      } catch (error) {
-        createNotification({
-          type: 'error',
-          description: 'Hubo un error al agregar el invitado a la lista'
-        })
-      }
-      nameInput.value = '';
-      emailInput.value = '';
-      indicationsInput.value = '';
-
-      // Vuelve a aplicar el estado visual de validación inicial
-      updateInputValidationUI(nameInput, false);
-      updateInputValidationUI(emailInput, false);
-      updateInputValidationUI(indicationsInput, false);
-
-      // Reinicia el estado de validación para deshabilitar el botón
-      validationState.isNameValid = false;
-      validationState.isEmailValid = false;
-      validateForm();     
-     
-
-     });
+        guest_name: guestName,
+        events_id: eventSelect.value,
+        guest_email: email,
+        indications: indicationsInput.value || ''
+      };
+      
+      // Se agrega cada invitado individualmente
+      await guestModule.addGuestTolist(guestToSend);
+    }
     
+    createNotification({
+        type: 'success',
+        title: `${emailsArray.length} invitado(s) agregado(s) a la lista`
+    });
 
+    // 3. Reiniciar campos del formulario
+    emailInput.value = '';
+    // Mantenemos las indicaciones y el evento por si se quieren agregar más
+    
+    updateInputValidationUI(emailInput, false);
+    validationState.isEmailValid = false;
+    validateForm();
+  });
 </script>
