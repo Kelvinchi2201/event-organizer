@@ -39,7 +39,44 @@ guestRouter.post('/', async (req, res) => {
     from: process.env.EMAIL_USER,
     to: guest.guest_email,
     subject: 'Verifica tu correo',
-    html: `<a href="http://localhost:4321/verifyGuest/${token}">Verifica tu correo</a>`,
+    html: `
+      <!DOCTYPE html>
+      <html lang="es">
+      <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Confirmación de Asistencia</title>
+      <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; }
+        .container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .header { background-color: #4A90E2; color: #ffffff; padding: 40px; text-align: center; }
+        .header h1 { margin: 0; font-size: 28px; }
+        .content { padding: 40px 30px; text-align: center; color: #333333; line-height: 1.6; }
+        .content p { font-size: 18px; }
+        .button-container { margin-top: 30px; }
+        .button { background-color: #50C878; color: #ffffff; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px; display: inline-block; }
+        .footer { background-color: #f4f4f4; padding: 20px; text-align: center; font-size: 12px; color: #777777; }
+      </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>¡Felicidades!</h1>
+          </div>
+          <div class="content">
+            <p>Has sido invitado a nuestro evento. Por favor, haz clic en el siguiente botón para confirmar tu asistencia.</p>
+            <div class="button-container">
+              <a href="http://localhost:4321/verifyGuest/${token}" class="button">Confirmar Asistencia</a>
+            </div>
+            <p style="font-size: 14px; margin-top: 30px; color: #888;">Si no te registraste, puedes ignorar este correo.</p>
+          </div>
+          <div class="footer">
+            <p>Nombre del Evento | Fecha | Lugar</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
   });
 }
   res.sendStatus(200).json(newGuests);
