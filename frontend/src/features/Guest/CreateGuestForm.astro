@@ -143,7 +143,20 @@
           description: 'Hubo un error al agregar el invitado a la lista'
         })
       }
-      form.reset();      
+      nameInput.value = '';
+      emailInput.value = '';
+      indicationsInput.value = '';
+
+      // Vuelve a aplicar el estado visual de validación inicial
+      updateInputValidationUI(nameInput, false);
+      updateInputValidationUI(emailInput, false);
+      updateInputValidationUI(indicationsInput, false);
+
+      // Reinicia el estado de validación para deshabilitar el botón
+      validationState.isNameValid = false;
+      validationState.isEmailValid = false;
+      validateForm();     
+     
 
      });
     

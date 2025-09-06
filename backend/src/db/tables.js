@@ -46,7 +46,7 @@ const createGuestsTable = async () => {
         id SERIAL PRIMARY KEY,
         estado_asistencia BOOLEAN DEFAULT FALSE,
         fecha_envio TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-        guest_name TEXT NOT NULL,
+        guest_name TEXT,
         guest_email TEXT NOT NULL,
         events_id INTEGER NOT NULL,
         indications TEXT,
