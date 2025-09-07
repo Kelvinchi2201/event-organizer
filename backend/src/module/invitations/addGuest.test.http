@@ -3,21 +3,9 @@ Content-Type: application/json
 
 
    [ {
-        "guest_name": "Maria jose",
+        "guest_name": "carlos",
         "events_id": 1,
-        "guest_email": "kelvinchirinos485@gmail.com",
-        "indications": ""
-    },
-    {
-        "guest_name": "Maria jose",
-        "events_id": 1,
-        "guest_email": "kelvinchirinos2702@gmail.com",
-        "indications": ""
-    },
-    {
-        "guest_name": "Maria jose",
-        "events_id": 1,
-        "guest_email": "kelvinchirinos2004@gmail.com",
+        "guest_email": "carloschirinos416@gmail.com",
         "indications": ""
     }
    ]

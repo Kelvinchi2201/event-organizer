@@ -94,6 +94,46 @@ guestRouter.patch('/:id', async (req, res) => {
   const body = createIndicationsRouteSchema.body.parse(req.body);
   const params = createIndicationsRouteSchema.params.parse(req.params);
   const addIndications = await guestRepository.updateGuestById(params.id, body);
+    if (addIndications && addIndications.guest_email) {
+    await nodemailerService.sendMail({
+      from: process.env.EMAIL_USER,
+      to: addIndications.guest_email, // Usamos tu variable original
+      subject: 'Actualización de indicaciones para el evento',
+      html: `
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+        <meta charset="UTF-8">
+        <title>Confirmación de Asistencia</title>
+        <style>
+          body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; }
+          .container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+          .header { background-color: #4A90E2; color: #ffffff; padding: 40px; text-align: center; }
+          .header h1 { margin: 0; font-size: 28px; }
+          .content { padding: 40px 30px; text-align: center; color: #333333; line-height: 1.6; }
+          .content p { font-size: 18px; }
+          .footer { background-color: #f4f4f4; padding: 20px; text-align: center; font-size: 12px; color: #777777; }
+        </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <h1>Notificación de Actualización</h1>
+            </div>
+            <div class="content">
+              <p>Hemos actualizado tus indicaciones especiales para nuestro evento. La nueva indicación registrada es:</p>
+              <p><strong>"${body.indications}"</strong></p>
+              <p style="font-size: 14px; margin-top: 30px; color: #888;">Si no solicitaste este cambio, por favor, contáctanos.</p>
+            </div>
+            <div class="footer">
+              <p>Nombre del Evento | Fecha | Lugar</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `,
+    });
+    }
   res.json(addIndications);
 });
 

@@ -129,9 +129,9 @@
       return;
     }
 
-    // 2. Iterar sobre cada correo y agregarlo a la lista
+  
     for (const email of emailsArray) {
-      // Generar un nombre a partir del correo (ej: de "juan@test.com" sale "juan")
+      
       const guestName = email.split('@')[0];
 
       const guestToSend = {
@@ -141,7 +141,7 @@
         indications: indicationsInput.value || ''
       };
       
-      // Se agrega cada invitado individualmente
+      
       await guestModule.addGuestTolist(guestToSend);
     }
     
@@ -150,11 +150,10 @@
         title: `${emailsArray.length} invitado(s) agregado(s) a la lista`
     });
 
-    // 3. Reiniciar campos del formulario
+    
     emailInput.value = '';
     indicationsInput.value = '';
-    // Mantenemos las indicaciones y el evento por si se quieren agregar más
-    
+   
     updateInputValidationUI(emailInput, false);
     validationState.isEmailValid = false;
     validateForm();
