@@ -31,27 +31,23 @@
     import AuthModule, { user } from '../auth/auth.module';
     import { getLinks } from "./navigation.utils";
 
-    // 1. Seleccionamos los elementos correctos del DOM
+
     const menuItemsContainer = document.querySelector('#menu-items');
     const navUserName = document.querySelector('#nav-user-name');
-    const mobileMenuBtn = document.querySelector('#mobile-menu-btn'); // Apuntamos al nuevo ID del botón
-
+    const mobileMenuBtn = document.querySelector('#mobile-menu-btn'); 
     const pathname = location.pathname;
     const links = getLinks(pathname);
 
-    // 2. Creamos los enlaces y los añadimos al nuevo contenedor
     links.forEach(link => {
         if (link.type === 'button') {
             const btn = document.createElement('button');
             btn.addEventListener('click', link.handler);
-            // Clases para que se vea bien en móvil y escritorio
             btn.setAttribute('class', 'text-white no-underline hover:underline text-xl text-left border-b border-divide-gray-400 pb-2');
             btn.innerHTML = link.text;
             menuItemsContainer.append(btn);
         } else {
             const a = document.createElement('a');
             a.href = link.path;
-            // Clases para que se vea bien en móvil y escritorio
              a.setAttribute('class', 'text-white no-underline hover:underline text-xl border-b border-divide-gray-400 pb-2');
             a.innerHTML = link.text;
             menuItemsContainer.append(a);
@@ -66,9 +62,9 @@
         navUserName.innerHTML = `Bienvenido ${userName}`;
     });
 
-    // 3. ¡La magia! Añadimos el evento 'click' al botón de hamburguesa
+   
     mobileMenuBtn.addEventListener('click', () => {
-        // Cada vez que se hace clic, se añade o quita la clase 'hidden'
+
         menuItemsContainer.classList.toggle('hidden');
     });
 </script>
