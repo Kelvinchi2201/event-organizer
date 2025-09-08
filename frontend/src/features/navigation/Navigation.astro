@@ -2,64 +2,73 @@
 //TODO:  arreglar la hamburguesa de la barra de navegacion
 ---
 
-<nav class="bg-pink-700  fixed top-0 left-0 right-0 z-50">
-     <div class="max-w-7xl mx-auto h-16 flex items-center justify-between pr-8 pl-8">
-      <div class="flex items-center gap-2 h-full">
-        <h2 class="font-medium text-2xl text-white">EOrganizer</h2>
-      </div>
-      <div id="nav-links" class="flex items-center gap-4">
-        <div id="nav-user-container">
-          <p id="nav-user-name" class='text-white text-xl'></p>
+<nav class="bg-pink-700 fixed top-0 left-0 right-0 z-50">
+    <div class="max-w-7xl mx-auto h-16 flex items-center justify-between pr-8 pl-8">
+        <div class="flex items-center gap-2 h-full">
+            <h2 class="font-medium text-2xl text-white">EOrganizer</h2>
         </div>
-        <button id="logout-btn" class="md:hidden flex items-center justify-center p-1 rounded-md bg-white text-pink-500">
-          <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-          </svg>
-        </button>
-        <!-- {links.map(link => <a class="hidden md:block text-white no-underline hover:underline" href={link.path}>{link.name}</a>)} -->
-      </div>
+
+        <div class="flex items-center gap-4 ">
+            <div id="menu-items" class="absolute top-16 left-0 w-full bg-pink-700 p-4 flex flex-col gap-4 md:relative md:top-auto md:left-auto md:w-auto md:bg-transparent md:p-0 md:flex-row md:flex md:items-center">
+                <div id="nav-user-container">
+                    <p id="nav-user-name" class='text-white text-xl'></p>
+                </div>
+            </div>
+
+            <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center p-1 rounded-md text-white">
+                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </div>
     </div>
 </nav>
 
 
 
 <script>
- // @ts-nocheck
-  import AuthModule, {user} from '../auth/auth.module';
-  import { getLinks } from "./navigation.utils";
-  const navLinksDiv = document.querySelector('#nav-links'); 
-  const navUserName = document.querySelector('#nav-user-name');
-  const logoutBtn = document.querySelector('#logout-btn');
-  const pathname = location.pathname;
-  const links = getLinks(pathname);
+    // @ts-nocheck
+    import AuthModule, { user } from '../auth/auth.module';
+    import { getLinks } from "./navigation.utils";
 
-  
-   
-  links.forEach(link => {
-    if (link.type === 'button') {
-      const btn = document.createElement('button');
-      btn.addEventListener('click', link.handler);
-      btn.setAttribute('class', 'hidden md:block text-white no-underline hover:underline text-xl');
-      btn.innerHTML = link.text;
-      navLinksDiv.append(btn)
-    } else {
-      const a = document.createElement('a');
-      a.href = link.path;
-      a.setAttribute('class', 'hidden md:block text-white no-underline hover:underline text-xl');
-      a.innerHTML = link.text;
-      navLinksDiv.append(a);
-    
-    }
-  });
+    // 1. Seleccionamos los elementos correctos del DOM
+    const menuItemsContainer = document.querySelector('#menu-items');
+    const navUserName = document.querySelector('#nav-user-name');
+    const mobileMenuBtn = document.querySelector('#mobile-menu-btn'); // Apuntamos al nuevo ID del botón
 
+    const pathname = location.pathname;
+    const links = getLinks(pathname);
 
-  user.subscribe(user => {
-    if (!user) return;
-    const userName = user.name;
-    navUserName.innerHTML = `Bienvenido ${userName}`;
-
-    
-  });
+    // 2. Creamos los enlaces y los añadimos al nuevo contenedor
+    links.forEach(link => {
+        if (link.type === 'button') {
+            const btn = document.createElement('button');
+            btn.addEventListener('click', link.handler);
+            // Clases para que se vea bien en móvil y escritorio
+            btn.setAttribute('class', 'text-white no-underline hover:underline text-xl text-left border-b border-divide-gray-400 pb-2');
+            btn.innerHTML = link.text;
+            menuItemsContainer.append(btn);
+        } else {
+            const a = document.createElement('a');
+            a.href = link.path;
+            // Clases para que se vea bien en móvil y escritorio
+             a.setAttribute('class', 'text-white no-underline hover:underline text-xl border-b border-divide-gray-400 pb-2');
+            a.innerHTML = link.text;
+            menuItemsContainer.append(a);
+        }
+        
+    });
 
 
+    user.subscribe(user => {
+        if (!user) return;
+        const userName = user.name;
+        navUserName.innerHTML = `Bienvenido ${userName}`;
+    });
+
+    // 3. ¡La magia! Añadimos el evento 'click' al botón de hamburguesa
+    mobileMenuBtn.addEventListener('click', () => {
+        // Cada vez que se hace clic, se añade o quita la clase 'hidden'
+        menuItemsContainer.classList.toggle('hidden');
+    });
 </script>
