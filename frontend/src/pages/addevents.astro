@@ -106,8 +106,15 @@ import Layout from "../layouts/Layout.astro"
     const timeInput = document.querySelector('#event-time')
     const descriptionInput = document.querySelector('#event-description')
     const btnEvent = document.querySelector('#button-create-event')
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Los meses van de 0-11
+    const day = String(today.getDate()).padStart(2, '0');
+    const todayFormatted = `${year}-${month}-${day}`;
+
     
-     console.log(eventForm);
+   
      
     
 
@@ -159,8 +166,24 @@ import Layout from "../layouts/Layout.astro"
   
   });
 
-    dateInput.addEventListener('input',async () => {
-        const isValid = DATE_REGEX.test(dateInput.value);
+      dateInput.addEventListener('input',async () => {
+        // Primero, validamos que el formato sea correcto (YYYY-MM-DD)
+        const isFormatValid = DATE_REGEX.test(dateInput.value);
+
+        // Segundo, creamos las fechas para compararlas
+        const today = new Date();
+        const selectedDate = new Date(dateInput.value);
+
+        // Reseteamos la hora de "hoy" para comparar solo el día, mes y año.
+        // Esto evita errores si el evento se crea al final del día.
+        today.setHours(0, 0, 0, 0);
+
+        // La fecha seleccionada debe ser mayor o igual a la de hoy.
+        const isDateInFuture = selectedDate >= today;
+
+        // La validación es correcta solo si AMBAS condiciones se cumplen.
+        const isValid = isFormatValid && isDateInFuture;
+
         validationState.isDateValid = isValid;
         updateInputValidationUI(dateInput, isValid);
         validateForm();
