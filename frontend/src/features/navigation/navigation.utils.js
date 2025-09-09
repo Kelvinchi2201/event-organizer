@@ -63,10 +63,6 @@ export const getLinks = (pathname) => {
     links.push({text: 'Login', path: '/login'});
   }
 
-  if (pathname === '/') {
-    links.push({text: 'Login', path: '/login'});
-    links.push({text: 'Registro', path: '/registro'});
-  }
 
   return links;
 }
