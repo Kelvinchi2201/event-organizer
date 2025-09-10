@@ -11,7 +11,7 @@
         <div class="flex items-center gap-4 ">
             <div id="menu-items" class="absolute top-16 left-0 w-full bg-pink-700 p-4 flex flex-col gap-4 md:relative md:top-auto md:left-auto md:w-auto md:bg-transparent md:p-0 md:flex-row md:flex md:items-center">
                 <div id="nav-user-container">
-                    <p id="nav-user-name" class='text-white text-xl'></p>
+                    <p id="nav-user-name" class='text-white text-sm font-bold '></p>
                 </div>
             </div>
 
@@ -42,13 +42,13 @@
         if (link.type === 'button') {
             const btn = document.createElement('button');
             btn.addEventListener('click', link.handler);
-            btn.setAttribute('class', 'text-white no-underline hover:underline text-xl text-left border-b border-divide-gray-400 pb-2');
+            btn.setAttribute('class',  'inline-block bg-pink-600 text-white font-bold py-3 px-8 rounded-full text-sm hover:bg-pink-700 transition-all duration-300 ease-in-out transform hover:-translate-y-1 shadow-lg');
             btn.innerHTML = link.text;
             menuItemsContainer.append(btn);
         } else {
             const a = document.createElement('a');
             a.href = link.path;
-             a.setAttribute('class', 'text-white no-underline hover:underline text-xl border-b border-divide-gray-400 pb-2');
+             a.setAttribute('class', 'inline-block bg-pink-600 text-white font-bold py-3 px-8 rounded-full text-sm hover:bg-pink-700 transition-all duration-300 ease-in-out transform hover:-translate-y-1 shadow-lg');
             a.innerHTML = link.text;
             menuItemsContainer.append(a);
         }
