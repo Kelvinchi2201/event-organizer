@@ -11,7 +11,7 @@ const eventsIdSchema = z
 
 export const createEventsRouteSchema = {
   params: z.object({}),
-  body: eventsSchema.omit({ id: true, fecha_creacion: true}),
+  body: eventsSchema.omit({ id: true, fecha_creacion: true, portada_url: true}),
   queries: z.object({}),
 };
 

@@ -29,6 +29,7 @@ const createEventsTable = async () => {
     hora_evento TIME,
     usuarios_id INTEGER NOT NULL,
     fecha_creacion TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    portada_url TEXT,
 
     CONSTRAINT fk_usuario
         FOREIGN KEY(usuarios_id)

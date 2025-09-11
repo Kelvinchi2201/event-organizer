@@ -68,7 +68,17 @@ import Layout from "../layouts/Layout.astro"
           rows="4"
           class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
           required
-        ></textarea>
+        > </textarea>
+      </div>
+      <div>
+        <label for="event-portada" class="block text-sm font-medium text-gray-700">Imagen de Portada (Opcional)</label>
+        <input
+          type="file"
+          name="event-portada"
+          id="event-portada"
+          accept="image/*"
+          class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100"
+        />
       </div>
 
       <!-- Botón de Envío -->
@@ -100,12 +110,13 @@ import Layout from "../layouts/Layout.astro"
        const BASE_URL = `${BACK_ENDPOINT}/api/events`
 
 
-    const eventForm = document.querySelector('#event-form')
-    const nameInput = document.querySelector('#event-name')
-    const dateInput = document.querySelector('#event-date')
-    const timeInput = document.querySelector('#event-time')
-    const descriptionInput = document.querySelector('#event-description')
-    const btnEvent = document.querySelector('#button-create-event')
+    const eventForm = document.querySelector('#event-form');
+    const nameInput = document.querySelector('#event-name');
+    const dateInput = document.querySelector('#event-date');
+    const timeInput = document.querySelector('#event-time');
+    const descriptionInput = document.querySelector('#event-description');
+     const portadaInput = document.querySelector('#event-portada'); 
+    const btnEvent = document.querySelector('#button-create-event');
 
     const today = new Date();
     const year = today.getFullYear();
@@ -217,6 +228,7 @@ import Layout from "../layouts/Layout.astro"
           hora_evento: timeInput.value,
           usuarios_id: userId
         }, credentials: 'include'}).json();
+        
     createNotification({title: 'Evento creado!',type: 'success'});
     for (const key in validationState) {
         validationState[key] = false;

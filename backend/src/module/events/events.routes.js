@@ -6,6 +6,7 @@ import {
     updateEventsRouteSchema,
     getEventsByIdRouteSchema,
 } from './events.routes.schemas.js';
+import upload from '../../middleware/multer.config.js';
 
 const eventsRouter = express.Router()
 
@@ -24,10 +25,51 @@ eventsRouter.get('/events/:usuarios_id', async (req, res, next) => {
    
 });
 
-eventsRouter.post('/', async (req, res) => {
-  const body = createEventsRouteSchema.body.parse(req.body);
-  const newEvent = await eventsRepository.addOneEvents(body);
-  res.json(newEvent);
+eventsRouter.post('/', upload.single('portada'), async (req, res, next) => {
+  try {
+    // El campo 'portada' debe coincidir con el nombre del campo en el formulario del frontend
+    const body = createEventsRouteSchema.body.parse(req.body);
+    let portadaUrl = null;
+
+    if (req.file) {
+      // Si se subió un archivo, lo procesamos
+      const file = req.file;
+      const fileName = `cover-${Date.now()}${path.extname(file.originalname)}`;
+     
+      
+      // Subir el archivo a Supabase Storage
+      const { data, error } = await supabase.storage
+        .from('eventos-portadas') // El nombre de tu bucket
+        .upload(fileName, file.buffer, {
+          contentType: file.mimetype,
+          cacheControl: '3600',
+          upsert: false,
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      // Obtener la URL pública del archivo subido
+      const { data: publicUrlData } = supabase.storage
+        .from('eventos-portadas')
+        .getPublicUrl(fileName);
+        
+      portadaUrl = publicUrlData.publicUrl;
+    }
+    
+    // Añadimos la URL al objeto que se guardará en la base de datos
+    const eventData = {
+      ...body,
+      portada_url: portadaUrl,
+    };
+    
+    const newEvent = await eventsRepository.addOneEvents(eventData);
+    res.status(201).json(newEvent);
+
+  } catch (error) {
+    next(error); // Pasa el error al manejador de errores global
+  }
 });
 
 eventsRouter.delete('/:id', async (req, res) => {

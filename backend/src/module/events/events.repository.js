@@ -20,10 +20,15 @@ const getEventsById = async (usuarios_id) => {
 const addOneEvents = async (payload) => {
   const response = await db.query(
     `
-    INSERT INTO events (name, description, fecha_evento, hora_evento, usuarios_id)
-    VALUES ($1, $2, $3, $4, $5) RETURNING *
+    INSERT INTO events (name, description, fecha_evento, hora_evento,  portada_url, usuarios_id)
+    VALUES ($1, $2, $3, $4, $5, $6) RETURNING *
   `,
-    [payload.name, payload.description, payload.fecha_evento, payload.hora_evento, payload.usuarios_id],
+    [payload.name, 
+      payload.description, 
+      payload.fecha_evento, 
+      payload.hora_evento, 
+      payload.portada_url, 
+      payload.usuarios_id],
   );
   return response.rows[0];
 };
@@ -32,11 +37,15 @@ const updateEventsById = async (id, payload) => {
   const response = await db.query(
     `
     UPDATE events
-    SET name = $1, description = $2, fecha_evento = $3, hora_evento = $4
-    WHERE id = $5
+    SET name = $1, description = $2, fecha_evento = $3, hora_evento = $4, portada_url = $5
+    WHERE id = $6
     RETURNING *
   `,
-    [payload.name, payload.description, payload.fecha_evento, payload.hora_evento, id],
+    [payload.name, 
+      payload.description, 
+      payload.fecha_evento, 
+      payload.hora_evento, 
+      payload.portada_url, id],
   );
   if (response.rowCount === 0) {
     throw new ErrorWithStatus(404, 'El evento fue no encontrado');
