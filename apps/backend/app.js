@@ -9,6 +9,8 @@ import jwt from 'jsonwebtoken';
 import authRouter from './src/module/auth/auth.routes.js';
 import cookieParser from 'cookie-parser';
 import guestRouter from './src/module/invitations/guest.routes.js';
+import path from 'path';
+import { handler as ssrHandler } from './dist/server/entry.mjs';
 
 const app = express();
 
@@ -51,5 +53,8 @@ app.use((err, req, res, _next) => {
 
   res.json({ error: 'HUBO UN ERROR' });
 });
+
+app.use('/', express.static(path.join(import.meta.dirname, 'dist', 'client')));
+app.use(ssrHandler);
 
 export default app;
