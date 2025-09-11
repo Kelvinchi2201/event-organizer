@@ -10,8 +10,10 @@ const eventsIdSchema = z
   .refine((val) => !isNaN(val), 'El id tiene que ser un numero');
 
 export const createEventsRouteSchema = {
-  params: z.object({}),
-  body: eventsSchema.omit({ id: true, fecha_creacion: true, portada_url: true}),
+
+  body: eventsSchema.omit({ id: true, fecha_creacion: true, portada_url: true}).extend({
+    usuarios_id: z.string().transform((val) => Number(val)).refine((val) => !isNaN(val), 'El usuarios_id tiene que ser un numero'),
+  }),
   queries: z.object({}),
 };
 

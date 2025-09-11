@@ -215,38 +215,52 @@ import Layout from "../layouts/Layout.astro"
     });
 
     
-    eventForm.addEventListener('submit', async (event)=> {
+   eventForm.addEventListener('submit', async (event)=> {
       event.preventDefault();  
-     const { isNameValid, isDateValid, isTimeValid, isDescriptionValid } = validationState;
      
-      
-     try {
-    const contactCreated = await ky.post(BASE_URL, {json: {
-          name: nameInput.value,
-          description: descriptionInput.value,
-          fecha_evento: dateInput.value,
-          hora_evento: timeInput.value,
-          usuarios_id: userId
-        }, credentials: 'include'}).json();
+      try {
+        const user = await AuthModule.getLoggedUser();
+        const userId = user.id;
+        // Crear un nuevo objeto FormData
+        const formData = new FormData();
+
+        // Añadir todos los campos de texto al FormData
+        formData.append('name', nameInput.value);
+        formData.append('description', descriptionInput.value);
+        formData.append('fecha_evento', dateInput.value);
+        formData.append('hora_evento', timeInput.value);
+        formData.append('usuarios_id', userId);
+
+        // Si se seleccionó una imagen, añadirla al FormData
+        if (portadaInput.files[0]) {
+          formData.append('portada', portadaInput.files[0]);
+        }
         
-    createNotification({title: 'Evento creado!',type: 'success'});
-    for (const key in validationState) {
-        validationState[key] = false;
-      }
-      eventForm.reset();
-      [nameInput, dateInput, timeInput, descriptionInput].forEach(input => {
-        updateInputValidationUI(input);
-      });
-      location.assign('/addGuest');
-  } catch (error) {
-    console.log(error);
-    const errorData = await error.response.json();
-    createNotification({
-      title: 'Ups! Hubo un error',
-      description: errorData.error,
-      type: 'error'
-    });
-  }      
+        // Enviar la solicitud POST con el FormData como cuerpo
+        const contactCreated = await ky.post(BASE_URL, {
+          body: formData, // ky automáticamente establece el Content-Type: multipart/form-data
+          credentials: 'include'
+        }).json();
+        
+        createNotification({title: 'Evento creado!',type: 'success'});
+        for (const key in validationState) {
+          validationState[key] = false;
+        }
+        eventForm.reset();
+        [nameInput, dateInput, timeInput, descriptionInput].forEach(input => {
+          input.classList.remove('border-green-500', 'border-red-500');
+        });
+        location.assign('/addGuest');
+
+      } catch (error) {
+        console.log(error);
+        const errorData = await error.response.json();
+        createNotification({
+          title: 'Ups! Hubo un error',
+          description: errorData.error,
+          type: 'error'
+        });
+      }      
     });
   
    

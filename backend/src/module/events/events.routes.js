@@ -7,6 +7,8 @@ import {
     getEventsByIdRouteSchema,
 } from './events.routes.schemas.js';
 import upload from '../../middleware/multer.config.js';
+import supabase from '../../middleware/supabase.config.js';
+import path from 'path';
 
 const eventsRouter = express.Router()
 
@@ -27,19 +29,21 @@ eventsRouter.get('/events/:usuarios_id', async (req, res, next) => {
 
 eventsRouter.post('/', upload.single('portada'), async (req, res, next) => {
   try {
-    // El campo 'portada' debe coincidir con el nombre del campo en el formulario del frontend
+    // Aquí es donde multer ya ha procesado la solicitud y ha añadido los campos
+    // de texto del FormData a `req.body`.
+    // La validación de Zod ahora debe procesar este `req.body`
     const body = createEventsRouteSchema.body.parse(req.body);
+    
+    // El resto de tu lógica para subir a Supabase y guardar en la base de datos
+    // ya es correcta y no necesita cambios adicionales.
     let portadaUrl = null;
 
     if (req.file) {
-      // Si se subió un archivo, lo procesamos
       const file = req.file;
       const fileName = `cover-${Date.now()}${path.extname(file.originalname)}`;
-     
       
-      // Subir el archivo a Supabase Storage
       const { data, error } = await supabase.storage
-        .from('eventos-portadas') // El nombre de tu bucket
+        .from('eventos-portadas')
         .upload(fileName, file.buffer, {
           contentType: file.mimetype,
           cacheControl: '3600',
@@ -50,7 +54,6 @@ eventsRouter.post('/', upload.single('portada'), async (req, res, next) => {
         throw error;
       }
 
-      // Obtener la URL pública del archivo subido
       const { data: publicUrlData } = supabase.storage
         .from('eventos-portadas')
         .getPublicUrl(fileName);
@@ -58,7 +61,6 @@ eventsRouter.post('/', upload.single('portada'), async (req, res, next) => {
       portadaUrl = publicUrlData.publicUrl;
     }
     
-    // Añadimos la URL al objeto que se guardará en la base de datos
     const eventData = {
       ...body,
       portada_url: portadaUrl,
@@ -68,7 +70,7 @@ eventsRouter.post('/', upload.single('portada'), async (req, res, next) => {
     res.status(201).json(newEvent);
 
   } catch (error) {
-    next(error); // Pasa el error al manejador de errores global
+    next(error); 
   }
 });
 
