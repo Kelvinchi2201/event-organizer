@@ -5,7 +5,8 @@
    "type": "module",
    "scripts": {
       "dev": "cross-env NODE_ENV=dev node --watch -r dotenv/config index.js",
-      "tables:create": "cross-env NODE_ENV=dev node -r dotenv/config ./src/db/tables.js dev"
+      "tables:create:dev": "cross-env NODE_ENV=dev node -r dotenv/config ./src/db/tables.js dev",
+      "tables:create:prod": "cross-env NODE_ENV=prod node -r dotenv/config ./src/db/tables.js dev"
    },
    "author": "",
    "license": "ISC",
