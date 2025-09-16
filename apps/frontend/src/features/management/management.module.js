@@ -72,7 +72,7 @@ import ky from "ky";
 const updateEvents = async (eventToUpdate) => {
   const url = `${BASE_URL_EVENTS}/${eventToUpdate.id}`;
   try {
-    const eventToUpdated = await ky.put(url, {json: eventToUpdate}).json();
+    const eventToUpdated = await ky.patch(url, {json: eventToUpdate}).json();
     events.set(events.get().map(event => {
       if (event.id === eventToUpdated.id) {
         return eventToUpdated;
