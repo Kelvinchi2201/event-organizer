@@ -90,7 +90,7 @@ eventsRouter.patch('/:id', upload.single('portada'), async (req, res, next) => {
       const file = req.file;
       const fileName = `cover-${Date.now()}${path.extname(file.originalname)}`;
       const { data, error } = await supabase.storage
-        .from('eventos-portadas')
+        .from('eventos-portada')
         .upload(fileName, file.buffer, {
           contentType: file.mimetype,
           cacheControl: '3600',
