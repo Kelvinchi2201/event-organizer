@@ -1,0 +1,42 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AuthProtected from "../features/auth/AuthProtected.astro";
+import HomeEventList from "../features/dashboard/HomeEventList.astro";
+---
+
+
+<Layout title= "Home">
+    <AuthProtected>
+        <main class="h-[calc(80vh)] overflow-y-auto flex flex-col gap-2 p-4 max-w-[90rem] mx-auto md:flex-row md:h-[calc(100vh-4rem)] md:justify-between items-center">
+          <HomeEventList>
+          </HomeEventList>
+ <div class="lg:col-span-2 space-y-8">
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <p class="text-lg text-slate-700 mb-5">
+                            Da vida a tu idea. Planifica, personaliza y lanza tu próximo gran evento en solo unos minutos.
+                        </p>
+                        <a 
+                            class="inline-block bg-pink-600 text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-pink-700 transition-all duration-300 ease-in-out transform hover:-translate-y-1 shadow-lg" 
+                            href="/addevents"
+                        >
+                            Crear Evento
+                        </a>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <p class="text-lg text-slate-700 mb-5">
+                            Invita a quienes harán de tu encuentro algo especial y gestiona quiénes te acompañarán.
+                        </p>
+                        <a 
+                            class="inline-block bg-pink-600 text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-pink-700 transition-all duration-300 ease-in-out transform hover:-translate-y-1 shadow-lg" 
+                            href="/addGuest"
+                        >
+                            Crear Lista de Invitados
+                        </a>
+                    </div>
+
+                </div>
+        </main>
+    </AuthProtected>
+</Layout>

@@ -150,7 +150,7 @@ const updateGuest = async (guestToUpdate) => {
           
         }));
         createNotification({
-          title:'Invitado editado correctamente',
+          title:'Invitado esdita correctamente',
           type:'success'
         })
       } catch (error) {

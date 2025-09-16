@@ -1,0 +1,35 @@
+---
+import Layout from "../../layouts/Layout.astro";
+export const prerender = false; 
+---
+
+<Layout title="Verify">
+  <main class="min-h-screen flex flex-col justify-center px-4 max-w-7xl mx-auto md:items-center md:w-[70%] lg:flex-row">
+    <div class="flex flex-col gap-4">
+      <p id="verify-text" class="text-pink-700 text-2xl justify-center items-center md:text-2xl lg:text-2xl">Verificando</p>
+      <p class="flex justify-center text-pink-700 text-2xl items-center md:text-2xl lg:text-2xl">dale click para continuar </p>
+      <a href="/login" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-700 hover:bg-pink-800
+     disabled:cursor-not-allowed dark:bg-pink-800 dark:hover:bg-pink-700 dark:focus:ring-pink-800 dark:disabled:bg-gray-600 transition-colors duration-200">iniciar sesion</a>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  // @ts-nocheck
+  import ky from 'ky';
+  import { BACK_ENDPOINT } from '../../config/endpoints';
+  const verifyText = document.querySelector('#verify-text');
+  const token = window.location.pathname.split('/verify/')[1];
+  const BASE_PATH = `${BACK_ENDPOINT}/api/users/verify`;
+
+  try {
+    const data = await ky.patch(BASE_PATH, {json: {token}}).json();
+    console.log(data);
+    
+    verifyText.innerHTML = data.message;
+  } catch (error) {
+    const errorData = await error.response.json();
+    verifyText.innerHTML = errorData.error;
+  }
+  
+</script>
