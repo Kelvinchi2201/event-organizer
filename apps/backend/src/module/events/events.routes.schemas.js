@@ -31,6 +31,6 @@ export const deleteEventsRouteSchema = {
 
 export const updateEventsRouteSchema = {
   params: z.object({ id: eventsIdSchema }),
-  body: eventsSchema.omit({ id: true, fecha_creacion: true, usuarios_id: true}),
+  body: eventsSchema.omit({ id: true, fecha_creacion: true, usuarios_id: true, portada_url: true}),
   queries: z.object({}),
 };

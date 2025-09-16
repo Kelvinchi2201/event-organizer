@@ -83,7 +83,7 @@ eventsRouter.delete('/:id', async (req, res) => {
   res.json(eventsDeleted);
 });
 
-eventsRouter.put('/:id', async (req, res) => {
+eventsRouter.patch('/:id', async (req, res) => {
   const body = updateEventsRouteSchema.body.parse(req.body);
   const params = updateEventsRouteSchema.params.parse(req.params);
   const updateEvents = await eventsRepository.updateEventsById(params.id, body);
