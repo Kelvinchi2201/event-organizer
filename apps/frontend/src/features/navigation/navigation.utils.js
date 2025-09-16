@@ -1,5 +1,4 @@
-/** 
-  * @typedef Link
+/** * @typedef Link
   * @type {object}
   * @property {'link' | 'button'} type El tipo de link
   * @property {string} text Lo que va dentro del link
@@ -16,7 +15,8 @@ import AuthModule from "../auth/auth.module.js";
 export const getLinks = (pathname) => {
   /** @type {Link[]} */
   let links = [];
-  if (pathname === '/addevents') {
+
+  if (pathname.startsWith('/addevents')) {
     links.push({
       type: 'button', 
       text: 'Cerrar sesion', 
@@ -27,9 +27,7 @@ export const getLinks = (pathname) => {
     });
     links.push({text: 'Invitaciones', path:'/addGuest'});
     links.push({text: 'Home', path:'/dashboard'});
-  }
-
-  if (pathname === '/addGuest') {
+  } else if (pathname.startsWith('/addGuest')) {
     links.push({
       type: 'button', 
       text: 'Cerrar sesion', 
@@ -40,8 +38,7 @@ export const getLinks = (pathname) => {
     });
     links.push({text: 'Crear Eventos', path:'/addevents'});
     links.push({text: 'Home', path:'/dashboard'});
-  }
-  if (pathname === '/dashboard') {
+  } else if (pathname.startsWith('/dashboard')) {
     links.push({
       type: 'button', 
       text: 'Cerrar sesion', 
@@ -50,19 +47,15 @@ export const getLinks = (pathname) => {
         location.replace('/');
       }
     });
-    links.push({text: 'Mis eventos', path: '/eventManagement'});
+    links.push({text: 'Crear Eventos', path:'/addevents'});
+    links.push({text: 'Invitaciones', path:'/addGuest'});
+  } else if (pathname === '/login' || pathname === '/registro' || pathname === '/') {
+    links.push({text: 'Inicia sesion', path:'/login'});
+    links.push({text: 'Registrate', path:'/registro'});
+  } else {
+    // Caso por si la ruta no coincide con ninguna de las anteriores
+    // Puedes dejarlo vacío o agregar enlaces predeterminados
   }
-
-  if (pathname === '/login') {
-    links.push({text: 'Home', path: '/'});
-    links.push({text: 'Registro', path: '/registro'});
-  }
-
-  if (pathname === '/registro') {
-    links.push({text: 'Home', path: '/'});
-    links.push({text: 'Login', path: '/login'});
-  }
-
 
   return links;
-}
+};
