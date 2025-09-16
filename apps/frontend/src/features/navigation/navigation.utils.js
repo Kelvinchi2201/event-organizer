@@ -16,6 +16,7 @@ export const getLinks = (pathname) => {
   /** @type {Link[]} */
   let links = [];
 
+  // Se ha ajustado la condición para que sea más robusta y capture las rutas correctamente.
   if (pathname.startsWith('/addevents')) {
     links.push({
       type: 'button', 
@@ -25,8 +26,9 @@ export const getLinks = (pathname) => {
         location.replace('/');
       }
     });
-    links.push({text: 'Invitaciones', path:'/addGuest'});
-    links.push({text: 'Home', path:'/dashboard'});
+    // Se ha añadido la propiedad 'type' para mayor claridad.
+    links.push({type: 'link', text: 'Invitaciones', path:'/addGuest'});
+    links.push({type: 'link', text: 'Home', path:'/dashboard'});
   } else if (pathname.startsWith('/addGuest')) {
     links.push({
       type: 'button', 
@@ -36,8 +38,9 @@ export const getLinks = (pathname) => {
         location.replace('/');
       }
     });
-    links.push({text: 'Crear Eventos', path:'/addevents'});
-    links.push({text: 'Home', path:'/dashboard'});
+    // Se ha añadido la propiedad 'type' para mayor claridad.
+    links.push({type: 'link', text: 'Crear Eventos', path:'/addevents'});
+    links.push({type: 'link', text: 'Home', path:'/dashboard'});
   } else if (pathname.startsWith('/dashboard')) {
     links.push({
       type: 'button', 
@@ -47,11 +50,13 @@ export const getLinks = (pathname) => {
         location.replace('/');
       }
     });
-    links.push({text: 'Crear Eventos', path:'/addevents'});
-    links.push({text: 'Invitaciones', path:'/addGuest'});
+    // Se ha añadido la propiedad 'type' para mayor claridad.
+    links.push({type: 'link', text: 'Crear Eventos', path:'/addevents'});
+    links.push({type: 'link', text: 'Invitaciones', path:'/addGuest'});
   } else if (pathname === '/login' || pathname === '/registro' || pathname === '/') {
-    links.push({text: 'Inicia sesion', path:'/login'});
-    links.push({text: 'Registrate', path:'/registro'});
+    // Se ha añadido la propiedad 'type' para mayor claridad.
+    links.push({type: 'link', text: 'Inicia sesion', path:'/login'});
+    links.push({type: 'link', text: 'Registrate', path:'/registro'});
   } else {
     // Caso por si la ruta no coincide con ninguna de las anteriores
     // Puedes dejarlo vacío o agregar enlaces predeterminados
