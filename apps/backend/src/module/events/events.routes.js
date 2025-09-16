@@ -43,7 +43,7 @@ eventsRouter.post('/', upload.single('portada'), async (req, res, next) => {
       const fileName = `cover-${Date.now()}${path.extname(file.originalname)}`;
       
       const { data, error } = await supabase.storage
-        .from('eventos-portadas')
+        .from('eventos-portada')
         .upload(fileName, file.buffer, {
           contentType: file.mimetype,
           cacheControl: '3600',
@@ -55,7 +55,7 @@ eventsRouter.post('/', upload.single('portada'), async (req, res, next) => {
       }
 
       const { data: publicUrlData } = supabase.storage
-        .from('eventos-portadas')
+        .from('eventos-portada')
         .getPublicUrl(fileName);
         
       portadaUrl = publicUrlData.publicUrl;
@@ -102,7 +102,7 @@ eventsRouter.patch('/:id', upload.single('portada'), async (req, res, next) => {
       }
 
       const { data: publicUrlData } = supabase.storage
-        .from('eventos-portadas')
+        .from('eventos-portada')
         .getPublicUrl(fileName);
 
       req.body.portada_url = publicUrlData.publicUrl;
