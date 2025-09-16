@@ -83,13 +83,43 @@ eventsRouter.delete('/:id', async (req, res) => {
   res.json(eventsDeleted);
 });
 
-eventsRouter.patch('/:id', async (req, res) => {
-  const body = updateEventsRouteSchema.body.parse(req.body);
-  const params = updateEventsRouteSchema.params.parse(req.params);
-  const updateEvents = await eventsRepository.updateEventsById(params.id, body);
-  res.json(updateEvents);
+eventsRouter.patch('/:id', upload.single('portada'), async (req, res, next) => {
+  try {
+    // Si se sube un nuevo archivo, usamos esa URL en su lugar.
+    if (req.file) {
+      const file = req.file;
+      const fileName = `cover-${Date.now()}${path.extname(file.originalname)}`;
+      const { data, error } = await supabase.storage
+        .from('eventos-portadas')
+        .upload(fileName, file.buffer, {
+          contentType: file.mimetype,
+          cacheControl: '3600',
+          upsert: false,
+        });
 
-})
+      if (error) {
+        throw error;
+      }
+
+      const { data: publicUrlData } = supabase.storage
+        .from('eventos-portadas')
+        .getPublicUrl(fileName);
+
+      req.body.portada_url = publicUrlData.publicUrl;
+    } else {
+      // Si no se sube un archivo, nos aseguramos de que portada_url no esté en el body para que se omita en el esquema de Zod.
+      delete req.body.portada_url;
+    }
+    const body = updateEventsRouteSchema.body.parse(req.body);
+
+    const { id } = updateEventsRouteSchema.params.parse(req.params);
+    const updatedEvent = await eventsRepository.updateEventsById(id, body);
+    res.json(updatedEvent);
+  } catch (error) {
+    next(error);
+  }
+});
+
 
 
 

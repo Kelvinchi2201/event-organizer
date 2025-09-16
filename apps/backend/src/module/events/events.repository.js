@@ -34,21 +34,42 @@ const addOneEvents = async (payload) => {
 };
 
 const updateEventsById = async (id, payload) => {
-  const response = await db.query(
-    `
+  let query = `
     UPDATE events
-    SET name = $1, description = $2, fecha_evento = $3, hora_evento = $4, portada_url = $5
-    WHERE id = $6
+    SET name = $1, description = $2, fecha_evento = $3, hora_evento = $4
+    WHERE id = $5
     RETURNING *
-  `,
-    [payload.name, 
+  `;
+  let values = [
+    payload.name, 
+    payload.description, 
+    payload.fecha_evento, 
+    payload.hora_evento, 
+    id
+  ];
+
+  // Agrega la portada solo si se proporciona en el payload
+  if (payload.portada_url !== undefined) {
+    query = `
+      UPDATE events
+      SET name = $1, description = $2, fecha_evento = $3, hora_evento = $4, portada_url = $5
+      WHERE id = $6
+      RETURNING *
+    `;
+    values = [
+      payload.name, 
       payload.description, 
       payload.fecha_evento, 
       payload.hora_evento, 
-      payload.portada_url, id],
-  );
+      payload.portada_url, 
+      id
+    ];
+  }
+  
+  const response = await db.query(query, values);
+  
   if (response.rowCount === 0) {
-    throw new ErrorWithStatus(404, 'El evento fue no encontrado');
+    throw new ErrorWithStatus(404, 'El evento no fue encontrado');
   }
   return response.rows[0];
 };

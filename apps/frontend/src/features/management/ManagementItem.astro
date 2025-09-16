@@ -1,8 +1,8 @@
 ---
-const {event_name, event_date, guests_byEvents, event_description, Id, event_time} = Astro.props
+const {event_name, event_date, guests_byEvents, event_description, Id, event_time, portada_url} = Astro.props
 ---
 
-<li id={Id} class="flex flex-col gap-4 p-4 border border-pink-700 rounded-md" data-status="inputs-deshabilitados">
+<li id={Id} class="flex flex-col gap-4 p-4 border border-pink-700 rounded-md" data-status="inputs-deshabilitados" data-portada-url={portada_url}>
     
     <div class="flex flex-col gap-2">
       <label for="eventName" class="text-sm text-gray-600">Nombre del Evento:</label>

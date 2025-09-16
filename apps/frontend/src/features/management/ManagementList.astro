@@ -104,14 +104,14 @@ import ManagementGuestitem from "./ManagementGuestitem.astro"
                 dateInput.classList.remove('outline', 'outline-solid', 'outline-cyan-500');
                 timeInput.classList.remove('outline', 'outline-solid', 'outline-cyan-500');
                 descriptionInput.classList.remove('outline', 'outline-solid', 'outline-cyan-500');
-
+                
                 const eventToUpdate = {
                     id: liElement.id,
                     name: nameInput.value,
                     description: descriptionInput.value,
                     fecha_evento: dateInput.value,
-                    hora_evento: timeInput.value.split(':')[0] + ':' + timeInput.value.split(':')[1]
-
+                    hora_evento: timeInput.value.split(':')[0] + ':' + timeInput.value.split(':')[1],
+                    
                 };
                 
                 
