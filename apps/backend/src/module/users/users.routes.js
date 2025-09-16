@@ -4,6 +4,7 @@ import usersRepository from './users.repository.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import nodemailerService from '../../services/nodemailer.services.js';
+import { endpoint } from '../../config/endpoints.js';
 
 
 const usersRouter = express.Router();
@@ -26,7 +27,7 @@ usersRouter.post('/', async (req, res) => {
     from: process.env.EMAIL_USER,
     to: body.email,
     subject: 'Verifica tu correo',
-    html: `<a href="http://localhost:4321/verify/${token}">Verifica tu correo</a>`,
+    html: `<a href="${endpoint}/verify/${token}">Verifica tu correo</a>`,
   });
 
   res.sendStatus(200);

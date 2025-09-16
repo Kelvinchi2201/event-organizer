@@ -3,6 +3,7 @@ import { createGuestRouteSchema, createIndicationsRouteSchema, getGuestByEventsI
 import guestRepository from './guest.repository.js';
 import jwt from 'jsonwebtoken';
 import nodemailerService from '../../services/nodemailer.services.js';
+import { endpoint } from '../../config/endpoints.js';
 
 const guestRouter = express.Router();
 
@@ -66,7 +67,7 @@ guestRouter.post('/', async (req, res) => {
           <div class="content">
             <p>Has sido invitado a nuestro evento. Por favor, haz clic en el siguiente botón para confirmar tu asistencia.</p>
             <div class="button-container">
-              <a href="http://localhost:4321/verifyGuest/${token}" class="button">Confirmar Asistencia</a>
+              <a href="${endpoint}/verifyGuest/${token}" class="button">Confirmar Asistencia</a>
             </div>
             <p style="font-size: 14px; margin-top: 30px; color: #888;">Si no te registraste, puedes ignorar este correo.</p>
           </div>
