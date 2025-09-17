@@ -51,16 +51,21 @@ export const getLinks = (pathname) => {
       }
     });
     // Se ha añadido la propiedad 'type' para mayor claridad.
-    links.push({type: 'link', text: 'Crear Eventos', path:'/addevents'});
-    links.push({type: 'link', text: 'Invitaciones', path:'/addGuest'});
+    links.push({type: 'links', text: 'mis eventos', path:'/eventManagement'});
   } else if (pathname === '/login' || pathname === '/registro' || pathname === '/') {
     // Se ha añadido la propiedad 'type' para mayor claridad.
     links.push({type: 'link', text: 'Inicia sesion', path:'/login'});
     links.push({type: 'link', text: 'Registrate', path:'/registro'});
-  } else {
-    // Caso por si la ruta no coincide con ninguna de las anteriores
-    // Puedes dejarlo vacío o agregar enlaces predeterminados
+  } else if (pathname.startsWith('/eventManagement')) {
+    links.push({
+      type: 'button', 
+      text: 'Cerrar sesion', 
+      handler: async () => {
+        await AuthModule.logoutUser();
+        location.replace('/');
+      }
+    });
+    // Se ha añadido la propiedad 'type' para mayor claridad.
   }
-
   return links;
 };
