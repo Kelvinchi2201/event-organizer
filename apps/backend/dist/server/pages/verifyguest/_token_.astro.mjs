@@ -1,6 +1,6 @@
 import { e as createComponent, k as renderComponent, l as renderScript, r as renderTemplate, m as maybeRenderHead } from '../../chunks/astro/server_DdhIxf7_.mjs';
 import 'kleur/colors';
-import { $ as $$Layout } from '../../chunks/Layout_CvHj3Sh2.mjs';
+import { $ as $$Layout } from '../../chunks/Layout_FAjzt4h0.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const prerender = false;
