@@ -66,6 +66,14 @@ export const getLinks = (pathname) => {
       }
     });
     // Se ha añadido la propiedad 'type' para mayor claridad.
+  } else if (pathname.startsWith('/login')) {
+    links.push({type: 'link', text: 'home', path: '/'});
+    links.push({type: 'link', text: 'registro', path: '/registro'});
+    // Se ha añadido la propiedad 'type' para mayor claridad.
+  } else if (pathname.startsWith('/registro')) {
+    links.push({type: 'link', text: 'home', path: '/'});
+    links.push({type: 'link', text: 'login', path: '/login'});
+    // Se ha añadido la propiedad 'type' para mayor claridad.
   }
   return links;
 };
