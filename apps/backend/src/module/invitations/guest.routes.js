@@ -62,10 +62,11 @@ guestRouter.post('/', async (req, res) => {
       <body>
         <div class="container">
           <div class="header">
-            <h1>¡Felicidades!</h1>
+            <h1>¡Felicidades! Invitación a ${guest.event_name}</h1>
           </div>
           <div class="content">
             <p>Has sido invitado a nuestro evento. Por favor, haz clic en el siguiente botón para confirmar tu asistencia.</p>
+            ${guest.indications ? `<p><strong>Indicaciones especiales:</strong> ${guest.indications}</p>` : ''}
             <div class="button-container">
               <a href="${endpoint}/verifyGuest/${token}" class="button">Confirmar Asistencia</a>
             </div>

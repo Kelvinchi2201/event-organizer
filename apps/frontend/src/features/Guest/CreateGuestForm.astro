@@ -49,7 +49,6 @@
   import AuthModule from "../../features/auth/auth.module";
   import guestModule from "./guest.module";
   import { BACK_ENDPOINT } from "../../config/endpoints";
-
   const user = await AuthModule.getLoggedUser();
   const userId = user.id;
   const eventsApiUrl = `${BACK_ENDPOINT}/api/events/events/${userId}`;
@@ -95,13 +94,11 @@
     updateInputValidationUI(emailInput, allEmailsAreValid);
     validateForm();
   });
-
   indicationsInput.addEventListener('input', () => {
     const isValid = INDICATIONS_REGEX.test(indicationsInput.value);
     validationState.isIndicationsValid = isValid;
     updateInputValidationUI(indicationsInput, isValid);
   });
-
   // Cargar eventos en el select
   const events = await ky.get(eventsApiUrl, { credentials: 'include' }).json();
   events.forEach(event => {
@@ -110,7 +107,6 @@
     option.textContent = event.name;
     eventSelect.appendChild(option);
   });
-
   // --- LÓGICA DE ENVÍO PRINCIPAL (ACTUALIZADA) ---
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -129,7 +125,9 @@
       return;
     }
 
-  
+    // Obtenemos el nombre del evento seleccionado
+    const eventName = eventSelect.options[eventSelect.selectedIndex].textContent;
+
     for (const email of emailsArray) {
       
       const guestName = email.split('@')[0];
@@ -138,9 +136,10 @@
         guest_name: guestName,
         events_id: eventSelect.value,
         guest_email: email,
-        indications: indicationsInput.value || ''
+        indications: indicationsInput.value || '',
+        // Aquí agregamos el nombre del evento
+        event_name: eventName,
       };
-      
       
       await guestModule.addGuestTolist(guestToSend);
     }
@@ -149,8 +148,6 @@
         type: 'success',
         title: `${emailsArray.length} invitado(s) agregado(s) a la lista`
     });
-
-    
     emailInput.value = '';
     indicationsInput.value = '';
    

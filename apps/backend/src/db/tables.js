@@ -51,6 +51,7 @@ const createGuestsTable = async () => {
         guest_email TEXT NOT NULL,
         events_id INTEGER NOT NULL,
         indications TEXT,
+        event_name TEXT,
 
         CONSTRAINT fk_events
             FOREIGN KEY(events_id)

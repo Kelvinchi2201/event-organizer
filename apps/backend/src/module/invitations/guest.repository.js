@@ -28,10 +28,10 @@ const getByEventId = async (events_id) => {
 const addOneGuest = async (payload) => {
   const response = await db.query(
     `
-    INSERT INTO invitados (guest_name, events_id, guest_email, indications)
-    VALUES ($1, $2, $3, $4) RETURNING *
+    INSERT INTO invitados (guest_name, events_id, guest_email, indications, event_name)
+    VALUES ($1, $2, $3, $4, $5) RETURNING *
   `,
-    [payload.guest_name, payload.events_id, payload.guest_email, payload.indications],
+    [payload.guest_name, payload.events_id, payload.guest_email, payload.indications, payload.event_name],
   );
   return response.rows[0];
 };

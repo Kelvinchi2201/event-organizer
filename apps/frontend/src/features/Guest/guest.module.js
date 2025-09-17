@@ -22,26 +22,26 @@ const saveToLocalStorage = (guests) => {
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(guests));
 };
 
-/** 
-  * @typedef Guests
+/** * @typedef Guests
   * @type {object}
   * @property {string} guest_name El nombre del inivtado
   * @property {number} events_id el id del evento al que pertenece el invitado
   * @property {string} guest_email El email del del invitado
   * @property {string} indications las indicaciones del invitado (son opcionales)
+  * @property {string} event_name el nombre del evento
 */
 
 /** @type {Guests[]} */
 let guestsArray = loadFromLocalStorage();
 export const guests = atom(guestsArray);
 
-/** 
-  * Agrega un contacto.
+/** * Agrega un contacto.
   * @param {object} guestToSend El nuevo invitado a agregar
   * @param {string} guestToSend.guest_name El nombre del invitado
   * @param {number} guestToSend.events_id El id del evento al que pertence el invitado
   * @param {string} guestToSend.guest_email El email del coontacto
   * @param {string} guestToSend.indications las indicaciones del invitado (son opcionales)
+  * @param {string} guestToSend.event_name el nombre del evento
 */
 
 const getGuestListByEventId = async (eventId) => {
@@ -62,7 +62,9 @@ const addGuestTolist = (guestToSend) => {
                 guest_name: guestToSend.guest_name,
                 events_id: Number(guestToSend.events_id),
                 guest_email: guestToSend.guest_email,
-                indications: guestToSend.indications || ''
+                indications: guestToSend.indications || '',
+                // Aquí se agrega el nombre del evento para guardarlo localmente
+                event_name: guestToSend.event_name
             }; 
          
          const updatedGuests = [...guests.get(), newGuest];
@@ -102,7 +104,8 @@ const updatedGuestList = (guestToUpdate) => {
 
 
 const sendGuestList = async () =>{
-   const guestsToSend = guests.get().map(({ temp_id, ...rest }) => rest);
+    // Se debe enviar el nombre del evento y las indicaciones junto con la lista de invitados
+    const guestsToSend = guests.get();
 
     if (guestsToSend.length === 0) {
         createNotification({
@@ -113,6 +116,7 @@ const sendGuestList = async () =>{
         return;
     }
     try { 
+        // Agregamos el nombre del evento y las indicaciones al JSON que se envía
         const response = await ky.post(BASE_URL, {
             json: guestsToSend,
             credentials: 'include'
