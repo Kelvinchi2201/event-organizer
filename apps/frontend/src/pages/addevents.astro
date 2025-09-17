@@ -5,7 +5,7 @@ import Layout from "../layouts/Layout.astro"
 
 <Layout title="Crear Eventos">
   <AuthProtected>
-    <main class="min-h-screen flex items-center justify-center px-4 py-12 bg-gray-50">
+    <main class="h-full overflow-auto flex items-center justify-center px-4 py-12 bg-gray-50">
   <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-6">
     <div class="text-center">
       <h1 class="text-3xl font-bold text-gray-900">
@@ -17,7 +17,7 @@ import Layout from "../layouts/Layout.astro"
     </div>
 
     <!-- Formulario para crear el evento -->
-    <form class="space-y-6" id="event-form">
+    <form class="space-y-5" id="event-form">
       <!-- Campo para el Nombre del Evento -->
       <div>
         <label for="event-name" class="block text-sm font-medium text-gray-700">Nombre del evento</label>
