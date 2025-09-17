@@ -52,7 +52,7 @@ export const getLinks = (pathname) => {
     });
     // Se ha añadido la propiedad 'type' para mayor claridad.
     links.push({type: 'links', text: 'mis eventos', path:'/eventManagement'});
-  } else if (pathname === '/login' || pathname === '/registro' || pathname === '/') {
+  } else if (pathname === '/login' || pathname === '/registro') {
     // Se ha añadido la propiedad 'type' para mayor claridad.
     links.push({type: 'link', text: 'Inicia sesion', path:'/login'});
     links.push({type: 'link', text: 'Registrate', path:'/registro'});
