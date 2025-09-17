@@ -3,7 +3,7 @@ import GuestItem from "./GuestItem.astro";
 ---
 
 
-<ul id="guest-list" class="m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border border-gray-300 h-full md:w-[70%] lg:w-[50%]">
+<ul id="guest-list" class="w-[95%] max-w-md m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border border-gray-300 h-full md:w-[70%] lg:w-[50%]">
   <template id="guest-item-template">
     <GuestItem 
       guest_name="Daniel Perez"
@@ -14,7 +14,7 @@ import GuestItem from "./GuestItem.astro";
     />
   </template>
 </ul>
-<button type="submit" id="sendListBtn" class="w-full md:w-[70%] lg:w-[50%] flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-700 hover:bg-pink-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-800 transition-colors duration-200"> enviar invitaciones </button>
+<button type="submit" id="sendListBtn" class="w-[95%] max-w-md md:w-[70%] lg:w-[50%] flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-700 hover:bg-pink-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-800 transition-colors duration-200"> enviar invitaciones </button> 
 <script>
   // @ts-nocheck
 import ky from 'ky';
