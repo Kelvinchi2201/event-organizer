@@ -1,6 +1,6 @@
 import { renderers } from './renderers.mjs';
 import { c as createExports, s as serverEntrypointModule } from './chunks/_@astrojs-ssr-adapter_f8KdmA6k.mjs';
-import { manifest } from './manifest_DPkQzS37.mjs';
+import { manifest } from './manifest_CrwaaCK7.mjs';
 
 const serverIslandMap = new Map();;
 
@@ -36,8 +36,8 @@ const _manifest = Object.assign(manifest, {
 });
 const _args = {
     "mode": "middleware",
-    "client": "file:///C:/Users/Kelvin/Desktop/Programacion/Proyecto%20final/apps/frontend/dist/client/",
-    "server": "file:///C:/Users/Kelvin/Desktop/Programacion/Proyecto%20final/apps/frontend/dist/server/",
+    "client": "file:///C:/Users/EDTecnica/Desktop/event-organizer-main/apps/frontend/dist/client/",
+    "server": "file:///C:/Users/EDTecnica/Desktop/event-organizer-main/apps/frontend/dist/server/",
     "host": false,
     "port": 4321,
     "assets": "_astro",
