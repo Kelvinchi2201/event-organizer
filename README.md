@@ -83,6 +83,7 @@ https://event-organizer-jb5e.onrender.com/
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 EOrganizer 📅
+
 EOrganizer es una aplicación web diseñada para simplificar y agilizar el proceso de gestión y compartición de eventos. Con una interfaz intuitiva, los usuarios pueden publicar eventos sin esfuerzo, incluyendo todos los detalles esenciales como fecha, hora, ubicación y una lista de invitados personalizable.
 
 Sobre el Proyecto 🚀
