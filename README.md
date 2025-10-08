@@ -87,9 +87,11 @@ EOrganizer 📅
 EOrganizer es una aplicación web diseñada para simplificar y agilizar el proceso de gestión y compartición de eventos. Con una interfaz intuitiva, los usuarios pueden publicar eventos sin esfuerzo, incluyendo todos los detalles esenciales como fecha, hora, ubicación y una lista de invitados personalizable.
 
 Sobre el Proyecto 🚀
+
 Esta plataforma proporciona un espacio centralizado para todas tus necesidades de planificación de eventos. Desde la creación de un nuevo evento hasta la gestión de tu lista de invitados, EOrganizer asegura que cada detalle esté bajo tu control.
 
 Características Clave ✨
+
 Creación de Eventos Sin Esfuerzo: Planifica y lanza tu próximo gran evento en solo unos minutos. La aplicación te guía para completar todos los detalles necesarios para programar tu evento.
 
 Información Detallada del Evento: Especifica el nombre del evento, fecha, hora y una descripción completa.
