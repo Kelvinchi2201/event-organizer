@@ -1,0 +1,131 @@
+---
+import GuestItem from "./GuestItem.astro";
+---
+
+
+<ul id="guest-list" class="w-[95%] max-w-md m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border border-gray-300 h-full sm:max-h-80 md:w-[70%] lg:w-[50%]">
+  <template id="guest-item-template">
+    <GuestItem 
+      guest_name="Daniel Perez"
+      guest_email="******@correo.com"
+      indications="traer comida"
+      events_id= {1}
+      temp_id={0}
+    />
+  </template>
+</ul>
+<button type="submit" id="sendListBtn" class="w-[95%] max-w-md md:w-[70%] lg:w-[50%] flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-700 hover:bg-pink-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-800 transition-colors duration-200"> enviar invitaciones </button> 
+<script>
+  // @ts-nocheck
+import ky from 'ky';
+import { BACK_ENDPOINT } from '../../config/endpoints';
+import guestModule, { guests } from './guest.module';
+const guestList = document.querySelector('#guest-list');
+const guestItemTemplate = document.querySelector('#guest-item-template');
+const sendListBtn = document.querySelector('#sendListBtn');
+await guestModule.getLocalGuestList();
+
+
+
+guests.subscribe(guests => {
+  guestList.innerHTML = ''; // Limpia la lista actual
+  for (const guest of guests) {
+    const guestItem = guestItemTemplate.content.cloneNode(true);
+    
+    const nameInput = guestItem.querySelector('input:nth-child(1)');
+    const emailInput = guestItem.querySelector('input:nth-child(2)');
+    const indicationsInput = guestItem.querySelector('input:nth-child(3)');
+    const eventsInput = guestItem.querySelector('input:nth-child(4)');
+    const liElement = guestItem.querySelector('li');
+    liElement.id = guest.temp_id;
+    nameInput.value = guest.guest_name;
+    emailInput.value = guest.guest_email;
+    indicationsInput.value = guest.indications;
+    guestList.append(guestItem);
+  }
+});
+
+
+guestList.addEventListener('click', async e => {
+    const deleteBtn = e.target.closest('.delete-btn');
+    const editBtn = e.target.closest('.edit-btn');
+  
+    if (deleteBtn) {
+      // 1. Encuentro el li
+      const li = deleteBtn.parentElement.parentElement;
+      // 2. Actualizo el array en js, usando el metodo filter para devolver todos los contactos excepto el que quiero eliminar.
+      await guestModule.removeGuestFromList(li.id);
+    }
+
+    if (editBtn) {
+      // 1. Encuentro el li
+      const li = editBtn.parentElement.parentElement;
+      // 2. Obtener el status
+      const status = li.dataset.status;
+      // 3. Obtener los inputs
+      const guestInputName = li.children[0].children[0];
+      const guestInputEmail = li.children[0].children[1];
+      const guestInputIndications = li.children[0].children[2];
+      const guestInputEvent = li.children[0].children[3];
+      // 4. Obtener el boton
+      const contactEditBtn = li.children[1].children[0];
+      if (status === 'inputs-deshabilitados') {
+        // 1. Remover el readonly (No se puede editar) de los inputs.
+        guestInputName.removeAttribute('readonly');
+        guestInputEmail.removeAttribute('readonly');
+        guestInputIndications.removeAttribute('readonly');
+        // 2. Cambiar el status a inputs-habilitados
+        li.dataset.status = 'inputs-habilitados';
+        // 3. Cambiar icono del boton para reflejar el estado
+        contactEditBtn.children[0].classList.add('hidden');
+        contactEditBtn.children[1].classList.remove('hidden');
+        // 4. Cambiar estilos de los inputs para reflejar el estado
+        guestInputName.classList.add('outline', 'outline-solid', 'outline-cyan-500');
+        guestInputEmail.classList.add('outline', 'outline-solid', 'outline-cyan-500');
+        guestInputIndications.classList.add('outline', 'outline-solid', 'outline-cyan-500');
+      }
+
+      
+
+      if (status === 'inputs-habilitados') {
+        // 1. Agegar el readonly (No se puede editar) de los inputs.
+        guestInputName.setAttribute('readonly', true);
+        guestInputEmail.setAttribute('readonly', true);
+        guestInputIndications.setAttribute('readonly', true)
+        // 2. Cambiar el status a inputs-deshabilitados
+        li.dataset.status = 'inputs-deshabilitados';
+        // 3. Cambiar icono del boton para reflejar el estado
+        contactEditBtn.children[0].classList.remove('hidden');
+        contactEditBtn.children[1].classList.add('hidden');
+        guestInputName.classList.remove('outline', 'outline-solid', 'outline-cyan-500');
+        guestInputEmail.classList.remove('outline', 'outline-solid', 'outline-cyan-500');
+        guestInputIndications.classList.remove('outline', 'outline-solid', 'outline-cyan-500');
+        // 4. Actualizar el contacto
+        const guestToUpdate = {
+          temp_id: li.id,
+          events_id: Number(guestInputEvent.value),
+          guest_name: guestInputName.value,
+          guest_email: guestInputEmail.value,
+          indications: guestInputIndications.value
+
+        }
+        await guestModule.updatedGuestList(guestToUpdate);
+      }
+    }
+  });
+
+document.addEventListener('DOMContentLoaded', () => {
+  guestModule.getLocalGuestList();
+});
+
+sendListBtn.addEventListener('click', async () => {
+  await guestModule.sendGuestList();
+});
+
+
+
+
+
+
+  
+</script>

@@ -1,0 +1,218 @@
+---
+import Layout from "../layouts/Layout.astro"
+---
+ 
+ 
+ <Layout title="EOrganizer - registro">
+    <main class="min-h-screen overflow-y-auto flex items-center justify-center px-4 py-8 ">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-6">
+      <div class="text-center">
+        <h1 class="text-3xl font-bold text-gray-900">
+          Crea tu cuenta
+        </h1>
+        
+      </div>
+
+      <form class="space-y-6" id="register-form">
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700">Nombre de usuario</label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            placeholder="Kelvin Chirinos"
+            class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+            required
+          />
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="tu@email.com"
+            class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+            required
+          />
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="'Mínimo 6 caracteres, 1 letra, 1 número y 1 símbolo."
+            class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+            required
+          />
+        </div>
+
+        <div>
+            <label for="confirm-password" class="block text-sm font-medium text-gray-700">Confirmar contraseña</label>
+            <input
+              type="password"
+              name="confirm-password"
+              id="confirm-password"
+              placeholder="••••••••"
+              class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+              required
+            />
+          </div>
+
+        <div class="flex items-center flex-col gap-2">
+         
+
+        <div>
+          <button
+            id="button-register"
+            type="submit"
+            disabled
+            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-700 hover:bg-pink-800
+            disabled:cursor-not-allowed dark:bg-pink-800 dark:hover:bg-pink-700 dark:focus:ring-pink-800 dark:disabled:bg-gray-600 transition-colors duration-200" 
+            
+          >
+            Registrarme
+          </button>
+        </div>
+      </form>
+
+      <div class="text-center text-sm text-gray-600">
+        <p>
+          ¿Ya tienes una cuenta?
+          <a href="/login" class="font-medium text-pink-600 hover:text-pink-500">
+            Inicia sesión aquí
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+ </Layout>
+
+ <script>
+    // @ts-nocheck
+  import ky from 'ky';
+  import { BACK_ENDPOINT } from "../config/endpoints";
+  import { createNotification } from "../features/notifications/notificiation";
+ 
+ const form = document.querySelector('#register-form');
+ const InputName = document.querySelector('#name');
+ const inputEmail = document.querySelector('#email');
+ const inputPass = document.querySelector('#password');
+ const inputCoPass = document.querySelector('#confirm-password');
+ const btn = document.querySelector('#button-register')
+
+    
+    // Validation Regular Expressions
+  const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  // At least 1 letter, 1 number, 1 special character, and minimum 6 characters.
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/;
+  
+  const NAME_REGEX = /^[a-zA-Z0-9 ]{4,}$/;
+
+  
+
+  const validationState = {
+    isEmailValid: false,
+    isPasswordValid: false,
+    doPasswordsMatch: false,
+    isNameValid: false,
+  };
+
+    function updateInputValidationUI(inputElement, isValid) {
+    if (isValid) {
+      // Use Tailwind classes for valid state: green border
+      inputElement.classList.remove('border-red-500', 'dark:border-red-500');
+      inputElement.classList.add('border-green-500', 'dark:border-green-500');
+    } else {
+      // Use Tailwind classes for invalid state: red border
+      inputElement.classList.remove('border-green-500', 'dark:border-green-500');
+      inputElement.classList.add('border-red-500', 'dark:border-red-500');
+    }
+    // Reset border color if the input is empty
+    if (inputElement.value === '') {
+      inputElement.classList.remove('border-red-500', 'dark:border-red-500', 'border-green-500', 'dark:border-green-500');
+    }
+  }
+
+
+  function validateForm() {
+    const { isEmailValid, isPasswordValid, doPasswordsMatch, isNameValid } = validationState;
+    // Enable the button only if all validation checks pass
+    btn.disabled = !isEmailValid || !isPasswordValid || !doPasswordsMatch || !isNameValid;
+  };
+
+  InputName.addEventListener('input', () => {
+    const isValid = NAME_REGEX.test(InputName.value);
+    validationState.isNameValid = isValid;
+    updateInputValidationUI(InputName, isValid);
+    validateForm();
+  });
+
+  inputEmail.addEventListener('input', () => {
+    const isValid = emailRegex.test(inputEmail.value);
+    validationState.isEmailValid = isValid;
+    updateInputValidationUI(inputEmail, isValid);
+    validateForm();
+  });
+
+
+inputPass.addEventListener('input', () => {
+    const isValid = passwordRegex.test(inputPass.value);
+    validationState.isPasswordValid = isValid;
+    updateInputValidationUI(inputPass, isValid);
+
+    const passwordsMatch = inputPass.value === inputCoPass.value && inputCoPass.value.length > 0;
+    validationState.doPasswordsMatch = passwordsMatch;
+    updateInputValidationUI(inputCoPass, passwordsMatch);
+
+    validateForm();
+  });
+
+  inputCoPass.addEventListener('input', () => {
+    const isValid = inputPass.value === inputCoPass.value && inputCoPass.value.length > 0;
+    validationState.doPasswordsMatch = isValid;
+    updateInputValidationUI(inputCoPass, isValid);
+    validateForm();
+  });
+
+   form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const { isEmailValid, isPasswordValid, doPasswordsMatch } = validationState;
+    if (!isEmailValid || !isPasswordValid || !doPasswordsMatch) return;
+
+
+    try {
+      await ky.post(`${BACK_ENDPOINT}/api/users`, {json: { name:InputName.value, email: inputEmail.value, password: inputPass.value}});
+      // Reinciar todos los estados del formulario
+      for (const key in validationState) {
+        validationState[key] = false;
+      }
+      form.reset();
+      [inputEmail, inputPass, inputCoPass].forEach(input => {
+        updateInputValidationUI(input);
+      });
+      validateForm();
+      createNotification({ 
+        title: 'Usuario creado!', 
+        description: 'Se ha enviado un correo de verificacion a su bandeja de correo', 
+        type: 'success'
+      });
+    } catch (error) {
+      const errorData = await error?.response?.json();
+      createNotification({ 
+        title: 'Ups! Hubo un error', 
+        description: errorData?.error ?? 'Sin mensaje', 
+        type: 'error'
+      });
+    }  
+  });
+
+
+
+
+
+
+ </script>

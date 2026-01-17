@@ -1,0 +1,28 @@
+---
+// EventsItem.astro
+const {
+    event_name, 
+    event_date, 
+    guests_byEvents, 
+    event_description, 
+    Id, 
+    event_time,
+} = Astro.props;
+---
+
+<li id={Id} class="flex flex-col gap-4 p-2 justify-between border border-pink-700 rounded-md items-center">
+    
+    <div class="flex flex-wrap md:flex-nowrap gap-2 flex-col w-full p-2">
+     
+        <input class="w-full bg-pink-500 rounded-md p-2 outline-none text-white font-bold" type="text" value={event_name} readonly>
+        <label for="event_date">Fecha del evento:</label>
+        <input id="event_date" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={event_date} readonly>
+        <label for="event_time">Hora:</label>
+        <input id="event_time" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={event_time} readonly>
+        <label for="guests_byEvents">Invitados:</label>
+        <input id="guests_byEvents" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={guests_byEvents} readonly>
+       
+        <label for="event_description">Descripción:</label> 
+        <input id="event_description" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={event_description} readonly>
+    </div>
+</li>

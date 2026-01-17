@@ -1,0 +1,103 @@
+---
+import Layout from "../layouts/Layout.astro"
+---
+
+<Layout title="EOrganizer - login">
+     <main class="min-h-screen flex items-center justify-center px-4 py-12">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-6">
+      <div class="text-center">
+        <h1 class="text-3xl font-bold text-gray-900">
+          Bienvenido de nuevo
+        </h1>
+        <p class="mt-2 text-sm text-gray-600">
+          Inicia sesión para continuar.
+        </p>
+      </div>
+
+      <form class="space-y-6" id="form" novalidate>
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="tu@email.com"
+            class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-800 focus:border-pink-800"
+            required
+          />
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="••••••••"
+            class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-800 focus:border-pink-800"
+            required
+          />
+        </div>
+
+        <div class="flex items-center justify-between flex-col gap-2">
+          <div class="flex items-center">
+
+          <div class="text-sm">
+            <a href="#" class="font-medium text-pink-700 hover:text-pink-800">
+              ¿Olvidaste tu contraseña?
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-700 hover:bg-pink-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-800 transition-colors duration-200"
+          >
+            Iniciar Sesión
+          </button>
+        </div>
+      </form>
+
+      <div class="text-center text-sm text-gray-600">
+        <p>
+          ¿No tienes una cuenta?
+          <a href="/registro" class="font-medium text-pink-700 hover:text-pink-800">
+            Regístrate aquí
+          </a>
+        </p>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  // @ts-nocheck
+  import { BACK_ENDPOINT } from "../config/endpoints";
+import AuthModule from "../features/auth/auth.module";
+  import { createNotification } from "../features/notifications/notificiation";
+  import ky from 'ky';
+
+  // DOM Element Selection
+  const form = document.querySelector('#form');
+  const emailInput = document.querySelector('#email');
+  const passwordInput = document.querySelector('#password');
+
+  // Form Submission
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    try {
+      await AuthModule.login({email: emailInput.value, password: passwordInput.value});
+      location.assign('/dashboard');
+    } catch (error) {
+      console.log(error);
+      const errorData = await error?.response?.json();
+      createNotification({ 
+        title: 'Ups! Hubo un error', 
+        description: errorData?.error ?? 'Sin mensaje', 
+        type: 'error'
+      });
+    }  
+  });
+</script>

@@ -1,0 +1,267 @@
+---
+import AuthProtected from "../features/auth/AuthProtected.astro"
+import Layout from "../layouts/Layout.astro"
+---
+
+<Layout title="Crear Eventos">
+  <AuthProtected>
+    <main class="h-full overflow-auto flex items-center justify-center px-4 py-12 bg-gray-50">
+  <div class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-6">
+    <div class="text-center">
+      <h1 class="text-3xl font-bold text-gray-900">
+        Crear un nuevo evento
+      </h1>
+      <p class="mt-2 text-sm text-gray-600">
+        Completa los detalles para agendar tu evento.
+      </p>
+    </div>
+
+    <!-- Formulario para crear el evento -->
+    <form class="space-y-5" id="event-form">
+      <!-- Campo para el Nombre del Evento -->
+      <div>
+        <label for="event-name" class="block text-sm font-medium text-gray-700">Nombre del evento</label>
+        <input
+          type="text"
+          name="event-name"
+          id="event-name"
+          placeholder="Ej: Conferencia de Astro"
+          class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+          required
+        />
+      </div>
+
+      <!-- Contenedor para Fecha y Hora -->
+      <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-6 sm:space-y-0">
+        <!-- Campo para la Fecha del Evento -->
+        <div class="w-full">
+          <label for="event-date" class="block text-sm font-medium text-gray-700">Fecha del evento</label>
+          <input
+            type="date"
+            name="event-date"
+            id="event-date"
+            class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+            required
+          />
+        </div>
+        
+        <!-- Campo para la Hora del Evento -->
+        <div class="w-full">
+          <label for="event-time" class="block text-sm font-medium text-gray-700">Hora del evento</label>
+          <input
+            type="time"
+            name="event-time"
+            id="event-time"
+            class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Campo para la Descripción del Evento -->
+      <div>
+        <label for="event-description" class="block text-sm font-medium text-gray-700">Descripción</label>
+        <textarea
+          name="event-description"
+          id="event-description"
+          placeholder="Describe brevemente de qué tratará el evento..."
+          rows="4"
+          class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+          required
+        > </textarea>
+      </div>
+      <div>
+        <label for="event-portada" class="block text-sm font-medium text-gray-700">Imagen de Portada (Opcional)</label>
+        <input
+          type="file"
+          name="event-portada"
+          id="event-portada"
+          accept="image/*"
+          class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100"
+        />
+      </div>
+
+      <!-- Botón de Envío -->
+      <div>
+        <button
+          id="button-create-event"
+          type="submit"
+          disabled
+          class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-pink-700 hover:bg-pink-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-colors duration-200"
+          
+        >
+          Crear Evento
+        </button>
+      </div>
+    </form>
+    <!-- Fin del formulario -->
+
+  </div>
+</main>
+</AuthProtected>
+</Layout>
+
+<script>
+     // @ts-nocheck
+       import { BACK_ENDPOINT } from "../config/endpoints";
+       import { createNotification } from "../features/notifications/notificiation";
+       import ky from 'ky';
+       import AuthModule from "../features/auth/auth.module";
+       const BASE_URL = `${BACK_ENDPOINT}/api/events`
+
+
+    const eventForm = document.querySelector('#event-form');
+    const nameInput = document.querySelector('#event-name');
+    const dateInput = document.querySelector('#event-date');
+    const timeInput = document.querySelector('#event-time');
+    const descriptionInput = document.querySelector('#event-description');
+     const portadaInput = document.querySelector('#event-portada'); 
+    const btnEvent = document.querySelector('#button-create-event');
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Los meses van de 0-11
+    const day = String(today.getDate()).padStart(2, '0');
+    const todayFormatted = `${year}-${month}-${day}`;
+
+    
+   
+     
+    
+
+    const NAME_REGEX = /^[a-zA-Z0-9\s.,-ñÑáéíóúÁÉÍÓÚ]+$/;
+    const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
+    const TIME_REGEX = /^\d{2}:\d{2}$/;
+    const DESCRIPTION_REGEX = /^[\w\s.,-ñÑáéíóúÁÉÍÓÚ¡!¿?()"'\/@#%\n\r]+$/;
+    const user =  await AuthModule.getLoggedUser();
+    const userId = user.id;
+    
+    
+     const validationState = {
+    isNameValid: false,
+    isDateValid: false,
+    isTimeValid: false,
+    isDescriptionValid: false,
+  };
+
+    function updateInputValidationUI(inputElement, isValid) {
+    if (isValid) {
+      
+      inputElement.classList.remove('border-red-500', 'dark:border-red-500');
+      inputElement.classList.add('border-green-500', 'dark:border-green-500');
+    } else {
+      
+      inputElement.classList.remove('border-green-500', 'dark:border-green-500');
+      inputElement.classList.add('border-red-500', 'dark:border-red-500');
+    }
+   
+    if (inputElement.value === '') {
+      inputElement.classList.remove('border-red-500', 'dark:border-red-500', 'border-green-500', 'dark:border-green-500');
+    }
+  }
+
+
+  function validateForm() {
+    const { isNameValid, isDateValid, isTimeValid, isDescriptionValid } = validationState;
+    btnEvent.disabled = !isNameValid || !isDateValid || !isTimeValid || !isDescriptionValid
+    
+    
+  };
+
+
+  nameInput.addEventListener('input',async () => {
+    const isValid = NAME_REGEX.test(nameInput.value);
+    validationState.isNameValid = isValid;
+    updateInputValidationUI(nameInput, isValid);
+    validateForm();
+  
+  });
+
+      dateInput.addEventListener('input',async () => {
+        // Primero, validamos que el formato sea correcto (YYYY-MM-DD)
+        const isFormatValid = DATE_REGEX.test(dateInput.value);
+
+        // Segundo, creamos las fechas para compararlas
+        const today = new Date();
+        const selectedDate = new Date(dateInput.value);
+
+        // Reseteamos la hora de "hoy" para comparar solo el día, mes y año.
+        // Esto evita errores si el evento se crea al final del día.
+        today.setHours(0, 0, 0, 0);
+
+        // La fecha seleccionada debe ser mayor o igual a la de hoy.
+        const isDateInFuture = selectedDate >= today;
+
+        // La validación es correcta solo si AMBAS condiciones se cumplen.
+        const isValid = isFormatValid && isDateInFuture;
+
+        validationState.isDateValid = isValid;
+        updateInputValidationUI(dateInput, isValid);
+        validateForm();
+    });
+
+    timeInput.addEventListener('input', async () => {
+        const isValid = TIME_REGEX.test(timeInput.value);
+        validationState.isTimeValid = isValid;
+        updateInputValidationUI(timeInput, isValid);
+        validateForm();
+    });
+
+    descriptionInput.addEventListener('input', async () => {
+        const isValid = DESCRIPTION_REGEX.test(descriptionInput.value);
+        validationState.isDescriptionValid = isValid;
+        updateInputValidationUI(descriptionInput, isValid);
+        validateForm();
+    });
+
+    
+   eventForm.addEventListener('submit', async (event)=> {
+      event.preventDefault();  
+     
+      try {
+        const user = await AuthModule.getLoggedUser();
+        const userId = user.id;
+        // Crear un nuevo objeto FormData
+        const formData = new FormData();
+
+        // Añadir todos los campos de texto al FormData
+        formData.append('name', nameInput.value);
+        formData.append('description', descriptionInput.value);
+        formData.append('fecha_evento', dateInput.value);
+        formData.append('hora_evento', timeInput.value);
+        formData.append('usuarios_id', userId);
+
+        // Si se seleccionó una imagen, añadirla al FormData
+        if (portadaInput.files[0]) {
+          formData.append('portada', portadaInput.files[0]);
+        }
+        
+        // Enviar la solicitud POST con el FormData como cuerpo
+        const contactCreated = await ky.post(BASE_URL, {
+          body: formData, // ky automáticamente establece el Content-Type: multipart/form-data
+          credentials: 'include'
+        }).json();
+        
+        createNotification({title: 'Evento creado!',type: 'success'});
+        for (const key in validationState) {
+          validationState[key] = false;
+        }
+        eventForm.reset();
+        [nameInput, dateInput, timeInput, descriptionInput].forEach(input => {
+          input.classList.remove('border-green-500', 'border-red-500');
+        });
+        location.assign('/addGuest');
+
+      } catch (error) {
+        console.log(error);
+        const errorData = await error.response.json();
+        createNotification({
+          title: 'Ups! Hubo un error',
+          description: errorData.error,
+          type: 'error'
+        });
+      }      
+    });
+  
+   
+</script>

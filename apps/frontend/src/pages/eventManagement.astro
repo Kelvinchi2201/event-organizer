@@ -1,0 +1,33 @@
+---
+import Layout from "../layouts/Layout.astro";
+import AuthProtected from "../features/auth/AuthProtected.astro";
+import ManagementList from "../features/management/ManagementList.astro";
+---
+<Layout title="Gestion de eventos">
+    <AuthProtected>
+        <div class="h-[calc(80vh)] overflow-y-auto flex flex-col gap-2 p-4 max-w-[90rem] mx-auto md:flex-row md:h-[calc(100vh-4rem)] md:justify-between items-center">
+
+ 
+    <ManagementList>
+    </ManagementList>
+ 
+
+  <div class="md:w-1/2 flex flex-col justify-center items-center p-4 gap-8 w-full">
+    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+      <p class="text-xl">¿Necesitas hacer cambios o invitar a más gente?</p>
+      <a class="inline-block bg-pink-600 text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-pink-700 transition-all duration-300 ease-in-out transform hover:-translate-y-1 shadow-lg"   href="/addGuest">Enviar más invitaciones</a>
+    </div>
+     <div class="bg-white p-6 rounded-lg shadow-md text-center">
+      <p class="text-xl">Da vida a tu idea. Planifica, personaliza y lanza tu próximo gran evento en solo unos minutos.</p>
+      <a class="inline-block bg-pink-600 text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-pink-700 transition-all duration-300 ease-in-out transform hover:-translate-y-1 shadow-lg"   href="/addevents">Crear eventos</a>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+      <p class="text-xl">Vuelve al panel principal para ver los eventos creados por otros usuarios.</p>
+      <a class="inline-block bg-pink-600 text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-pink-700 transition-all duration-300 ease-in-out transform hover:-translate-y-1 shadow-lg"  href="/">Ir al Home</a>
+    </div>
+  </div>
+
+</div>
+ </AuthProtected>
+    
+</Layout>

@@ -1,0 +1,50 @@
+---
+import AuthUnprotected from '../features/auth/AuthUnprotected.astro';
+import Layout from '../layouts/Layout.astro';
+import '../styles/global.css'
+import img from '../assets/ejemplo.jpg'
+---
+
+<Layout title="EOrganizer - Organiza tus eventos fácilmente">
+ <AuthUnprotected>
+	 <main class="bg-gray-50 min-h-screen overflow-auto flex flex-col justify-center items-center p-4">
+    <div class="max-w-4xl w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      
+      <div class="text-center lg:text-left p-6">
+        <h1 class="text-5xl md:text-6xl font-bold text-gray-800">
+          <span class="text-pink-600">E</span>Organizer
+        </h1>
+        <p class="mt-4 text-lg text-gray-600">
+          Tu espacio para gestionar y compartir eventos de forma sencilla y eficiente.
+        </p>
+
+        <div class="mt-8 bg-white p-6 rounded-lg shadow-md border border-gray-200">
+          <p class="text-gray-700 text-justify">
+            ¿Quieres organizar un evento y mantener todo bajo control? En EOrganizer, te ofrecemos una herramienta intuitiva para publicar tus eventos con todos los detalles importantes: fecha, hora, ubicación y una lista de invitados personalizable.
+          </p>
+        </div>
+        
+        <div class="mt-8 flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-4">
+          <a 
+            class="bg-pink-600 text-white font-bold py-3 px-8 rounded-full text-center text-lg hover:bg-pink-700 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg" 
+            href="/login"
+          >
+            Iniciar Sesión
+          </a>
+          <a 
+            class="bg-transparent border-2 border-pink-600 text-pink-600 font-bold py-3 px-8 rounded-full text-center text-lg hover:bg-pink-600 hover:text-white transition-all duration-300 ease-in-out transform hover:scale-105" 
+            href="/registro"
+          >
+            Registro
+          </a>
+        </div>
+      </div>
+
+      <div class="hidden lg:flex justify-center items-center p-6">
+        <img src={img.src} alt="Ilustración de organización de eventos" class="w-full max-w-md h-auto rounded-lg">
+        </div>
+
+    </div>
+  </main>
+ </AuthUnprotected>
+</Layout>

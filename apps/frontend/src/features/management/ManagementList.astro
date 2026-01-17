@@ -1,0 +1,233 @@
+---
+import ManagementItem from "./ManagementItem.astro"
+import ManagementGuestitem from "./ManagementGuestitem.astro"
+---
+
+<div id="eventos-div" class="flex flex-col justify-center items-center gap-4 h-full w-full p-4">
+<h1 id="main-title" class="text-pink-700 text-4xl md:text-6xl">Mis Eventos</h1>
+<ul id="dashboard-list" class="m-0 p-2 list-none overflow-auto flex flex-col gap-8 rounded-md border border-gray-300 h-full md:w-[70%] lg:w-[50%]">
+ <template id="events-item-template">
+    <ManagementItem
+    event_name="Fiesta de fin de año"
+    event_date="31-12-2025"
+    event_time="16:30"
+    guests_byEvents="16"
+    event_description="sera una fiesta de fin de año"
+    />
+ </template>
+ <template id="guests-item-template" >
+    <ManagementGuestitem
+        guest_name="Juan Pérez"
+        guest_email="juanperez@example.com"
+        fecha_envio="31-12-2025"
+        estado_asistencia={false}
+        indications="Llevar traje de baño. No se permiten niños."
+    />
+ </template>
+</ul>
+</div>
+ 
+
+
+
+<script>
+    // @ts-nocheck
+    import ManagementModule, {events, guests} from "./management.module";
+    import AuthModule from "../auth/auth.module";
+    const eventsItemTemplate = document.querySelector('#events-item-template');
+    const guestsItemTemplate = document.querySelector('#guests-item-template');
+    const eventList = document.querySelector('#dashboard-list');
+    const mainTitle = document.querySelector('#main-title');
+    const user =  await AuthModule.getLoggedUser();
+    const userId = user.id;
+    await ManagementModule.getEventsListByUserId(userId);
+        events.subscribe(async events => {
+             if (mainTitle.textContent === 'Mis Eventos') {
+            eventList.innerHTML= '';
+            for (const event of events) {
+                const eventItem = eventsItemTemplate.content.cloneNode(true).children[0];
+                const nameInput = eventItem.querySelector('#eventName');
+                const dateInput = eventItem.querySelector('#event_date');
+                const timeInput = eventItem.querySelector('#event_time');
+                const guestsInput = eventItem.querySelector('#guests_byEvents');
+                const descriptionInput = eventItem.querySelector('#event_description');
+                const liElement = eventItem.querySelector('li');
+                
+                
+                eventItem.id = event.id
+                const guestsCount = await ManagementModule.getGuestsByEventId(eventItem.id)                 
+                nameInput.value = event.name;
+                dateInput.value = event.fecha_evento.split('T')[0];
+                timeInput.value = event.hora_evento;
+                guestsInput.value = guestsCount.count;
+                descriptionInput.value = event.description;
+                
+                eventList.append(eventItem);
+                
+            }
+         }
+        });
+
+        eventList.addEventListener('click', async (e) => {
+           const editBtn = e.target.closest('.edit-btn');
+           const guestsBtn = e.target.closest('.guests-btn');
+            const liElement = e.target.closest('li');
+            const deleteBtn = e.target.closest('.delete-btn');
+
+           if (editBtn) {
+            
+            const nameInput = liElement.querySelector('#eventName');
+            const dateInput = liElement.querySelector('#event_date');
+            const timeInput = liElement.querySelector('#event_time');
+            const descriptionInput = liElement.querySelector('#event_description');
+            const status = liElement.dataset.status;
+            if (status === 'inputs-deshabilitados') {
+                nameInput.removeAttribute('readonly');
+                dateInput.removeAttribute('readonly');
+                timeInput.removeAttribute('readonly');
+                descriptionInput.removeAttribute('readonly');
+                liElement.dataset.status = 'inputs-habilitados';
+                nameInput.classList.add('outline', 'outline-solid', 'outline-black');
+                dateInput.classList.add('outline', 'outline-solid', 'outline-cyan-500');
+                timeInput.classList.add('outline', 'outline-solid', 'outline-cyan-500');
+                descriptionInput.classList.add('outline', 'outline-solid', 'outline-cyan-500');
+
+            }
+            if (status === 'inputs-habilitados') {
+                nameInput.setAttribute('readonly', true);
+                dateInput.setAttribute('readonly', true);
+                timeInput.setAttribute('readonly', true);
+                descriptionInput.setAttribute('readonly', true);
+                liElement.dataset.status = 'inputs-deshabilitados';
+
+                nameInput.classList.remove('outline', 'outline-solid', 'outline-black');
+                dateInput.classList.remove('outline', 'outline-solid', 'outline-cyan-500');
+                timeInput.classList.remove('outline', 'outline-solid', 'outline-cyan-500');
+                descriptionInput.classList.remove('outline', 'outline-solid', 'outline-cyan-500');
+                
+                const eventToUpdate = {
+                    id: liElement.id,
+                    name: nameInput.value,
+                    description: descriptionInput.value,
+                    fecha_evento: dateInput.value,
+                    hora_evento: timeInput.value.split(':')[0] + ':' + timeInput.value.split(':')[1],
+                    
+                };
+                
+                
+                await ManagementModule.updateEvents(eventToUpdate)
+            }
+           }
+           if (deleteBtn) {
+             const eventId = liElement.id;
+            await ManagementModule.deleteEventById(eventId); 
+            liElement.remove();
+           }
+
+           if (guestsBtn) {
+               const liElement = guestsBtn.closest('li');
+               const eventId = liElement.id;
+               const eventName = liElement.querySelector('#eventName').value;
+
+               
+               await ManagementModule.getGuestsListByEventId(eventId);
+               const guestList = guests.get(); 
+
+               
+               eventList.innerHTML = '';
+               mainTitle.textContent = `Invitados de: ${eventName}`;
+
+               
+               const backButton = document.createElement('button');
+               backButton.textContent = 'Volver a Eventos';
+               backButton.className = 'bg-pink-500 text-white py-2 px-4 rounded-md hover:bg-pink-600 transition-all duration-200 ease-in mb-4 self-start';
+               backButton.onclick = async () => {
+                   mainTitle.textContent = 'Mis Eventos';
+                   
+                   await ManagementModule.getEventsListByUserId(userId);
+               };
+               eventList.append(backButton);
+
+               
+               for (const guest of guestList) {
+                    const guestItem = guestsItemTemplate.content.cloneNode(true).children[0];
+                    guestItem.id = guest.id;
+                    guestItem.querySelector('#guest_name').value = guest.guest_name;
+                    guestItem.querySelector('#guest_email').value = guest.guest_email;
+                    guestItem.querySelector('#fecha_envio').value = guest.fecha_envio.split('T')[0];
+                    guestItem.querySelector('#indications').value = guest.indications;
+                    
+                    const estadoInput = guestItem.querySelector('#estado_asistencia');
+                    estadoInput.value = guest.estado_asistencia ? "Confirmado" : "Pendiente";
+                    estadoInput.className = `w-full rounded-md p-2 outline-none text-center font-bold ${guest.estado_asistencia ? "bg-green-200 text-green-800" : "bg-yellow-200 text-yellow-800"}`;
+                    
+                    eventList.append(guestItem);
+               }
+
+           }
+            const guestEditBtn = e.target.closest('.edit-btn-guest');
+           if (guestEditBtn && liElement.querySelector('#guest_name')) { 
+        const status = liElement.dataset.status;
+        const guestNameInput = liElement.querySelector('#guest_name');
+        const indicationsInput = liElement.querySelector('#indications');
+        
+      
+        
+    
+        
+
+        if (status === 'inputs-deshabilitados') {
+            guestNameInput.removeAttribute('readonly');
+            indicationsInput.removeAttribute('readonly');
+            liElement.dataset.status = 'inputs-habilitados';
+            guestNameInput.classList.add('outline', 'outline-solid', 'outline-black');
+            indicationsInput.classList.add('outline', 'outline-solid', 'outline-cyan-500');
+        } else if (status === 'inputs-habilitados') {
+            guestNameInput.setAttribute('readonly', true);
+            indicationsInput.setAttribute('readonly', true);
+            
+            liElement.dataset.status = 'inputs-deshabilitados';
+            guestNameInput.classList.remove('outline', 'outline-solid', 'outline-black');
+            indicationsInput.classList.remove('outline', 'outline-solid', 'outline-cyan-500');
+
+            const guestToUpdate = {
+                id: liElement.id,
+                guest_name: guestNameInput.value,
+                indications: indicationsInput.value,
+            };
+
+            await ManagementModule.updateGuest(guestToUpdate); 
+        }
+    }
+
+            const deleteBtnGuest = e.target.closest('.delete-btn-guest');
+            if (deleteBtnGuest && liElement.querySelector('#guest_name')) { 
+            const guestId = liElement.id;
+            
+            
+            await ManagementModule.deleteGuestById(guestId); 
+            liElement.remove(); 
+        
+    }
+
+          
+        })
+    
+    
+
+    
+
+    const eventsbyUser = await ManagementModule.getGuestsByUserId(userId);
+    
+    
+    
+   
+    
+    
+   
+  
+  
+
+
+
+</script>

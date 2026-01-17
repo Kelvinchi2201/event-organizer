@@ -1,0 +1,9 @@
+PATCH http://localhost:3000/api/events/2
+Content-Type: application/json
+
+{
+    "name": "evento espe",
+    "description": "prueba 654",
+    "fecha_evento": "2025-12-31",
+    "hora_evento": "02:30"
+}

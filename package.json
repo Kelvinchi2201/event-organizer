@@ -1,0 +1,25 @@
+{
+  "name": "proyecto-final",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+   "client:dev": "npm run dev --workspace=client",
+   "server:dev": "npm run dev --workspace=server",
+   "server:prod": "npm run prod --workspace=server",
+   "start": "npm run start --workspace=server",
+   "build:client":"rm -rf apps/backend/dist && npm run build --workspace=client && cp -r apps/frontend/dist apps/backend/dist"
+  },
+  "workspaces":["apps/*"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kelvinchi2201/event-organizer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kelvinchi2201/event-organizer/issues"
+  },
+  "homepage": "https://github.com/Kelvinchi2201/event-organizer#readme",
+  "description": ""
+}

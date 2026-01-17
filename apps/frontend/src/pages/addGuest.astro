@@ -1,0 +1,20 @@
+---
+import AuthProtected from "../features/auth/AuthProtected.astro"
+import CreateGuestForm from "../features/Guest/CreateGuestForm.astro"
+import GuestList from "../features/Guest/GuestList.astro"
+import Layout from "../layouts/Layout.astro"
+---
+
+
+<Layout title="Crear Lista de Invitados">
+    <AuthProtected>
+        <main class="h-[calc(100vh-4rem)] flex overflow-y-scroll flex-col gap-8 p-4 max-w-[90rem] mx-auto items-center ">
+            <CreateGuestForm/>
+            <GuestList/>
+       
+    </main>
+    </AuthProtected>
+    
+</Layout>
+
+

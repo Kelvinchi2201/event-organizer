@@ -1,0 +1,39 @@
+---
+const {event_name, event_date, guests_byEvents, event_description, Id, event_time, portada_url} = Astro.props
+---
+
+<li id={Id} class="flex flex-col gap-4 p-4 border border-pink-700 rounded-md" data-status="inputs-deshabilitados" data-portada-url={portada_url}>
+    
+    <div class="flex flex-col gap-2">
+      <label for="eventName" class="text-sm text-gray-600">Nombre del Evento:</label>
+      <input id="eventName" class="w-full bg-pink-500 rounded-md p-2 text-white font-bold outline-none" type="text" value={event_name} readonly>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-4">
+      <div class="flex flex-col gap-2 w-full md:w-1/2">
+        <label for="event_date" class="text-sm text-gray-600">Fecha del evento:</label>
+        <input id="event_date" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="date" value={event_date} readonly>
+      </div>
+      <div class="flex flex-col gap-2 w-full md:w-1/2">
+        <label for="event_time" class="text-sm text-gray-600">Hora:</label>
+        <input id="event_time" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="time" value={event_time} readonly>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+        <label for="guests_byEvents" class="text-sm text-gray-600">Invitados:</label>
+        <input id="guests_byEvents" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={guests_byEvents} readonly>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="event_description" class="text-sm text-gray-600">Descripcion:</label>
+      <input id="event_description" class="w-full bg-gray-100 rounded-md p-2 outline-none" type="text" value={event_description} readonly>
+    </div>
+    
+    <div class="flex flex-col md:flex-row gap-2 mt-2">
+      <button class="edit-btn bg-gray-200 text-gray-800 py-2 px-4 text-center font-medium text-sm rounded-md hover:bg-gray-300 transition-all duration-200 ease-in w-full">Editar Evento</button>
+      <button class="guests-btn bg-gray-200 text-gray-800 py-2 px-4 no-underline text-center font-medium text-sm rounded-md hover:bg-gray-300 transition-all duration-200 ease-in w-full">Ver Invitados</button>
+      <button class="delete-btn bg-red-200 text-red-800 py-2 px-4 no-underline text-center font-medium text-sm rounded-md hover:bg-red-300 transition-all duration-200 ease-in w-full">Eliminar Evento</button>
+    </div>
+
+</li>

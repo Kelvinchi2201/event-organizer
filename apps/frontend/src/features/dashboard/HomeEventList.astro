@@ -1,0 +1,72 @@
+---
+import EventsItem from "./EventsItem.astro"
+---
+
+<div id="eventos-div" class="flex flex-col justify-center items-center gap-4 h-full w-full p-4">
+<h1 class="flex text-pink-700 text-4xl md:text-6xl lg:text-7xl">Eventos</h1>
+<ul id="dashboard-list" class="m-0 p-2 list-none overflow-scroll flex flex-col gap-4 rounded-md border border-gray-300 h-full md:w-[50%] lg:w-[50%]">
+ <template id="events-item-template">
+    <EventsItem
+    event_name="Fiesta de fin de año"
+    event_date="31-12-2025"
+    event_time="16:30"
+    guests_byEvents="16"
+    event_description="sera una fiesta de fin de año"
+    portada_url="" />
+ </template>
+</ul>
+</div>
+ 
+
+
+
+<script>
+    // @ts-nocheck
+    import homeModule, { events } from "./home.module";
+    import AuthModule from "../auth/auth.module"; 
+    const eventsItemTemplate = document.querySelector('#events-item-template');
+    const eventList = document.querySelector('#dashboard-list');
+    await homeModule.getEventsListForHome();
+
+   events.subscribe(async events => { 
+    eventList.innerHTML = '';
+    for (const event of events) {
+        const eventItem = eventsItemTemplate.content.cloneNode(true).children[0];
+        
+        // Selecciona los elementos de input como ya lo hacías
+        const nameInput = eventItem.querySelector('input:nth-child(1)');
+        const dateInput = eventItem.querySelector('input:nth-child(3)');
+        const timeInput = eventItem.querySelector('input:nth-child(5)'); 
+        const guestsInput = eventItem.querySelector('input:nth-child(7)');
+        const descriptionInput = eventItem.querySelector('input:nth-child(9)');
+        
+        eventItem.id = event.id;
+
+        const guestsCount = await homeModule.getGuestsByEventId(eventItem.id); 
+        
+        // Asigna los valores a los inputs
+        nameInput.value = event.name;
+        dateInput.value = event.fecha_evento.split('T')[0];
+        timeInput.value = event.hora_evento;
+        guestsInput.value = guestsCount.count;
+        descriptionInput.value = event.description; 
+
+        // --- NUEVA LÓGICA PARA LA IMAGEN ---
+        // Si el evento tiene una portada_url, crea el elemento <img> y añádelo.
+        if (event.portada_url) {
+            const imgElement = document.createElement('img');
+            imgElement.src = event.portada_url;
+            imgElement.alt = `Portada de ${event.name}`;
+            imgElement.className = "w-full h-48 object-cover rounded-t-md";
+            
+            // Inserta la imagen al principio del 'eventItem' (dentro del <li>)
+            eventItem.prepend(imgElement);
+        }
+        
+        eventList.append(eventItem);
+    }
+});
+    
+    const user = await AuthModule.getLoggedUser();
+    const userId = user.id; 
+</script>

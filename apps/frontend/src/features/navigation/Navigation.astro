@@ -1,0 +1,78 @@
+<nav class="bg-pink-700 fixed top-0 left-0 right-0 z-50">
+    <div class="max-w-7xl mx-auto h-16 flex items-center justify-between pr-8 pl-8">
+        <div class="flex items-center gap-2 h-full">
+            <h2 class="text-sm md:text-2xl text-white font-bold">EOrganizer</h2>
+        </div>
+
+        <div class="flex items-center gap-4 ">
+            <div id="menu-items" class="absolute top-16 left-0 w-full bg-pink-700 p-4 flex flex-col gap-4 md:relative md:top-auto md:left-auto md:w-auto md:bg-transparent md:p-0 md:flex-row md:flex md:items-center">
+    
+            </div>
+
+            <div id="nav-user-container">
+                <p id="nav-user-name" class='text-white text-xs md:text-sm font-bold '></p>
+            </div>
+
+            <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center p-1 rounded-md text-white">
+                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 
+0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<script>
+    // @ts-nocheck
+    import { getLinks } from "./navigation.utils";
+    import { user } from "../auth/auth.module";
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuItemsContainer = document.querySelector('#menu-items');
+        const navUserName = document.querySelector('#nav-user-name');
+        const mobileMenuBtn = document.querySelector('#mobile-menu-btn');
+        const pathname = location.pathname;
+        const links = getLinks(pathname);
+
+        // Limpia cualquier contenido anterior para evitar duplicados
+        menuItemsContainer.innerHTML = '';
+      
+        links.forEach(link => {
+            if (link.type === 'button') {
+                const btn = document.createElement('button');
+                btn.addEventListener('click', link.handler);
+                btn.setAttribute('class',  'inline-block bg-pink-600 text-white font-bold py-3 px-8 rounded-full text-sm hover:bg-pink-700 transition-all duration-300 ease-in-out transform hover:-translate-y-1 shadow-lg');
+    
+                btn.innerHTML = link.text;
+                menuItemsContainer.append(btn);
+            } else {
+                const a = document.createElement('a');
+                a.href = link.path;
+                a.setAttribute('class', 'inline-block bg-pink-600 text-white font-bold py-3 px-8 rounded-full text-sm hover:bg-pink-700 transition-all duration-300 ease-in-out transform hover:-translate-y-1 shadow-lg');
+                a.innerHTML = link.text;
+                menuItemsContainer.append(a);
+            }
+        });
+        user.subscribe(user => {
+            if (!user) {
+                navUserName.innerHTML = '';
+                return;
+            }
+            const userName = user.name;
+            navUserName.innerHTML = `Bienvenido ${userName}`;
+        
+        });
+
+        mobileMenuBtn.addEventListener('click', () => {
+            menuItemsContainer.classList.toggle('hidden');
+        });
+    });
+</script>
+
+<style>
+    /* Estilos del menú móvil */
+    #menu-items:not(.md\:flex) {
+        display: none;
+    }
+</style>
