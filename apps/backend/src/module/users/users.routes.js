@@ -24,7 +24,7 @@ usersRouter.post('/', async (req, res) => {
     { expiresIn: '10m' },
   );
   await nodemailerService.sendMail({
-    from: process.env.EMAIL_USER,
+    from: `"E-Organizer" <${process.env.EMAIL_USER}>`,
     to: body.email,
     subject: 'Verifica tu correo',
     html: `<!DOCTYPE html>
