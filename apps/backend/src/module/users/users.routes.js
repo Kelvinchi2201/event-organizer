@@ -5,6 +5,8 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import nodemailerService from '../../services/nodemailer.services.js';
 import { endpoint } from '../../config/endpoints.js';
+import { Resend } from 'resend';
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 
 const usersRouter = express.Router();
@@ -23,8 +25,8 @@ usersRouter.post('/', async (req, res) => {
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: '10m' },
   );
-  await nodemailerService.sendMail({
-    from: `"E-Organizer" <${process.env.EMAIL_USER}>`,
+  await resend.emails.send({
+    from: 'E-Organizer <no-reply@eorganizer.lat>',
     to: body.email,
     subject: 'Verifica tu correo',
     html: `<!DOCTYPE html>
