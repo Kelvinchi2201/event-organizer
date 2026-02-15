@@ -23,8 +23,5 @@
     "url": "https://github.com/Kelvinchi2201/event-organizer/issues"
   },
   "homepage": "https://github.com/Kelvinchi2201/event-organizer#readme",
-  "description": "",
-  "dependencies": {
-    "resend": "^6.9.2"
-  }
+  "description": ""
 }
