@@ -1,4 +1,4 @@
-//TODO: iniciar el modulo de invitaciones 
+
 import db from '../../db/index.js';
 import { ErrorWithStatus } from '../../utils/errorTypes.js';
 
