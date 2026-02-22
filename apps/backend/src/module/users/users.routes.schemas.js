@@ -21,3 +21,14 @@ export const verifyUserRouteSchema = {
   }),
   queries: z.object({}),
 };
+
+export const changePasswordRouteSchema = {
+  params: z.object({}),
+  body: z.object({
+    token: z.jwt('Tiene que ser un token valido'),
+    password: z
+      .string()
+      .regex(PASSWORD_REGEX, 'Mínimo 6 caracteres, 1 letra, 1 número y 1 símbolo.'),
+  }),
+  queries: z.object({}),
+};
