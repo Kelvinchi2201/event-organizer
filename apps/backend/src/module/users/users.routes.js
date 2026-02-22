@@ -77,6 +77,9 @@ usersRouter.patch('/verify', async (req, res) => {
   res.status(200).json({ message: 'Su correo ha sido verificado exitosamente' });
 });
 
+//TODO IMPLEMENTAR RUTA PARA CAMBIAR CONTRASEÑA
+usersRouter.patch('/changePassword', async (req, res) => {});
+
 
 export default usersRouter;
 
