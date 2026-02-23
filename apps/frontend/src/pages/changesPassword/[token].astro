@@ -66,8 +66,8 @@ export const prerender = false;
   import ky from 'ky';
   import { BACK_ENDPOINT } from '../../config/endpoints';
   const verifyText = document.querySelector('#verify-text');
-  const token = window.location.pathname.split('/verifyGuest/')[1];
-  const BASE_PATH = `${BACK_ENDPOINT}/api/guest/verifyGuest`;
+  const token = window.location.pathname.split('/change-password/')[1];
+  const BASE_PATH = `${BACK_ENDPOINT}/api/guest/change-password`;
  // try {
    // const data = await ky.patch(BASE_PATH, {json: {token}}).json();
     //console.log(data);
@@ -105,7 +105,7 @@ export const prerender = false;
   };
   
   function validateForm() {
-    const { isEmailValid, isPasswordValid, doPasswordsMatch, isNameValid } = validationState;
+    const { isPasswordValid, doPasswordsMatch } = validationState;
     // Enable the button only if all validation checks pass
     btn.disabled = !isPasswordValid || !doPasswordsMatch 
   };
@@ -132,8 +132,8 @@ inputPass.addEventListener('input', () => {
  //TODO HACERLA LOGICA PARA QUE SE CAMBIEN LA CONTRASEÑA CON EL TOKEN, HACER LA RUTA EN EL BACKEND Y PROBARLA ANTES DE PASARLA AL FRONTEND
  form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    const { isEmailValid, isPasswordValid, doPasswordsMatch } = validationState;
-    if (!isEmailValid || !isPasswordValid || !doPasswordsMatch) return;});
+    const { isPasswordValid, doPasswordsMatch } = validationState;
+    if ( !isPasswordValid || !doPasswordsMatch) return;});
 
 
   
