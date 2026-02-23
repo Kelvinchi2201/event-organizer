@@ -78,7 +78,7 @@ usersRouter.patch('/verify', async (req, res) => {
 });
 
 //TODO IMPLEMENTAR RUTA PARA CAMBIAR CONTRASEÑA
-usersRouter.patch('/changePassword', async (req, res) => {});
+usersRouter.patch('/changesPassword', async (req, res) => {});
 
 
 export default usersRouter;

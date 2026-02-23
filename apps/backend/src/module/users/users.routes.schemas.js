@@ -22,7 +22,7 @@ export const verifyUserRouteSchema = {
   queries: z.object({}),
 };
 
-export const changePasswordRouteSchema = {
+export const changesPasswordRouteSchema = {
   params: z.object({}),
   body: z.object({
     token: z.jwt('Tiene que ser un token valido'),

@@ -67,7 +67,7 @@ export const prerender = false;
   import { BACK_ENDPOINT } from '../../config/endpoints';
   const verifyText = document.querySelector('#verify-text');
   const token = window.location.pathname.split('/changesPassword/')[1];
-  const BASE_PATH = `${BACK_ENDPOINT}/api/guest/change-password`;
+  const BASE_PATH = `${BACK_ENDPOINT}/api/users/changesPassword`;
  // try {
    // const data = await ky.patch(BASE_PATH, {json: {token}}).json();
     //console.log(data);
