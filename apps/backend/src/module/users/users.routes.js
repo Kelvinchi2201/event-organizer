@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUserRouteSchema, verifyUserRouteSchema } from './users.routes.schemas.js';
+import { changesPasswordRouteSchema, createUserRouteSchema, verifyUserRouteSchema } from './users.routes.schemas.js';
 import usersRepository from './users.repository.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -77,8 +77,50 @@ usersRouter.patch('/verify', async (req, res) => {
   res.status(200).json({ message: 'Su correo ha sido verificado exitosamente' });
 });
 
-//TODO IMPLEMENTAR RUTA PARA CAMBIAR CONTRASEÑA
-usersRouter.patch('/changesPassword', async (req, res) => {});
+
+usersRouter.patch('/changesPassword', async (req, res) => {
+  const body = changesPasswordRouteSchema.body.parse(req.body);
+  const decodedToken = jwt.verify(body.token, process.env.REFRESH_TOKEN_SECRET);
+  const passwordHash = await bcrypt.hash(body.password, 10);
+  await usersRepository.changePassword({id: decodedToken.id, passwordHash});
+  res.status(200).json({ message: 'su contraseña ha sido cambiada exitosamente'});
+});
+
+usersRouter.post('/forgotPassword', async (req, res) => {
+  const body = forgotPasswordRouteSchema.body.parse(req.body);
+
+  const user = await usersRepository.findByEmail({ email: body.email });
+  
+  if (!user) {
+    return res.status(200).json({ message: 'Si el correo existe, se enviará un enlace de recuperación.' });
+  }
+
+  const token = jwt.sign(
+    { id: user.id, email: user.email },
+    process.env.REFRESH_TOKEN_SECRET,
+    { expiresIn: '15m' },
+  );
+
+  await resend.emails.send({
+    from: 'E-Organizer <no-reply@eorganizer.lat>',
+    to: body.email,
+    subject: 'Recupera tu contraseña',
+    html: `<!DOCTYPE html>
+      <html lang="es">
+      <body>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;">
+          <h2>Recuperación de contraseña</h2>
+          <p>Has solicitado restablecer tu contraseña. Haz clic en el botón de abajo para cambiarla:</p>
+          <a href="http://localhost:4321/changesPassword/${token}" style="background-color: #50C878; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Restablecer Contraseña</a>
+          <p>Si no fuiste tú, ignora este correo. Este enlace expirará en 15 minutos.</p>
+        </div>
+      </body>
+      </html>`,
+  });
+
+  res.status(200).json({ message: 'Si el correo existe, se enviará un enlace de recuperación.' });
+});
+
 
 
 export default usersRouter;

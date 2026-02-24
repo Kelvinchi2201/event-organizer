@@ -32,3 +32,11 @@ export const changesPasswordRouteSchema = {
   }),
   queries: z.object({}),
 };
+
+export const forgotPasswordRouteSchema = {
+  params: z.object({}),
+  body: z.object({
+    email: z.email('Tiene que ser un email válido.'),
+  }),
+  queries: z.object({}),
+};
