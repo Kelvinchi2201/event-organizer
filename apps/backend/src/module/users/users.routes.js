@@ -111,7 +111,7 @@ usersRouter.post('/forgotPassword', async (req, res) => {
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;">
           <h2>Recuperación de contraseña</h2>
           <p>Has solicitado restablecer tu contraseña. Haz clic en el botón de abajo para cambiarla:</p>
-          <a href="http://localhost:4321/changesPassword/${token}" style="background-color: #50C878; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Restablecer Contraseña</a>
+          <a href="${endpoint}/changesPassword/${token}" style="background-color: #50C878; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Restablecer Contraseña</a>
           <p>Si no fuiste tú, ignora este correo. Este enlace expirará en 15 minutos.</p>
         </div>
       </body>
