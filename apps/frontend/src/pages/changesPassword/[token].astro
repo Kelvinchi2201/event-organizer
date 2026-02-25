@@ -65,6 +65,7 @@ export const prerender = false;
   // @ts-nocheck
   import ky from 'ky';
   import { BACK_ENDPOINT } from '../../config/endpoints';
+   import { createNotification } from "../../features/notifications/notificiation";
   const verifyText = document.querySelector('#verify-text');
   const token = window.location.pathname.split('/changesPassword/')[1];
   const BASE_PATH = `${BACK_ENDPOINT}/api/users/changesPassword`;
@@ -129,11 +130,49 @@ inputPass.addEventListener('input', () => {
     validateForm();
   });
 
- //TODO HACERLA LOGICA PARA QUE SE CAMBIEN LA CONTRASEÑA CON EL TOKEN, HACER LA RUTA EN EL BACKEND Y PROBARLA ANTES DE PASARLA AL FRONTEND
+ 
  form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const { isPasswordValid, doPasswordsMatch } = validationState;
-    if ( !isPasswordValid || !doPasswordsMatch) return;});
+   if (!isPasswordValid || !doPasswordsMatch) {
+    alert("Por favor, verifica que la contraseña cumpla los requisitos.");
+    return;
+  }
+
+  try {
+    
+    btn.disabled = true;
+    btn.innerText = 'Cambiando contraseña...';
+
+    const response = await ky.patch(BASE_PATH, {
+      json: { 
+        token,
+        password: inputPass.value 
+      }
+    }).json();
+
+     createNotification({ 
+        title: 'Contraseña cambiada!', 
+        description: 'Se ha cambiado la contraseña correctamente', 
+        type: 'success'
+      });
+   setTimeout(() => {
+        window.location.href = '/login';
+      }, 2500);
+  } catch (error) {
+    btn.disabled = false;
+    btn.innerText = 'Cambiar contraseña';
+    
+    console.error(error);
+    createNotification({ 
+        title: 'Ups! Hubo un error', 
+        description: errorData?.error ?? 'Sin mensaje', 
+        type: 'error'
+      });
+  }
+});
+     
+    
 
 
   

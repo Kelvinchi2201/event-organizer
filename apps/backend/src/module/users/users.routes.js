@@ -1,5 +1,5 @@
 import express from 'express';
-import { changesPasswordRouteSchema, createUserRouteSchema, verifyUserRouteSchema } from './users.routes.schemas.js';
+import { changesPasswordRouteSchema, createUserRouteSchema, verifyUserRouteSchema, forgotPasswordRouteSchema } from './users.routes.schemas.js';
 import usersRepository from './users.repository.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
