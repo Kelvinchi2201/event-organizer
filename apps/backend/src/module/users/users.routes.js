@@ -36,38 +36,42 @@ usersRouter.post('/', async (req, res) => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Verificación de Correo Electrónico</title>
       <style>
-        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; }
-        .container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .header { background-color: #4A90E2; color: #ffffff; padding: 40px; text-align: center; }
-        .header h1 { margin: 0; font-size: 28px; }
-        .content { padding: 40px 30px; text-align: center; color: #333333; line-height: 1.6; }
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f9fafb; }
+        .container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e5e7eb; }
+        .header { background-color: #ffffff; padding: 40px; text-align: center; border-bottom: 1px solid #f3f4f6; }
+        .header h1 { margin: 0; font-size: 28px; color: #1f2937; }
+        .header span { color: #db2777; }
+        .content { padding: 40px 30px; text-align: center; color: #4b5563; line-height: 1.6; }
         .content p { font-size: 18px; }
         .button-container { margin-top: 30px; }
-        .button { background-color: #50C878; color: #ffffff; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px; display: inline-block; }
-        .footer { background-color: #f4f4f4; padding: 20px; text-align: center; font-size: 12px; color: #777777; }
+        .button { background-color: #db2777; color: #ffffff; padding: 15px 30px; text-decoration: none; border-radius: 9999px; font-weight: bold; font-size: 16px; display: inline-block; }
+        .footer { background-color: #f9fafb; padding: 20px; text-align: center; font-size: 12px; color: #9ca3af; }
       </style>
       </head>
       <body>
         <div class="container">
           <div class="header">
-            <h1>¡Bienvenido!</h1>
+            <h1><span>E</span>Organizer</h1>
           </div>
           <div class="content">
             <p>Gracias por registrarte. Por favor, haz clic en el siguiente botón para verificar tu correo electrónico y activar tu cuenta.</p>
             <div class="button-container">
-              <a href="${endpoint}/verify/${token}" class="button">Verificar Correo</a>
+              <a href="${endpoint}/verify/${token}" 
+   style="background-color: #db2777; color: #ffffff !important; padding: 15px 30px; text-decoration: none; border-radius: 9999px; font-weight: bold; font-size: 16px; display: inline-block;">
+   Verificar Correo
+</a>
             </div>
-            <p style="font-size: 14px; margin-top: 30px; color: #888;">Si no te registraste, puedes ignorar este correo.</p>
+            <p style="font-size: 14px; margin-top: 30px; color: #9ca3af;">Si no te registraste, puedes ignorar este correo.</p>
           </div>
           <div class="footer">
-            <p>Nombre de la Aplicación</p>
+            <p>&copy; 2026 EOrganizer - Gestión de eventos sencilla</p>
           </div>
         </div>
       </body>
       </html>`,
-  });
+});
 
-  res.sendStatus(200);
+res.sendStatus(200);
 });
 
 usersRouter.patch('/verify', async (req, res) => {
@@ -101,24 +105,39 @@ usersRouter.post('/forgotPassword', async (req, res) => {
     { expiresIn: '15m' },
   );
 
-  await resend.emails.send({
+ await resend.emails.send({
     from: 'E-Organizer <no-reply@eorganizer.lat>',
     to: body.email,
     subject: 'Recupera tu contraseña',
     html: `<!DOCTYPE html>
       <html lang="es">
+      <head>
+      <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f9fafb; }
+        .container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e5e7eb; text-align: center; }
+        .header { padding: 30px; border-bottom: 1px solid #f3f4f6; }
+        .header h1 { margin: 0; font-size: 24px; color: #1f2937; }
+        .header span { color: #db2777; }
+        .content { padding: 40px 30px; color: #4b5563; line-height: 1.6; }
+        .button { background-color: #db2777; color: #ffffff; padding: 12px 25px; text-decoration: none; border-radius: 9999px; font-weight: bold; display: inline-block; margin: 20px 0; }
+        .footer { font-size: 12px; color: #9ca3af; margin-top: 20px; }
+      </style>
+      </head>
       <body>
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;">
-          <h2>Recuperación de contraseña</h2>
-          <p>Has solicitado restablecer tu contraseña. Haz clic en el botón de abajo para cambiarla:</p>
-          <a href="${endpoint}/changesPassword/${token}" style="background-color: #50C878; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Restablecer Contraseña</a>
-          <p>Si no fuiste tú, ignora este correo. Este enlace expirará en 15 minutos.</p>
+        <div class="container">
+          <div class="header">
+            <h1><span>E</span>Organizer</h1>
+          </div>
+          <div class="content">
+            <h2 style="color: #1f2937;">Recuperación de contraseña</h2>
+            <p>Has solicitado restablecer tu contraseña. Haz clic en el botón de abajo para cambiarla:</p>
+            <a href="${endpoint}/changesPassword/${token}"  style="background-color: #db2777; color: #ffffff !important; padding: 15px 30px; text-decoration: none; border-radius: 9999px; font-weight: bold; font-size: 16px; display: inline-block;">Restablecer Contraseña</a>
+            <p style="font-size: 14px; color: #9ca3af;">Si no fuiste tú, ignora este correo. Este enlace expirará en 15 minutos.</p>
+          </div>
         </div>
       </body>
       </html>`,
-  });
-
-  res.status(200).json({ message: 'Si el correo existe, se enviará un enlace de recuperación.' });
+});
 });
 
 
