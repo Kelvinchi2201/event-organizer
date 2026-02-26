@@ -9,6 +9,7 @@
       "prod": "cross-env NODE_ENV=prod node --watch -r dotenv/config index.js",
       "tables:create:dev": "cross-env NODE_ENV=dev node -r dotenv/config ./src/db/tables.js dev",
       "tables:create:prod": "cross-env NODE_ENV=prod node -r dotenv/config ./src/db/tables.js dev"
+      
    },
    "author": "",
    "license": "ISC",

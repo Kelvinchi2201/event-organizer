@@ -62,6 +62,38 @@ const createGuestsTable = async () => {
     console.log('Tabla invitados creada');
 };
 
+const createCommentsTable = async () => {
+  try {
+    await db.query('DROP TABLE IF EXISTS comentarios CASCADE');
+    
+    await db.query(`
+      CREATE TABLE comentarios (
+        id SERIAL PRIMARY KEY,
+        contenido TEXT NOT NULL,
+        fecha_creacion TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+        usuarios_id INTEGER NOT NULL,
+        events_id INTEGER NOT NULL,
+
+        CONSTRAINT fk_usuario_comentario
+            FOREIGN KEY(usuarios_id)
+            REFERENCES usuarios(id)
+            ON DELETE CASCADE,
+
+        CONSTRAINT fk_evento_comentario
+            FOREIGN KEY(events_id)
+            REFERENCES events(id)
+            ON DELETE CASCADE
+      )
+    `);
+    
+    console.log('Tabla de comentarios creada exitosamente');
+  } catch (error) {
+    console.error('Error al crear la tabla de comentarios:', error);
+  } finally {
+    process.exit();
+  }
+};
+
 
 
 
@@ -72,6 +104,7 @@ const createTables = async () => {
     await createUsersTable();
     await createEventsTable();
     await createGuestsTable();
+    await createCommentsTable();
   
 
     console.log('Todas las tablas fueron creadas correctamente');
