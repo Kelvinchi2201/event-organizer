@@ -51,12 +51,8 @@ export const getLinks = (pathname) => {
       }
     });
     // Se ha añadido la propiedad 'type' para mayor claridad.
-    links.push({type: 'links', text: 'mis eventos', path:'/eventManagement'});
-  } else if (pathname === '/login' || pathname === '/registro') {
-    // Se ha añadido la propiedad 'type' para mayor claridad.
-    links.push({type: 'link', text: 'Inicia sesion', path:'/login'});
-    links.push({type: 'link', text: 'Registrate', path:'/registro'});
-  } else if (pathname.startsWith('/eventManagement')) {
+    links.push({type: 'link', text: 'mis eventos', path:'/eventManagement'});
+  }  else if (pathname.startsWith('/eventManagement')) {
     links.push({
       type: 'button', 
       text: 'Cerrar sesion', 
@@ -65,15 +61,19 @@ export const getLinks = (pathname) => {
         location.replace('/');
       }
     });
-    // Se ha añadido la propiedad 'type' para mayor claridad.
+   
   } else if (pathname.startsWith('/login')) {
     links.push({type: 'link', text: 'home', path: '/'});
     links.push({type: 'link', text: 'registro', path: '/registro'});
-    // Se ha añadido la propiedad 'type' para mayor claridad.
+    
   } else if (pathname.startsWith('/registro')) {
     links.push({type: 'link', text: 'home', path: '/'});
     links.push({type: 'link', text: 'login', path: '/login'});
-    // Se ha añadido la propiedad 'type' para mayor claridad.
+    
+  } else if (pathname.startsWith('/recoverPassword')) {
+    links.push({type: 'link', text: 'home', path: '/'});
+    links.push({type: 'link', text: 'login', path: '/login'});
+
   }
   return links;
 };

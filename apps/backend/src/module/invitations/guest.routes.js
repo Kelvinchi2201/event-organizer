@@ -4,7 +4,8 @@ import guestRepository from './guest.repository.js';
 import jwt from 'jsonwebtoken';
 import nodemailerService from '../../services/nodemailer.services.js';
 import { endpoint } from '../../config/endpoints.js';
-
+import { Resend } from 'resend';
+const resend = new Resend(process.env.RESEND_API_KEY);
 const guestRouter = express.Router();
 
 guestRouter.get('/', async (req, res) => {
@@ -36,10 +37,10 @@ guestRouter.post('/', async (req, res) => {
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: '10m' },
   );
-  await nodemailerService.sendMail({
-    from: process.env.EMAIL_USER,
-    to: guest.guest_email,
-    subject: 'Verifica tu correo',
+  await resend.emails.send({
+    from: 'E-Organizer <no-reply@eorganizer.lat>',
+   to: guest.guest_email,
+    subject: 'Confirma tu asistencia',
     html: `
       <!DOCTYPE html>
       <html lang="es">
@@ -48,40 +49,45 @@ guestRouter.post('/', async (req, res) => {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Confirmación de Asistencia</title>
       <style>
-        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; }
-        .container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .header { background-color: #4A90E2; color: #ffffff; padding: 40px; text-align: center; }
-        .header h1 { margin: 0; font-size: 28px; }
-        .content { padding: 40px 30px; text-align: center; color: #333333; line-height: 1.6; }
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f9fafb; }
+        .container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e5e7eb; }
+        .header { background-color: #ffffff; padding: 40px; text-align: center; border-bottom: 1px solid #f3f4f6; }
+        .header h1 { margin: 0; font-size: 24px; color: #1f2937; }
+        .header span { color: #db2777; }
+        .content { padding: 40px 30px; text-align: center; color: #4b5563; line-height: 1.6; }
         .content p { font-size: 18px; }
-        .button-container { margin-top: 30px; }
-        .button { background-color: #50C878; color: #ffffff; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px; display: inline-block; }
-        .footer { background-color: #f4f4f4; padding: 20px; text-align: center; font-size: 12px; color: #777777; }
+        .footer { background-color: #f9fafb; padding: 20px; text-align: center; font-size: 12px; color: #9ca3af; }
       </style>
       </head>
       <body>
         <div class="container">
           <div class="header">
-            <h1>¡Felicidades! Invitación a ${guest.event_name}</h1>
+            <h1><span style="color: #db2777;">E</span>Organizer</h1>
           </div>
           <div class="content">
-            <p>Has sido invitado a nuestro evento. Por favor, haz clic en el siguiente botón para confirmar tu asistencia.</p>
-            ${guest.indications ? `<p><strong>Indicaciones especiales:</strong> ${guest.indications}</p>` : ''}
-            <div class="button-container">
-              <a href="${endpoint}/verifyGuest/${token}" class="button">Confirmar Asistencia</a>
+            <h2 style="color: #1f2937;">¡Felicidades!</h2>
+            <p>Has sido invitado al evento: <strong>${guest.event_name}</strong>. Por favor, confirma tu asistencia en el siguiente botón.</p>
+            
+            ${guest.indications ? `<p style="background-color: #f3f4f6; padding: 15px; border-radius: 8px; font-size: 15px;"><strong>Indicaciones:</strong> ${guest.indications}</p>` : ''}
+            
+            <div style="margin-top: 30px;">
+              <a href="${endpoint}/verifyGuest/${token}" 
+                 style="background-color: #db2777; color: #ffffff !important; padding: 15px 30px; text-decoration: none; border-radius: 9999px; font-weight: bold; font-size: 16px; display: inline-block;">
+                Confirmar Asistencia
+              </a>
             </div>
-            <p style="font-size: 14px; margin-top: 30px; color: #888;">Si no te registraste, puedes ignorar este correo.</p>
+            <p style="font-size: 14px; margin-top: 30px; color: #9ca3af;">Si no esperabas esta invitación, puedes ignorar este correo.</p>
           </div>
           <div class="footer">
-            <p>Nombre del Evento | Fecha | Lugar</p>
+            <p>${guest.event_name} | Gestionado con EOrganizer</p>
           </div>
         </div>
       </body>
       </html>
     `,
-  });
-}
-  res.sendStatus(200).json(newGuests);
+});
+  }
+res.status(200).json(newGuests);
 });
 
 guestRouter.patch('/verifyGuest', async (req, res) => {
