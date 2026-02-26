@@ -1,1 +1,0 @@
-import{k as r,B as n}from"./index.BXL97NTB.js";const t=document.querySelector("#verify-text"),s=window.location.pathname.split("/verifyGuest/")[1],a=`${n}/api/guest/verifyGuest`;try{const e=await r.patch(a,{json:{token:s}}).json();console.log(e),t.innerHTML=e.message}catch(e){const o=await e.response.json();t.innerHTML=o.error}
