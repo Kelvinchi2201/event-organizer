@@ -103,8 +103,8 @@ guestRouter.patch('/:id', async (req, res) => {
   const params = createIndicationsRouteSchema.params.parse(req.params);
   const addIndications = await guestRepository.updateGuestById(params.id, body);
     if (addIndications && addIndications.guest_email) {
-    await nodemailerService.sendMail({
-      from: process.env.EMAIL_USER,
+    await resend.emails.send({
+      from: 'E-Organizer <no-reply@eorganizer.lat>',
       to: addIndications.guest_email, 
       subject: 'Actualización de indicaciones para el evento',
       html: `

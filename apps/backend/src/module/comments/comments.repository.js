@@ -15,3 +15,31 @@ const addOneComment = async (payload) => {
     );
     return response.rows[0];
 };
+
+const deleteCommentById = async (id) => {
+    const response = await db.query(
+        `DELETE FROM comentarios
+        WHERE id = $1
+        RETURNING *
+        `,
+        [id]
+    );
+    return response.rows[0];
+};
+
+const updateCommentsById = async (id, payload) => {
+    const response = await db.query(
+        `UPDATE comentarios
+        SET contenido = $1
+        WHERE id = $2
+        RETURNING *
+        `,
+        [payload.contenido, id]
+    );
+    return response.rows[0];
+};
+
+const commentsRepository = { getAllComments, addOneComment, deleteCommentById, updateCommentsById};
+
+export default commentsRepository;
+
