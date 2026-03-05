@@ -21,6 +21,6 @@ export const deleteCommentsRouteSchema = {
 
 export const updateCommentsRouteSchema = {
   params: z.object({ id: commentsIdSchema }),
-  body: commentsIdSchema.omit({ id: true, creationDate: true, userId: true, eventId: true }),
+  body: commentsSchema.partial().omit({ id: true, creationDate: true, usuariosId: true, eventsId: true }),
   queries: z.object({})
-}
+};
