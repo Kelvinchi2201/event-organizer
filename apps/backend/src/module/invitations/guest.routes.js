@@ -105,7 +105,7 @@ guestRouter.patch('/:id', async (req, res) => {
     if (addIndications && addIndications.guest_email) {
     await nodemailerService.sendMail({
       from: process.env.EMAIL_USER,
-      to: addIndications.guest_email, // Usamos tu variable original
+      to: addIndications.guest_email, 
       subject: 'Actualización de indicaciones para el evento',
       html: `
         <!DOCTYPE html>
