@@ -18,4 +18,10 @@ commentsRouter.get('/', async (req, res) => {
 
 });
 
+commentsRouter.delete('/:id', async (req, res) => {
+    const params = deleteCommentsRouteSchema.params.parse(req.params);
+    const deletedComment = await commentsRepository.deleteCommentById(params.id);
+    res.status(200).json(deletedComment);
+});
+
 export default commentsRouter;
