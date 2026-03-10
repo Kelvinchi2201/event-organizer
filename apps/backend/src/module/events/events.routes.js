@@ -29,13 +29,10 @@ eventsRouter.get('/events/:usuarios_id', async (req, res, next) => {
 
 eventsRouter.post('/', upload.single('portada'), async (req, res, next) => {
   try {
-    // Aquí es donde multer ya ha procesado la solicitud y ha añadido los campos
-    // de texto del FormData a `req.body`.
-    // La validación de Zod ahora debe procesar este `req.body`
+  
     const body = createEventsRouteSchema.body.parse(req.body);
     
-    // El resto de tu lógica para subir a Supabase y guardar en la base de datos
-    // ya es correcta y no necesita cambios adicionales.
+    
     let portadaUrl = null;
 
     if (req.file) {

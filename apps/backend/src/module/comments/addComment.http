@@ -2,7 +2,7 @@ POST http://localhost:3000/api/comments
 Content-Type: application/json
 
 {
-  "contenido": "Probando mi primer comentario",
+  "contenido": "Probando mi segundo comentario",
   "usuariosId": 1,
   "eventsId": 1
 }

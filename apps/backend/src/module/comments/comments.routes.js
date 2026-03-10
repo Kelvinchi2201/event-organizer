@@ -12,4 +12,10 @@ commentsRouter.post('/', async (req, res) => {
     res.status(201).json(newComment);
 });
 
+commentsRouter.get('/', async (req, res) => {
+    const comments = await commentsRepository.getAllComments();
+    res.status(200).json(comments);
+
+});
+
 export default commentsRouter;
