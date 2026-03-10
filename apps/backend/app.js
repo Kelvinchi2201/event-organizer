@@ -9,6 +9,7 @@ import jwt from 'jsonwebtoken';
 import authRouter from './src/module/auth/auth.routes.js';
 import cookieParser from 'cookie-parser';
 import guestRouter from './src/module/invitations/guest.routes.js';
+import commentsRouter from './src/module/comments/comments.routes.js';
 import path from 'path';
 import { handler as ssrHandler } from './dist/server/entry.mjs';
 
@@ -25,6 +26,7 @@ app.use('/api/users', usersRouter);
 app.use('/api/events', eventsRouter);
 app.use('/api/guest', guestRouter)
 app.use('/api/auth', authRouter);
+app.use('/api/comments', commentsRouter);
 
 
 app.use((err, req, res, _next) => {
