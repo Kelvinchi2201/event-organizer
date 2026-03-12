@@ -24,4 +24,13 @@ commentsRouter.delete('/:id', async (req, res) => {
     res.status(200).json(deletedComment);
 });
 
+
+commentsRouter.patch('/:id', async (req, res) => {
+    const params = updateCommentsRouteSchema.params.parse(req.params);
+    const body = updateCommentsRouteSchema.body.parse(req.body);
+    const updatedComment = await commentsRepository.updateCommentsById(params.id, body);
+    res.status(200).json(updatedComment);
+});
+
+
 export default commentsRouter;
