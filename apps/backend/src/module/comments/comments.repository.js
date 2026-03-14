@@ -30,7 +30,7 @@ const deleteCommentById = async (id) => {
 const updateCommentsById = async (id, payload) => {
     const response = await db.query(
         `UPDATE comentarios
-        SET contenido = $1
+        SET contenido = $1, is_edited = true
         WHERE id = $2
         RETURNING *
         `,

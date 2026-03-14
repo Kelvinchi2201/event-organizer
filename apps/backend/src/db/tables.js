@@ -73,6 +73,7 @@ const createCommentsTable = async () => {
         fecha_creacion TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
         usuarios_id INTEGER NOT NULL,
         events_id INTEGER NOT NULL,
+        is_edited BOOLEAN DEFAULT FALSE,
 
         CONSTRAINT fk_usuario_comentario
             FOREIGN KEY(usuarios_id)
