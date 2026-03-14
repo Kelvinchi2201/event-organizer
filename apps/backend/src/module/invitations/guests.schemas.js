@@ -8,6 +8,5 @@ export const guestSchema = z.object({
     events_id: z.number(),
     guest_email: z.email("tiene que ser un email valido."),
     indications: z.string().optional(),
-    // Añadimos la nueva propiedad del nombre del evento
     event_name: z.string().optional()
 });

@@ -48,7 +48,6 @@ const updateEventsById = async (id, payload) => {
     id
   ];
 
-  // Agrega la portada solo si se proporciona en el payload
   if (payload.portada_url !== undefined) {
     query = `
       UPDATE events
