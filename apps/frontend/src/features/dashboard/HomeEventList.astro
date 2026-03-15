@@ -28,6 +28,8 @@ import EventsItem from "./EventsItem.astro"
     const eventList = document.querySelector('#dashboard-list');
     await homeModule.getEventsListForHome();
 
+    
+
    events.subscribe(async events => { 
     eventList.innerHTML = '';
     for (const event of events) {
@@ -66,7 +68,18 @@ import EventsItem from "./EventsItem.astro"
         eventList.append(eventItem);
     }
 });
+
+
     
     const user = await AuthModule.getLoggedUser();
     const userId = user.id; 
+
+
+     const eventItem = eventsItemTemplate.content.cloneNode(true).children[0];
+
+    const btnComments = eventItem.querySelector('#btn-comments');
+    const commentsSection = eventItem.querySelector('#comments-section');
+
+    console.log(btnComments, commentsSection);
+    
 </script>
