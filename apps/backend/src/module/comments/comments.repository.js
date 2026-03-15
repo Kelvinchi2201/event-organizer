@@ -39,7 +39,18 @@ const updateCommentsById = async (id, payload) => {
     return response.rows[0];
 };
 
-const commentsRepository = { getAllComments, addOneComment, deleteCommentById, updateCommentsById};
+const getCommentsByEventId = async (eventId) => {
+  const response = await db.query(
+    `
+    SELECT * FROM comentarios
+    WHERE events_id = $1
+    `,
+    [eventId]
+  );
+  return response.rows;
+};
+
+const commentsRepository = { getAllComments, addOneComment, deleteCommentById, updateCommentsById, getCommentsByEventId};
 
 export default commentsRepository;
 

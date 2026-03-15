@@ -4,5 +4,5 @@ Content-Type: application/json
 {
   "contenido": "Probando mi segundo comentario",
   "usuariosId": 1,
-  "eventsId": 1
+  "eventsId": 3
 }

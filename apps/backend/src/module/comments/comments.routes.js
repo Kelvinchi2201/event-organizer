@@ -18,6 +18,12 @@ commentsRouter.get('/', async (req, res) => {
 
 });
 
+commentsRouter.get('/:eventId', async (req, res) => {
+    const eventId = parseInt(req.params.eventId);
+    const comments = await commentsRepository.getCommentsByEventId(eventId);
+    res.status(200).json(comments);
+})
+
 commentsRouter.delete('/:id', async (req, res) => {
     const params = deleteCommentsRouteSchema.params.parse(req.params);
     const deletedComment = await commentsRepository.deleteCommentById(params.id);
