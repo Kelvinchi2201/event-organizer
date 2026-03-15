@@ -22,7 +22,15 @@ commentsRouter.get('/:eventId', async (req, res) => {
     const eventId = parseInt(req.params.eventId);
     const comments = await commentsRepository.getCommentsByEventId(eventId);
     res.status(200).json(comments);
-})
+});
+
+commentsRouter.get('/user/:userId', async (req, res) => {
+    const userId = parseInt(req.params.userId);
+    const comments = await commentsRepository.getsCommentsByUserId(userId);
+    res.status(200).json(comments);
+});
+
+
 
 commentsRouter.delete('/:id', async (req, res) => {
     const params = deleteCommentsRouteSchema.params.parse(req.params);

@@ -50,7 +50,18 @@ const getCommentsByEventId = async (eventId) => {
   return response.rows;
 };
 
-const commentsRepository = { getAllComments, addOneComment, deleteCommentById, updateCommentsById, getCommentsByEventId};
+const getsCommentsByUserId = async (userId) => {
+    const response = await db.query(
+       `
+       SELECT * FROM comentarios
+       WHERE usuarios_id = $1
+       `,
+       [userId]
+    );
+    return response.rows;
+};
+
+const commentsRepository = { getAllComments, addOneComment, deleteCommentById, updateCommentsById, getCommentsByEventId, getsCommentsByUserId};
 
 export default commentsRepository;
 
