@@ -64,7 +64,21 @@ import EventsItem from "./EventsItem.astro"
             // Inserta la imagen al principio del 'eventItem' (dentro del <li>)
             eventItem.prepend(imgElement);
         }
-        
+         const btnComments = eventItem.querySelector('#btn-comments');
+    const commentsSection = eventItem.querySelector('#comments-section');
+
+    
+    btnComments.addEventListener('click', () => {
+        console.log('ok');
+        commentsSection.classList.toggle('hidden');
+        if (commentsSection.classList.contains('hidden')) {
+            btnComments.textContent = 'ver comentarios';
+        } else {
+            btnComments.textContent = 'ocultar comentarios';
+        }
+    });
+
+
         eventList.append(eventItem);
     }
 });
@@ -77,9 +91,6 @@ import EventsItem from "./EventsItem.astro"
 
      const eventItem = eventsItemTemplate.content.cloneNode(true).children[0];
 
-    const btnComments = eventItem.querySelector('#btn-comments');
-    const commentsSection = eventItem.querySelector('#comments-section');
-
-    console.log(btnComments, commentsSection);
+   
     
 </script>
