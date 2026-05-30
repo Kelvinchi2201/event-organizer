@@ -42,8 +42,10 @@ const updateCommentsById = async (id, payload) => {
 const getCommentsByEventId = async (eventId) => {
   const response = await db.query(
     `
-    SELECT * FROM comentarios
-    WHERE events_id = $1
+    SELECT c.*, u.name
+    FROM comentarios c
+    JOIN usuarios u ON c.usuarios_id = u.id
+    WHERE c.events_id = $1
     `,
     [eventId]
   );

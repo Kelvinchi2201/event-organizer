@@ -5,6 +5,7 @@ import ky from "ky";
 
  const BASE_URL_EVENTS = `${BACK_ENDPOINT}/api/events`;
  const BASE_URL_GUESTS = `${BACK_ENDPOINT}/api/guest`;
+ const BASE_URL_COMMENTS = `${BACK_ENDPOINT}/api/comments`;
 
  let eventsArray = []
  export const events = atom(eventsArray);
@@ -29,7 +30,17 @@ import ky from "ky";
    return guestsData
  };
 
+ const getUsercommentByEventId = async (u) => {
+   const commentData = await ky.get(`${BASE_URL_COMMENTS}/${comment_id}`, {credentials: 'include'}).json();
+   return commentData
+ };
+
+ const getCommentsByEventId = async (event_id) => {
+  const commentsData = await ky.get(`${BASE_URL_COMMENTS}/${event_id}`, {credentials: 'include'}).json();
+  return commentsData
+ }
+
  
 
 
- export default { getEventsListForHome, getGuestsByEventId };
+ export default { getEventsListForHome, getGuestsByEventId, getCommentsByEventId, getUsercommentByEventId };

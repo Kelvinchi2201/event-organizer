@@ -27,6 +27,8 @@ import EventsItem from "./EventsItem.astro"
     const eventsItemTemplate = document.querySelector('#events-item-template');
     const eventList = document.querySelector('#dashboard-list');
     await homeModule.getEventsListForHome();
+    const commentsSection = document.querySelector('#comments-section');
+
 
     
 
@@ -68,15 +70,32 @@ import EventsItem from "./EventsItem.astro"
     const commentsSection = eventItem.querySelector('#comments-section');
 
     
-    btnComments.addEventListener('click', () => {
-        console.log('ok');
-        commentsSection.classList.toggle('hidden');
-        if (commentsSection.classList.contains('hidden')) {
-            btnComments.textContent = 'ver comentarios';
-        } else {
-            btnComments.textContent = 'ocultar comentarios';
-        }
-    });
+   btnComments.addEventListener('click', async () => {
+    commentsSection.classList.toggle('hidden');
+    
+    if (commentsSection.classList.contains('hidden')) {
+        btnComments.textContent = 'Ver comentarios';
+        return; 
+    }
+    
+    btnComments.textContent = 'Ocultar comentarios';
+
+    const commentsData = await homeModule.getCommentsByEventId(eventItem.id);
+    const commentsListDisplay = commentsSection.querySelector('#comments-list-display');
+    const commentsTemplateDisplay = commentsSection.querySelector('#comment-template-display');
+    
+    commentsListDisplay.innerHTML = '';
+
+    for (const comment of commentsData) {
+        const commentNode = commentsTemplateDisplay.content.cloneNode(true);
+        
+        // Asignamos directamente el 'name' y el 'contenido'
+        commentNode.querySelector('#commentUser').textContent = comment.name; 
+        commentNode.querySelector('.comment-text').textContent = comment.contenido; 
+        
+        commentsListDisplay.append(commentNode);
+    }
+});
 
 
         eventList.append(eventItem);
