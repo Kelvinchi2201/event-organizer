@@ -28,7 +28,7 @@ import EventsItem from "./EventsItem.astro"
     const eventList = document.querySelector('#dashboard-list');
     await homeModule.getEventsListForHome();
     const commentsSection = document.querySelector('#comments-section');
-
+    import { createNotification } from "../../features/notifications/notificiation";
 
     
 
@@ -71,6 +71,49 @@ import EventsItem from "./EventsItem.astro"
     const commentForm = eventItem.querySelector('#comment-form');
     const submitCommentButton = eventItem.querySelector('#submit-comment');
 
+    submitCommentButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const commentContent = commentForm.querySelector('textarea[name="content"]').value.trim();
+        
+       
+
+        if (!commentContent) {
+            createNotification('El comentario no puede estar vacío.', 'error');
+            return;
+        }
+
+        const user = await AuthModule.getLoggedUser();
+        const commentData = {
+            contenido: commentContent,
+            usuariosId: user.id,
+            eventsId: Number(eventItem.id)
+        };
+
+        try {
+            await homeModule.addComment(commentData);
+            createNotification('Comentario agregado exitosamente.', 'success');
+
+            
+            commentForm.reset(); 
+
+            
+            const listaComentarios = eventItem.querySelector('#comments-list-display'); 
+    
+            
+            listaComentarios.insertAdjacentHTML('beforeend', `
+                <div class="bg-gray-50 p-2 rounded-md border border-gray-200 text-xs flex justify-between items-start">
+                    <div class="flex-1">
+                        <p class="font-bold text-pink-600 mb-0.5">Tú</p>
+                        <p class="text-gray-700 comment-text">${commentContent}</p>
+                    </div>
+                </div>
+            `);
+
+        } catch (error) {
+            createNotification('Error al agregar el comentario.', 'error');
+        }
+
+    });
     
    btnComments.addEventListener('click', async () => {
     commentsSection.classList.toggle('hidden');
@@ -85,6 +128,7 @@ import EventsItem from "./EventsItem.astro"
     const commentsData = await homeModule.getCommentsByEventId(eventItem.id);
     const commentsListDisplay = commentsSection.querySelector('#comments-list-display');
     const commentsTemplateDisplay = commentsSection.querySelector('#comment-template-display');
+    
     
     commentsListDisplay.innerHTML = '';
 
