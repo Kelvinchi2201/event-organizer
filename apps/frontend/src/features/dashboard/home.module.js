@@ -40,7 +40,18 @@ import ky from "ky";
   return commentsData
  }
 
- 
+ const addComment = async (commentData) => {
+  try {
+    const response = await ky.post(`${BASE_URL_COMMENTS}`, {
+      json: commentData,
+      credentials: 'include'
+    }).json();
+    return response;
+  } catch (error) {
+    console.error('Error adding comment:', error);
+    throw error;
+  }
+}
 
 
- export default { getEventsListForHome, getGuestsByEventId, getCommentsByEventId, getUsercommentByEventId };
+ export default { getEventsListForHome, getGuestsByEventId, getCommentsByEventId, getUsercommentByEventId, addComment };
